@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2BA9E3</color>
+    <color name="colorPrimaryDark">#2BA9E3</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#FFFFFF</color>
+    <color name="tv_333">#333333</color>
+    <color name="tv_666">#666666</color>
+    <color name="tv_999">#999999</color>
+    <color name="tv_orange">#FF2400</color>
+    <color name="app_bg">#f5f5f9</color>
+    <color name="title_bg">#2BA9E3</color>
+    <color name="no_login">#3498DB</color>
+    <color name="text_address">#236B8E</color>
+    <color name="text_gray_light">#d0d0d0</color>
+    <color name="tv_ccc">#cccccc</color>
+</resources>

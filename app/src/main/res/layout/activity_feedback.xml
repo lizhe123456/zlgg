@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg">
+    <include layout="@layout/layout_title"/>
+
+    <EditText
+        android:id="@+id/et_desc"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/white"
+        android:gravity="top"
+        android:hint="设备报修或本应用BUG或是给点建议"
+        android:maxLength="500"
+        android:padding="10dp"
+        android:inputType="textMultiLine"
+        android:textColor="@color/tv_666"
+        android:textColorHint="@color/tv_999"
+        android:textSize="14dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+    <EditText
+        android:id="@+id/phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:maxLines="1"
+        android:inputType="phone"
+        android:hint="输入手机号，便与我们找到您(可不填)"
+        android:textColor="@color/tv_666"
+        android:textColorHint="@color/tv_999"
+        android:textSize="14sp"
+        android:paddingLeft="10dp"
+        android:paddingBottom="15dp"
+        android:paddingTop="20dp"
+        android:maxLength="11"
+        />
+    <TextView
+        android:id="@+id/submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_login_shape"
+        android:text="@string/submit"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:padding="10dp"
+        android:layout_margin="15dp" />
+</LinearLayout>

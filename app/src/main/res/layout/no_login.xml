@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_no_login"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/app_bg"
+    android:padding="10dp"
+    android:gravity="center"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_login"
+        android:textColor="@color/tv_666"
+        android:textSize="14sp"
+        android:layout_centerVertical="true"
+        />
+    <TextView
+        android:id="@+id/tv_btn_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/btn_login_shape_hollow"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:textColor="@color/no_login"
+        android:textSize="16sp"
+        android:layout_centerVertical="true"
+        />
+
+</RelativeLayout>

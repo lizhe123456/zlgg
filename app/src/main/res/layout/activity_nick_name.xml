@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg">
+    <include layout="@layout/layout_title"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+
+    <EditText
+        android:id="@+id/nick_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="15dp"
+        android:hint="请输入昵称"
+        android:inputType="textMultiLine"
+        android:textColor="@color/tv_666"
+        android:textColorHint="@color/tv_999"
+        android:textSize="14dp"
+        android:maxLines="1"
+        android:textCursorDrawable="@drawable/color_cursor"
+        android:maxLength="18"
+        />
+
+</LinearLayout>
