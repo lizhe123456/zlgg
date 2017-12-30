@@ -5,6 +5,7 @@ import android.app.Activity;
 import com.zlcm.zlgg.di.module.FragmentModule;
 import com.zlcm.zlgg.di.scope.FragmentScope;
 import com.zlcm.zlgg.ui.MainFragment;
+import com.zlcm.zlgg.ui.setting.SettingActivity;
 
 import dagger.Component;
 
@@ -18,4 +19,5 @@ public interface FragmentComponent {
 
     Activity getActivity();
 
+    void inject(MainFragment fragment);
 }

@@ -8,7 +8,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.zlcm.zlgg.R;
 import com.zlcm.zlgg.base.MvpActivity;
 import com.zlcm.zlgg.model.bean.LoginBean;
@@ -18,12 +17,10 @@ import com.zlcm.zlgg.presenter.user.contract.LoginContract;
 import com.zlcm.zlgg.utils.MobileUtil;
 import com.zlcm.zlgg.utils.SpUtil;
 import com.zlcm.zlgg.view.ZlToast;
-
 import java.util.Timer;
 import java.util.TimerTask;
 import butterknife.BindView;
 import butterknife.OnClick;
-
 
 /**
  * Created by lizhe on 2017/12/11 0011.

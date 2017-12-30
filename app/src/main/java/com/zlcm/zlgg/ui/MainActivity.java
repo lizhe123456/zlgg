@@ -1,6 +1,7 @@
 package com.zlcm.zlgg.ui;
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -10,8 +11,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 import com.zlcm.zlgg.R;
 import com.zlcm.zlgg.app.App;
@@ -26,7 +25,6 @@ import com.zlcm.zlgg.ui.user.activity.UserInfoActivity;
 import com.zlcm.zlgg.ui.wallet.WalletActivity;
 import com.zlcm.zlgg.view.RoundImageView;
 import com.zlcm.zlgg.view.ZlToast;
-
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -55,6 +53,8 @@ public class MainActivity extends BaseActivity {
     private static final int WALLET = 2;
     private static final int RELEASE = 3;
     private static final int SHARE = 4;
+    private Fragment mContent;
+
 
     @Override
     protected int setLayout() {
@@ -73,7 +73,7 @@ public class MainActivity extends BaseActivity {
         mList.add(new MenuBean(R.drawable.release_menu, "我的发布"));
         mList.add(new MenuBean(R.drawable.share, "邀请好友"));
         navigationMenu.setAdapter(mAdapter);
-
+        mContent = new MainFragment();
     }
 
     @Override
@@ -83,7 +83,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view, Object item, int position) {
                 Intent intent = new Intent();
-                switch (position){
+                switch (position) {
                     case HOT:
                         intent.setClass(mActivity, HotActivity.class);
                         startActivity(intent);
@@ -111,12 +111,13 @@ public class MainActivity extends BaseActivity {
 //        navigationMenu.addHeaderView(headerView);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_context, new MainFragment());
+        fragmentTransaction.add(R.id.fragment_context, mContent);
         fragmentTransaction.commit();
     }
 
 
-    @OnClick({R.id.tv_setting, R.id.tv_customer_service,R.id.head_portrait})
+
+    @OnClick({R.id.tv_setting, R.id.tv_customer_service, R.id.head_portrait})
     public void onViewClicked(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -153,14 +154,14 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-            if (drawerlayout.isDrawerOpen(navigationAll)){
+            if (drawerlayout.isDrawerOpen(navigationAll)) {
                 closeDrawerLayout();
-            }else {
+            } else {
                 exit();
             }
-            
+
             return false;
-        }else {
+        } else {
             return super.onKeyDown(keyCode, event);
         }
 
@@ -168,11 +169,12 @@ public class MainActivity extends BaseActivity {
 
     public void exit() {
         if ((System.currentTimeMillis() - exitTime) > 2000) {
-            ZlToast.showText(this,"再按一次退出程序");
+            ZlToast.showText(this, "再按一次退出程序");
             exitTime = System.currentTimeMillis();
         } else {
             App.getInstance().exitApp();
         }
     }
+
 
 }

@@ -78,4 +78,17 @@ public abstract class BaseFrament extends Fragment{
         isViewPrepared = false;
         mUnbinder.unbind();
     }
+
+    /**
+     * 检测view是否显示
+     * @param view
+     * @return
+     */
+    protected boolean isShow(View view){
+        if (view.getVisibility() == View.VISIBLE){
+            return true;
+        }else {
+            return false;
+        }
+    }
 }

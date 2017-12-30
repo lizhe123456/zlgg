@@ -24,7 +24,7 @@ public abstract class MvpActivity<T extends BasePresenter> extends BaseActivity 
 
     protected ActivityComponent getActivityComponent(){
         return DaggerActivityComponent.builder()
-                .appComponent(App.getAppComponent())
+                .appComponent(App.getInstance().getAppComponent())
                 .activityModule(new ActivityModule(this))
                 .build();
     }
@@ -70,6 +70,16 @@ public abstract class MvpActivity<T extends BasePresenter> extends BaseActivity 
     @Override
     public void showErrorMsg(String msg) {
         ZlToast.showText(mActivity,msg);
+    }
+
+    protected int getMaxElem(int[] arr) {
+        int size = arr.length;
+        int maxVal = Integer.MIN_VALUE;
+        for (int i = 0; i < size; i++) {
+            if (arr[i]>maxVal)
+                maxVal = arr[i];
+        }
+        return maxVal;
     }
 
 }

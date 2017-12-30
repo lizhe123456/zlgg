@@ -82,10 +82,10 @@ public class ZlCustomDialog extends Dialog {
         }else {
             dialog.mNegativeBtn.setText("取消");
         }
-        if (!TextUtils.isEmpty(dialog.cancel)){
-            dialog.mNegativeBtn.setText(dialog.confirm);
+        if (!TextUtils.isEmpty(dialog.confirm)){
+            dialog.mBtnSubmit.setText(dialog.confirm);
         }else {
-            dialog.mNegativeBtn.setText("确定");
+            dialog.mBtnSubmit.setText("确定");
         }
         if (mView != null){
             if (dialog.mFrameLayout.getChildCount() > 0){

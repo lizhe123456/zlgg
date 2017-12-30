@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
@@ -26,11 +27,12 @@ import java.util.UUID;
 public class PackageUtil {
 
     private Uri imageUri;
-    private static final int CODE_RESULT_REQUEST = 101;
+
+    public static final int CODE_RESULT_REQUEST = 101;
     //裁剪
-    private static final int CODE_CAMERA_REQUEST = 102;
+    public static final int CODE_CAMERA_REQUEST = 102;
     //相册
-    private static final int CODE_GALLERY_REQUEST = 103;
+    public static final int CODE_GALLERY_REQUEST = 103;
 
     /**
      * 获取包名
@@ -127,22 +129,27 @@ public class PackageUtil {
     /**
      * 打开系统相机
      */
-    public static void startCarmera(Activity activity){
-        File file = new File(activity.getExternalCacheDir(), UUID.randomUUID()+".jpg");
+    public static File startCarmera(Activity activity){
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                + "/test/" + System.currentTimeMillis() + ".jpg");
+        file.getParentFile().mkdirs();
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
             intent.putExtra(MediaStore.EXTRA_OUTPUT,
                     FileProvider.getUriForFile(activity,"com.zlcm.zlgg.fileprovider", file));
+            //添加权限
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }else {
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
         }
         activity.startActivityForResult(intent, CODE_RESULT_REQUEST);
+        return file;
     }
 
     /**
      * 从相册选择
      */
-    private void selectFromAlbum(Activity activity) {
+    public static void selectFromAlbum(Activity activity) {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         activity.startActivityForResult(intent, CODE_GALLERY_REQUEST);

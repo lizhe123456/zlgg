@@ -14,4 +14,10 @@
     <color name="text_address">#236B8E</color>
     <color name="text_gray_light">#d0d0d0</color>
     <color name="tv_ccc">#cccccc</color>
+    <color name="gary">#898989</color>
+    <color name="transparent">#00000000</color>
+    <color name="black">#000000</color>
+    <color name="colorTheme">#1296db</color>
+    <color name="green">#47C98E</color>
+    <color name="red_1">#A63E47</color>
 </resources>

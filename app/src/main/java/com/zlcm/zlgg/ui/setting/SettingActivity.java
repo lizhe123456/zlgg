@@ -10,9 +10,14 @@ import android.widget.Toast;
 import com.zlcm.zlgg.R;
 import com.zlcm.zlgg.app.Constants;
 import com.zlcm.zlgg.base.BaseActivity;
+import com.zlcm.zlgg.base.MvpActivity;
+import com.zlcm.zlgg.model.bean.NewVersionInfoBean;
+import com.zlcm.zlgg.presenter.setting.SettingPresenter;
+import com.zlcm.zlgg.presenter.setting.contract.SettingContract;
 import com.zlcm.zlgg.ui.setting.activity.FeedBackActivity;
 import com.zlcm.zlgg.utils.DataCleanManager;
 import com.zlcm.zlgg.utils.PackageUtil;
+import com.zlcm.zlgg.utils.SpUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +30,7 @@ import butterknife.OnClick;
  * 类介绍：设置页面
  */
 
-public class SettingActivity extends BaseActivity {
+public class SettingActivity extends MvpActivity<SettingPresenter> implements SettingContract.View{
 
     @BindView(R.id.title)
     TextView title;
@@ -36,14 +41,17 @@ public class SettingActivity extends BaseActivity {
     @BindView(R.id.exit_login)
     TextView exitLogin;
 
+    private static final int SETTING = 3;
 
     @Override
     protected int setLayout() {
         return R.layout.activity_setting;
     }
 
+
     @Override
-    protected void init() {
+    protected void initInject() {
+        getActivityComponent().inject(this);
     }
 
     @Override
@@ -58,7 +66,7 @@ public class SettingActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.img_lift, R.id.clean_out_cache, R.id.contact_us, R.id.version_update, R.id.feedback, R.id.about_us})
+    @OnClick({R.id.img_lift, R.id.clean_out_cache, R.id.contact_us, R.id.version_update, R.id.feedback, R.id.about_us,R.id.exit_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_lift:
@@ -78,15 +86,53 @@ public class SettingActivity extends BaseActivity {
                 startActivity(dialIntent);
                 break;
             case R.id.version_update:
+                mPresenter.getNewVersion(PackageUtil.getVersionName(mActivity));
                 break;
             case R.id.feedback:
                 Intent intent = new Intent();
                 intent.setClass(mActivity, FeedBackActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,SETTING);
                 break;
             case R.id.about_us:
+                break;
+            case R.id.exit_login:
+                mPresenter.exitLogin();
                 break;
         }
     }
 
+    @Override
+    public void stateError() {
+
+    }
+
+    @Override
+    public void showNewVersion(NewVersionInfoBean bean) {
+
+    }
+
+    @Override
+    public void exit() {
+        SpUtil.putString(this,"username",null);
+        SpUtil.putString(this,"loginId",null);
+        SpUtil.putString(this,"token",null);
+        finish();
+    }
+
+    @Override
+    public void back() {
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SETTING){
+            if (resultCode == FeedBackActivity.FEEDBACK){
+                String desc = data.getStringExtra("desc");
+                String phone = data.getStringExtra("phone");
+                mPresenter.feedback(desc,phone);
+            }
+        }
+    }
 }

@@ -5,6 +5,7 @@ import com.zlcm.zlgg.app.App;
 import com.zlcm.zlgg.di.component.DaggerFragmentComponent;
 import com.zlcm.zlgg.di.component.FragmentComponent;
 import com.zlcm.zlgg.di.module.FragmentModule;
+import com.zlcm.zlgg.view.LoadingDialog;
 import com.zlcm.zlgg.view.ZlToast;
 
 import org.greenrobot.eventbus.EventBus;
@@ -23,11 +24,17 @@ public abstract class MvpFragment<T extends BasePresenter> extends BaseFrament i
     @Inject
     protected T mPresenter;
 
+    protected LoadingDialog loadingDialog;
+
     protected FragmentComponent getFragmentComponent(){
         return DaggerFragmentComponent.builder()
-                .appComponent(App.getAppComponent())
+                .appComponent(App.getInstance().getAppComponent())
                 .fragmentModule(new FragmentModule(this))
                 .build();
+    }
+
+    protected void initLoading(){
+        loadingDialog = new LoadingDialog(getContext());
     }
 
     @Override
@@ -36,7 +43,7 @@ public abstract class MvpFragment<T extends BasePresenter> extends BaseFrament i
         if (mPresenter != null){
             mPresenter.attachView(this);
         }
-
+        initLoading();
     }
 
     protected void initEvent(){
@@ -61,12 +68,15 @@ public abstract class MvpFragment<T extends BasePresenter> extends BaseFrament i
 
     @Override
     public void loading(String msg) {
-
+        loadingDialog.setMessage(msg);
+        loadingDialog.show();
     }
 
     @Override
     public void unLoading() {
-
+        if (loadingDialog.isShowing()) {
+            loadingDialog.cancel();
+        }
     }
 
     @Override

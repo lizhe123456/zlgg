@@ -2,22 +2,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/relativeLayout">
     <include
-        android:id="@+id/title"
+        android:id="@+id/title_layuot"
         layout="@layout/layout_title"/>
-    <ImageView
-        android:id="@+id/src_pic"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/title"
-        android:scaleType="matrix"
-        android:gravity="center"
-        />
-    <com.zlcm.zlgg.widgets.RectangleClipView
+    <com.zlcm.zlgg.widgets.circle.ClipViewLayout
         android:id="@+id/clip_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/title"
+        android:layout_below="@+id/title_layuot"
+        app:clipBorderWidth="2dp"
+        app:clipType="circle"
+        app:mHorizontalPadding="30dp"
+        />
+    <com.zlcm.zlgg.widgets.circle.ClipViewLayout
+        android:id="@+id/clip_view1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title_layuot"
+        app:clipBorderWidth="2dp"
+        app:clipType="rectangle"
+        app:mHorizontalPadding="30dp"
         />
 </RelativeLayout>

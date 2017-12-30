@@ -19,6 +19,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    signingConfigs {
+        //调试版的keystore
+        debug {
+            storeFile file("C:/Users/Administrator/.android/debug.keystore")
+        }
+        //发布版的keystore
+        release {
+            storeFile file("C:/Users/Administrator/Desktop/project/appkey/zlgg.jks")
+            storePassword "100122"
+            keyAlias "key"
+            keyPassword "100122"
+        }
+    }
+
 }
 
 dependencies {
@@ -49,4 +63,6 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
     compile files('libs/commons-codec-1.11.jar')
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.youth.banner:banner:1.4.10'
 }

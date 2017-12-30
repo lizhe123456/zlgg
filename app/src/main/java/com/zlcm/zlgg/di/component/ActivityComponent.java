@@ -4,7 +4,12 @@ import android.app.Activity;
 
 import com.zlcm.zlgg.di.module.ActivityModule;
 import com.zlcm.zlgg.di.scope.ActivityScope;
+import com.zlcm.zlgg.ui.hot.HotActivity;
+import com.zlcm.zlgg.ui.periphery.PeripheryActivity;
+import com.zlcm.zlgg.ui.periphery.activity.DeviceDetailsActivity;
+import com.zlcm.zlgg.ui.setting.SettingActivity;
 import com.zlcm.zlgg.ui.user.LoginActivity;
+import com.zlcm.zlgg.ui.user.activity.UpdatePhoneActivity;
 import com.zlcm.zlgg.ui.user.activity.UserInfoActivity;
 
 import dagger.Component;
@@ -22,4 +27,15 @@ public interface ActivityComponent {
     void inject(LoginActivity activity);
 
     void inject(UserInfoActivity activity);
+
+    void inject(UpdatePhoneActivity activity);
+
+    void inject(SettingActivity activity);
+
+    void inject(HotActivity activity);
+
+    void inject(PeripheryActivity activity);
+
+    void inject(DeviceDetailsActivity activity);
+
 }

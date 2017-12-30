@@ -66,8 +66,11 @@ public class ClipView extends View {
 		super.onDraw(canvas);
 		int width = this.getWidth();
 		int height = this.getHeight();
-		mPaint = new Paint();
-		mPaint.setColor(0xA6000000);
+//		mPaint = new Paint();
+//		mPaint.setColor(0xA6000000);
+		if (shelterR == null || shelterR.isEmpty()) {
+			shelterR = new RectF(0, 0,width, height);
+		}
 		switch (clipType){
 			case CLIP_ROUND:
 				int sc = canvas.saveLayer(shelterR, null, LAYER_FLAGS);

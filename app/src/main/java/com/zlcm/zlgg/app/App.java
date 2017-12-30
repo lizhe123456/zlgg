@@ -1,7 +1,12 @@
 package com.zlcm.zlgg.app;
 
 import android.app.Activity;
+import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.util.DisplayMetrics;
@@ -11,6 +16,9 @@ import com.zlcm.zlgg.di.component.AppComponent;
 import com.zlcm.zlgg.di.component.DaggerAppComponent;
 import com.zlcm.zlgg.di.module.AppModule;
 import com.zlcm.zlgg.di.module.HttpModule;
+import com.zlcm.zlgg.service.LocationService;
+import com.zlcm.zlgg.utils.LogUtil;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,20 +30,20 @@ import java.util.Set;
 public class App extends MultiDexApplication {
     private static App instance;
     private Context mContext;
-    public static AppComponent appComponent;
+    public AppComponent appComponent;
     private Set<Activity> allActivitySet;
-
-    public static int SCREEN_WIDTH = -1;
-    public static int SCREEN_HEIGHT = -1;
-    public static float DIMEN_RATE = -1.0F;
-    public static int DIMEN_DPI = -1;
 
     public Context getContext() {
         return mContext;
     }
 
     public static synchronized App getInstance() {
-        return instance;
+        if (instance == null){
+            return new App();
+        }else {
+            return instance;
+        }
+
     }
 
     @Override
@@ -46,25 +54,10 @@ public class App extends MultiDexApplication {
         }
         instance = this;
         mContext = getApplicationContext();
-        //初始化屏幕宽高
-        getScreenSize();
     }
 
-    public void getScreenSize() {
-        WindowManager windowManager = (WindowManager)this.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics dm = new DisplayMetrics();
-        Display display = windowManager.getDefaultDisplay();
-        display.getMetrics(dm);
-        DIMEN_RATE = dm.density / 1.0F;
-        DIMEN_DPI = dm.densityDpi;
-        SCREEN_WIDTH = dm.widthPixels;
-        SCREEN_HEIGHT = dm.heightPixels;
-        if(SCREEN_WIDTH > SCREEN_HEIGHT) {
-            int t = SCREEN_HEIGHT;
-            SCREEN_HEIGHT = SCREEN_WIDTH;
-            SCREEN_WIDTH = t;
-        }
-    }
+
+
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -85,7 +78,7 @@ public class App extends MultiDexApplication {
         }
     }
 
-    public static AppComponent getAppComponent() {
+    public AppComponent getAppComponent() {
         if (appComponent == null){
             appComponent = DaggerAppComponent.builder()
                     .appModule(new AppModule(instance))

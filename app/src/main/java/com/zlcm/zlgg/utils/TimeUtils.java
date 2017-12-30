@@ -14,6 +14,7 @@ import java.util.Locale;
 public class TimeUtils {
 
     public static final SimpleDateFormat DEFAULT_SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    public static final SimpleDateFormat ADVERT_SDF = new SimpleDateFormat("yyyy年MM月dd日 HH:mm", Locale.getDefault());
 
     public static final SimpleDateFormat UTC_SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
 
@@ -72,6 +73,28 @@ public class TimeUtils {
      */
     public static String milliseconds2String(long milliseconds, SimpleDateFormat format) {
         return format.format(new Date(milliseconds));
+    }
+
+    public static String parseDate(long create){
+        try {
+            String ret = "";
+            Calendar now = Calendar.getInstance();
+            long ms  = 1000*(now.get(Calendar.HOUR_OF_DAY)*3600+now.get(Calendar.MINUTE)*60+now.get(Calendar.SECOND));//毫秒数
+            long ms_now = now.getTimeInMillis();
+            if(ms_now-create<ms){
+                ret = "今天 " + milliseconds2String(create,new SimpleDateFormat("HH:mm", Locale.getDefault()));
+            }else if(ms_now-create<(ms+24*3600*1000)){
+                ret = "昨天 " + milliseconds2String(create,new SimpleDateFormat("HH:mm", Locale.getDefault()));
+            }else if(ms_now-create<(ms+24*3600*1000*2)){
+                ret = "前天 " + milliseconds2String(create,new SimpleDateFormat("HH:mm", Locale.getDefault()));
+            }else{
+                ret= milliseconds2String(create,ADVERT_SDF);
+            }
+            return ret;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**

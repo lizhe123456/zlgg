@@ -55,6 +55,25 @@ public class RxUtil {
         };
     }
 
+    public static FlowableTransformer<ZLResponse,ZLResponse> handleZLState(){
+        return new FlowableTransformer<ZLResponse, ZLResponse>() {
+            @Override
+            public Flowable apply(Flowable<ZLResponse> upstream) {
+                return upstream.flatMap(new Function<ZLResponse, Flowable<ZLResponse>>() {
+                    @Override
+                    public Flowable<ZLResponse> apply(@NonNull final ZLResponse zlResponse) throws Exception {
+                        if (zlResponse.getCode() == 200){
+                            return createData(zlResponse);
+                        }else {
+                            return Flowable.error(new SysException(zlResponse.getCode()));
+                        }
+                    }
+                });
+            }
+        };
+
+    }
+
 
     /**
      * 生成Flowable

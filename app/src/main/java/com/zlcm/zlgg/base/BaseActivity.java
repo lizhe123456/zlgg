@@ -7,6 +7,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+
+import com.zlcm.zlgg.R;
 import com.zlcm.zlgg.app.App;
 import com.zlcm.zlgg.utils.LogUtil;
 import butterknife.ButterKnife;
@@ -24,20 +26,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected View mView;
     protected LayoutInflater mInflater;
 
-    private ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(setLayout());
         mActivity = this;
         mInflater = LayoutInflater.from(this);
         mView = mInflater.inflate(setLayout(),null);
-        setContentView(mView);
         mUnbinder = ButterKnife.bind(mActivity);
         App.getInstance().addActivity(mActivity);
         init();
 //        initFragment(savedInstanceState);
-        LogUtil.d("s","sadas");
         setData();
     }
 

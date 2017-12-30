@@ -42,6 +42,7 @@ public class LoginPresenter extends BasePresenterImpl<LoginContract.View> implem
                     .subscribeWith(new CommonSubscriber<LoginBean>(mView) {
                         @Override
                         public void onNext(LoginBean loginBean) {
+                            super.onNext(loginBean);
                             mView.getResponse(loginBean);
                         }
                     })
@@ -53,32 +54,14 @@ public class LoginPresenter extends BasePresenterImpl<LoginContract.View> implem
 //        mView.loading("加载中...");
         addSubscribe(dataManager.fetchMobileCodeInfo(mobile)
                     .compose(RxUtil.<ZLResponse>rxSchedulerHelper())
-                    .flatMap(new Function<ZLResponse, Flowable<ZLResponse>>() {
-                        @Override
-                        public Flowable<ZLResponse> apply(@NonNull final ZLResponse zlResponse) throws Exception {
-                            if (zlResponse.getCode() == 200){
-                                return Flowable.create(new FlowableOnSubscribe<ZLResponse>() {
-                                    @Override
-                                    public void subscribe(FlowableEmitter<ZLResponse> emitter) throws Exception {
-                                        try {
-                                            emitter.onNext(zlResponse);
-                                            emitter.onComplete();
-                                        } catch (Exception e) {
-                                            emitter.onError(e);
-                                        }
-                                    }
-                                }, BackpressureStrategy.BUFFER);
-                            }else {
-                                return Flowable.error(new SysException(zlResponse.getCode()));
-                            }
-                        }
-                    })
+                    .compose(RxUtil.handleZLState())
                     .subscribeWith(new CommonSubscriber<ZLResponse>(mView) {
                         @Override
                         public void onNext(ZLResponse zlResponse) {
+                            super.onNext(zlResponse);
                             mView.codeState(zlResponse);
                         }
-                })
+                    })
         );
     }
 

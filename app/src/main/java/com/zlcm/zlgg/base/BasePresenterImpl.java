@@ -11,7 +11,7 @@ public class BasePresenterImpl<T extends BaseView> implements BasePresenter<T>{
 
     protected T mView;
     protected CompositeDisposable mCompositeDisposable;
-
+    protected static final int SIZE = 20;
 
     /**
      * 订阅

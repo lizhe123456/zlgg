@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">zlgg</string>
+    <string name="app_name">智领广告</string>
     <string name="title_name">智领广告</string>
     <string name="navigation_item0">item1</string>
     <string name="navigation_item1">item2</string>
@@ -24,4 +24,6 @@
     <string name="submit">提交</string>
     <string name="user_info">个人信息</string>
     <string name="cancel">取消</string>
+    <string name="no_result">对不起，没有搜索到相关数据</string>
+    <string name="periphery">我的周边</string>
 </resources>

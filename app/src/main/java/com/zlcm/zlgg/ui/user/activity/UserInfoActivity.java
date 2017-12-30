@@ -1,18 +1,33 @@
 package com.zlcm.zlgg.ui.user.activity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.zlcm.zlgg.R;
 import com.zlcm.zlgg.base.MvpActivity;
 import com.zlcm.zlgg.model.bean.UserInfoBean;
 import com.zlcm.zlgg.presenter.user.UserInfoPresenter;
 import com.zlcm.zlgg.presenter.user.contract.UserInfoContract;
+import com.zlcm.zlgg.utils.BmpUtils;
+import com.zlcm.zlgg.utils.GlideuUtil;
+import com.zlcm.zlgg.utils.SpUtil;
+import com.zlcm.zlgg.view.RoundImageView;
 import com.zlcm.zlgg.view.ZlCustomDialog;
+import com.zlcm.zlgg.view.ZlToast;
+import com.zlcm.zlgg.widgets.PhotoListActivity;
+
+import java.io.File;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -44,8 +59,10 @@ public class UserInfoActivity extends MvpActivity<UserInfoPresenter> implements 
     TextView storeAddress;
     @BindView(R.id.phone)
     TextView phone;
-    @BindView(R.id.iv_go4)
-    ImageView ivGo4;
+    @BindView(R.id.iv_go3)
+    ImageView ivGo3;
+    @BindView(R.id.iv_go2)
+    ImageView ivGo2;
     @BindView(R.id.nick_name)
     TextView nickName;
     @BindView(R.id.real_name_info)
@@ -54,6 +71,8 @@ public class UserInfoActivity extends MvpActivity<UserInfoPresenter> implements 
     LinearLayout storeInfo;
     @BindView(R.id.name_auth_tv)
     TextView nameAuth;
+    @BindView(R.id.iv_avatar)
+    RoundImageView ivAvatar;
 
     private boolean isNameAuth = false;
     private boolean isStoreAuth = false;
@@ -61,7 +80,7 @@ public class UserInfoActivity extends MvpActivity<UserInfoPresenter> implements 
     //认证信息展开收起状态
     private boolean isNameAuthS = true;
     private boolean isStoreAuthS = true;
-    private ZlCustomDialog mDialog;
+
 
     private static final int USERINfO = 3;
 
@@ -78,23 +97,17 @@ public class UserInfoActivity extends MvpActivity<UserInfoPresenter> implements 
     @Override
     protected void setData() {
         title.setText(R.string.user_info);
-        //设置头像
-        mDialog = new ZlCustomDialog.Builder(this)
-                .setTitle("选择图片")
-                .setMessage("去相机或者相册选择一张图片")
-                .setPositiveButton("相册",new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                })
-                .setNegativeButton("相机", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                })
-                .build();
+        String avatarUrl =  SpUtil.getString(this,"avatar");
+        String nickName =  SpUtil.getString(this,"nickName");
+        String username = SpUtil.getString(this,"username");
+        if (!TextUtils.isEmpty(avatarUrl) && !TextUtils.isEmpty(nickName)){
+            GlideuUtil.loadImageView(this,avatarUrl,ivAvatar);
+            this.nickName.setText(nickName);
+        }else {
+            if (username != null){
+                mPresenter.getUserInfo(username);
+            }
+        }
     }
 
     @Override
@@ -108,11 +121,13 @@ public class UserInfoActivity extends MvpActivity<UserInfoPresenter> implements 
             isNameAuth = true;
             nameAuth.setTextColor(getResources().getColor(R.color.tv_666));
             nameAuth.setText("已认证");
+            ivGo2.setVisibility(View.GONE);
         }
         if (bean.getStorename() != null) {
             isStoreAuth = true;
             storeAuth.setTextColor(getResources().getColor(R.color.tv_666));
             storeAuth.setText("已认证");
+            ivGo3.setVisibility(View.GONE);
         }
         if (isNameAuth) {
             realNameInfo.setVisibility(View.VISIBLE);
@@ -137,31 +152,48 @@ public class UserInfoActivity extends MvpActivity<UserInfoPresenter> implements 
 
     }
 
-    @OnClick({R.id.avatar, R.id.btn_name_auth, R.id.btn_store_auth, R.id.btn_phone, R.id.btn_nick_name,R.id.img_lift})
+    @Override
+    public void upload() {
+        ZlToast.showText(this,"上传成功");
+    }
+
+    @OnClick({R.id.avatar, R.id.btn_name_auth, R.id.btn_store_auth, R.id.btn_phone, R.id.btn_nick_name, R.id.img_lift})
     public void onViewClicked(View view) {
+        Intent intent = new Intent();
         switch (view.getId()) {
             case R.id.avatar:
                 //到相机相册选择,返回时上传
-
+                intent.setClass(this, PhotoListActivity.class);
+                intent.putExtra("clipType",1);
+                startActivityForResult(intent, USERINfO);
                 break;
             case R.id.btn_name_auth:
-               //跳转实名认证页面
-                mDialog.show();
+                if (isNameAuth) {
+
+                }else {
+                    intent.setClass(this, NameAuthActivity.class);
+                    startActivityForResult(intent, USERINfO);
+                }
                 break;
             case R.id.btn_store_auth:
                 //跳转商家认证页面
+                if (isStoreAuth){
 
+                }else {
+                    intent.setClass(this, StoreAuthActivity.class);
+                    startActivityForResult(intent, USERINfO);
+                }
                 break;
             case R.id.btn_phone:
                 //跳转更改手机号页面
-
+                intent.setClass(this,UpdatePhoneActivity.class);
+                startActivityForResult(intent,USERINfO);
                 break;
             case R.id.btn_nick_name:
                 //跳转昵称修改页面
-                Intent intent = new Intent();
-                intent.setClass(this,NickNameActivity.class);
-                intent.putExtra("nickName",nickName.getText().toString().trim());
-                startActivityForResult(intent,USERINfO);
+                intent.setClass(this, NickNameActivity.class);
+                intent.putExtra("nickName", nickName.getText().toString().trim());
+                startActivityForResult(intent, USERINfO);
                 break;
             case R.id.img_lift:
                 finish();
@@ -172,14 +204,29 @@ public class UserInfoActivity extends MvpActivity<UserInfoPresenter> implements 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == USERINfO){
-            switch (resultCode){
+        if (requestCode == USERINfO) {
+            switch (resultCode) {
                 case NickNameActivity.NICKNAME_RESULT:
                     String name = data.getStringExtra("text");
                     nickName.setText(name);
                     break;
+                case Activity.RESULT_OK:
+                    String bmp = data.getStringExtra("bitmap");
+                    if (!TextUtils.isEmpty(bmp)) {
+                        GlideuUtil.loadImageView(this,bmp,ivAvatar);
+                        SpUtil.putString(this,"avatar",bmp);
+                        SpUtil.putString(this,"avatar",nickName.getText().toString().trim());
+                        File file = new File(bmp);
+                        mPresenter.updateAvatar(file,nickName.getText().toString().trim());
+                    }
+                    break;
+                case UpdatePhoneActivity.RESULT:
+
+                    break;
+
             }
         }
 
     }
+
 }

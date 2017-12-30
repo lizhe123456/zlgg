@@ -1,5 +1,7 @@
 package com.zlcm.zlgg.di.module;
 
+import android.text.TextUtils;
+
 import com.zlcm.zlgg.app.App;
 import com.zlcm.zlgg.app.Constants;
 import com.zlcm.zlgg.di.qualifiler.ZLUrl;
@@ -101,20 +103,19 @@ public class HttpModule {
         try {
             String uid = SpUtil.getString(App.getInstance().getContext(),"loginId");
             final String token = SpUtil.getString(App.getInstance().getContext(),"token");
-            if (uid != null && token != null) {
+            if (!TextUtils.isEmpty(uid) && !TextUtils.isEmpty(token)) {
                 final String puid = new String(RSAUtils.encryptByPrivateKey(RSAUtils.decryptByPrivateKey(uid.getBytes(), Constants.PRIVATE_KEY),Constants.APP_PUBLIC_KEY));
                 Interceptor apikey = new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
                         Request request = chain.request();
                         request = request.newBuilder()
-                                .addHeader("loginId",token)
-                                .addHeader("token",puid)
+                                .addHeader("loginId",puid)
+                                .addHeader("token",token)
                                 .build();
                         return chain.proceed(request);
                     }
                 };
-                //设置统一的请求头部参数
                 builder.addInterceptor(apikey);
             }
         } catch (Exception e) {
@@ -130,7 +131,6 @@ public class HttpModule {
                 .retryOnConnectionFailure(true)
                 .cache(cache)
                 .addInterceptor(cacheInterceptor);
-
         return builder.build();
     }
 
