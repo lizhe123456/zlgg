@@ -33,6 +33,7 @@ android {
         }
     }
 
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
 }
 
 dependencies {
@@ -65,4 +66,5 @@ dependencies {
     compile files('libs/commons-codec-1.11.jar')
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.youth.banner:banner:1.4.10'
+    compile 'com.contrarywind:Android-PickerView:3.2.7'
 }

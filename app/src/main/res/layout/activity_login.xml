@@ -126,7 +126,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
-            android:text="点击开始，即表示同意"
+            android:text="点击登录，即表示同意"
             />
         <TextView
             android:id="@+id/tv_agreement"

@@ -1,5 +1,6 @@
 package com.zlcm.zlgg.model.http;
 
+import com.zlcm.zlgg.model.bean.ChargInfoBean;
 import com.zlcm.zlgg.model.bean.ChargingBean;
 import com.zlcm.zlgg.model.bean.DeviceBean;
 import com.zlcm.zlgg.model.bean.HomePageBean;
@@ -9,10 +10,13 @@ import com.zlcm.zlgg.model.bean.NewVersionInfoBean;
 import com.zlcm.zlgg.model.bean.PeripheryDetailsBean;
 import com.zlcm.zlgg.model.bean.PeripheryDeviceBean;
 import com.zlcm.zlgg.model.bean.UserInfoBean;
+import com.zlcm.zlgg.model.http.response.ZL2Response;
 import com.zlcm.zlgg.model.http.response.ZLResponse;
 import java.util.List;
 import io.reactivex.Flowable;
 import okhttp3.RequestBody;
+import retrofit2.http.Field;
+import retrofit2.http.Part;
 
 /**
  * Created by lizhe on 2017/12/11 0011.
@@ -25,9 +29,11 @@ public interface HttpHelper {
 
     Flowable<ZLResponse<LoginBean>> fetchMobileCodeInfo(String mobile,String code);
 
-    Flowable<ZLResponse<UserInfoBean>> fetchgetUserInfo(String username);
+    Flowable<ZL2Response<UserInfoBean>> fetchgetUserInfo(String username);
 
-    Flowable<ZLResponse> fetchUploadFile(RequestBody file,RequestBody nickName);
+    Flowable<ZLResponse> fetchUploadFile(RequestBody file);
+
+    Flowable<ZLResponse> fetchSetNickName(String nickName);
 
     Flowable<ZLResponse> fetchProvingPhone(String mobile,String code);
 
@@ -47,4 +53,11 @@ public interface HttpHelper {
 
     Flowable<ZLResponse<PeripheryDetailsBean>> fetchPeripheryDetailsInfo(int did,int page, int size, int type);
 
+    Flowable<ZLResponse<ChargInfoBean>> fetchgetSubmitAdvertInfo(List<Integer> list,
+                                                                 RequestBody file,
+                                                                 String desc,
+                                                                 String address,
+                                                                 long duration);
+
+    Flowable<ZLResponse<PeripheryDeviceBean>> fetchDeliveryDeviceList(String province, String city, String area, List<Integer> devices,int page);
 }

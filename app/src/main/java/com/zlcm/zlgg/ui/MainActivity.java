@@ -23,6 +23,7 @@ import com.zlcm.zlgg.ui.release.ReleaseActivity;
 import com.zlcm.zlgg.ui.setting.SettingActivity;
 import com.zlcm.zlgg.ui.user.activity.UserInfoActivity;
 import com.zlcm.zlgg.ui.wallet.WalletActivity;
+import com.zlcm.zlgg.utils.GlideuUtil;
 import com.zlcm.zlgg.view.RoundImageView;
 import com.zlcm.zlgg.view.ZlToast;
 import java.util.ArrayList;
@@ -142,6 +143,22 @@ public class MainActivity extends BaseActivity {
 
     public void closeDrawerLayout() {
         drawerlayout.closeDrawer(navigationAll);
+    }
+
+    public void setDrawerLock(boolean flag){
+        if (flag){
+            drawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        }else {
+            drawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
+    }
+
+    public void setAvatar(String path){
+        GlideuUtil.loadImageView(this,path,headPortrait);
+    }
+
+    public void setUserName(String nickName){
+        userName.setText(nickName);
     }
 
     /**

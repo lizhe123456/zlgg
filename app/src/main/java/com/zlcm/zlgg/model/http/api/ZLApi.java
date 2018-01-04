@@ -1,6 +1,7 @@
 package com.zlcm.zlgg.model.http.api;
 
 import com.zlcm.zlgg.model.bean.AdvertDetailsBean;
+import com.zlcm.zlgg.model.bean.ChargInfoBean;
 import com.zlcm.zlgg.model.bean.ChargingBean;
 import com.zlcm.zlgg.model.bean.HomePageBean;
 import com.zlcm.zlgg.model.bean.HotBean;
@@ -9,7 +10,11 @@ import com.zlcm.zlgg.model.bean.NewVersionInfoBean;
 import com.zlcm.zlgg.model.bean.PeripheryDetailsBean;
 import com.zlcm.zlgg.model.bean.PeripheryDeviceBean;
 import com.zlcm.zlgg.model.bean.UserInfoBean;
+import com.zlcm.zlgg.model.http.response.ZL2Response;
 import com.zlcm.zlgg.model.http.response.ZLResponse;
+
+import java.util.List;
+
 import io.reactivex.Flowable;
 import okhttp3.RequestBody;
 import retrofit2.http.Field;
@@ -51,15 +56,23 @@ public interface ZLApi {
      */
     @FormUrlEncoded
     @POST("/api/user/info")
-    Flowable<ZLResponse<UserInfoBean>> getUserInfo(@Field("username") String username);
+    Flowable<ZL2Response<UserInfoBean>> getUserInfo(@Field("username") String username);
 
     /**
-     * 上传头像和昵称
+     * 上传头像
      * @return
      */
     @POST("/api/user/update/avatar")
     @Multipart
-    Flowable<ZLResponse> uploadFile(@Part("file\"; filename=\"avatar.png\"") RequestBody file,@Part("nickName") RequestBody nickName);
+    Flowable<ZLResponse> uploadFile(@Part("avatar\"; filename=\"avatar.jpg\"") RequestBody file);
+
+    /**
+     * 上传昵称
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/api/user/update/info")
+    Flowable<ZLResponse> setNickName(@Field("nickName") String nickName);
 
     /**
      * 验证手机号
@@ -136,7 +149,10 @@ public interface ZLApi {
      */
     @FormUrlEncoded
     @POST("/api/device/periphery")
-    Flowable<ZLResponse<PeripheryDeviceBean>> getDeviceListInfo(@Field("longitude") double longitude, @Field("latitude") double latitude,@Field("page") int page,@Field("size") int size);
+    Flowable<ZLResponse<PeripheryDeviceBean>> getDeviceListInfo(@Field("longitude") double longitude,
+                                                                @Field("latitude") double latitude,
+                                                                @Field("page") int page,
+                                                                @Field("size") int size);
 
     /**
      * 获取设配详情
@@ -150,4 +166,26 @@ public interface ZLApi {
     @FormUrlEncoded
     @POST("/api/advert/fordevice")
     Flowable<ZLResponse<PeripheryDetailsBean>> getPeripheryDetailsInfo(@Field("did") int did,@Field("page") int page, @Field("size") int size, @Field("type") int type);
+
+    /**
+     * 提交广告
+     */
+    @Multipart
+    @POST("/api/advert/submit")
+    Flowable<ZLResponse<ChargInfoBean>> getSubmitAdvert(@Field("devices")List<Integer> list,
+                                                        @Part("advert\"; filename=\"advert.jpg\"") RequestBody file,
+                                                        @Field("desc") String desc,
+                                                        @Field("address") String address,
+                                                        @Field("duration") long duration);
+
+    /**
+     * 通过省市区获取设配 + 已有设配
+     */
+    @FormUrlEncoded
+    @POST("/api/device/delivery")
+    Flowable<ZLResponse<PeripheryDeviceBean>> getDeliveryDeviceList(@Field("province") String province,
+                                                                    @Field("city") String city,
+                                                                    @Field("area") String area,
+                                                                    @Field("devices") List<Integer> devices,
+                                                                    @Query("page") int page);
 }

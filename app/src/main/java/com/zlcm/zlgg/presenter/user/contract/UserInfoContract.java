@@ -17,13 +17,17 @@ public interface UserInfoContract {
         void showContent(UserInfoBean bean);
 
         void upload();
+
+        void setState();
     }
 
     interface Presenter extends BasePresenter<View>{
 
-        void updateAvatar(File file, String nickName);
+        void updateAvatar(File file);
 
         void authen();
+
+        void setNickName(String nickName);
 
         void getUserInfo(String username);
     }

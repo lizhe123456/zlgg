@@ -1,6 +1,7 @@
 package com.zlcm.zlgg.utils;
 
 import com.zlcm.zlgg.model.http.exception.SysException;
+import com.zlcm.zlgg.model.http.response.ZL2Response;
 import com.zlcm.zlgg.model.http.response.ZLResponse;
 
 import io.reactivex.BackpressureStrategy;
@@ -46,6 +47,23 @@ public class RxUtil {
                     public Flowable<T> apply(@NonNull ZLResponse<T> tWeatherResponse) throws Exception {
                         if (tWeatherResponse.getCode() == 200){
                             return createData(tWeatherResponse.getData());
+                        }else {
+                            return Flowable.error(new SysException(tWeatherResponse.getCode()));
+                        }
+                    }
+                });
+            }
+        };
+    }
+    public static <T> FlowableTransformer<ZL2Response<T>,T> handleZL2(){
+        return new FlowableTransformer<ZL2Response<T>, T>() {
+            @Override
+            public Flowable<T> apply(Flowable<ZL2Response<T>> upstream) {
+                return upstream.flatMap(new Function<ZL2Response<T>, Flowable<T>>() {
+                    @Override
+                    public Flowable<T> apply(@NonNull ZL2Response<T> tWeatherResponse) throws Exception {
+                        if (tWeatherResponse.getCode() == 200){
+                            return createData(tWeatherResponse.getInfo());
                         }else {
                             return Flowable.error(new SysException(tWeatherResponse.getCode()));
                         }

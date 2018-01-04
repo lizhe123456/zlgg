@@ -7,6 +7,8 @@ import com.zlcm.zlgg.di.scope.ActivityScope;
 import com.zlcm.zlgg.ui.hot.HotActivity;
 import com.zlcm.zlgg.ui.periphery.PeripheryActivity;
 import com.zlcm.zlgg.ui.periphery.activity.DeviceDetailsActivity;
+import com.zlcm.zlgg.ui.release.DeliveryAddressActivity;
+import com.zlcm.zlgg.ui.release.ReleaseActivity;
 import com.zlcm.zlgg.ui.setting.SettingActivity;
 import com.zlcm.zlgg.ui.user.LoginActivity;
 import com.zlcm.zlgg.ui.user.activity.UpdatePhoneActivity;
@@ -37,5 +39,9 @@ public interface ActivityComponent {
     void inject(PeripheryActivity activity);
 
     void inject(DeviceDetailsActivity activity);
+
+    void inject(ReleaseActivity activity);
+
+    void inject(DeliveryAddressActivity activity);
 
 }

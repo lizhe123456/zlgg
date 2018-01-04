@@ -15,6 +15,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.zlcm.zlgg.app.Constants;
 import com.zlcm.zlgg.utils.SpUtil;
 
 
@@ -101,6 +102,7 @@ public class LocationTask implements AMapLocationListener{
 
 	@Override
 	public void onLocationChanged(AMapLocation amapLocation) {
+
 		if (amapLocation != null && amapLocation.getErrorCode() == 0) {
 			PositionEntity entity = new PositionEntity();
 			entity.latitue = amapLocation.getLatitude();
@@ -111,6 +113,9 @@ public class LocationTask implements AMapLocationListener{
 			if (!TextUtils.isEmpty(amapLocation.getCity())) {
 				entity.city = amapLocation.getCity();
 			}
+			Constants.city = amapLocation.getCity();
+			Constants.province = amapLocation.getProvince();
+			Constants.district = amapLocation.getDistrict();
 			mOnLocationGetlisGetListener.onLocationGet(entity);
 		}
 	}

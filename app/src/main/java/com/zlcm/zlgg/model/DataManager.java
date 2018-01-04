@@ -1,5 +1,6 @@
 package com.zlcm.zlgg.model;
 
+import com.zlcm.zlgg.model.bean.ChargInfoBean;
 import com.zlcm.zlgg.model.bean.ChargingBean;
 import com.zlcm.zlgg.model.bean.HomePageBean;
 import com.zlcm.zlgg.model.bean.HotBean;
@@ -10,7 +11,11 @@ import com.zlcm.zlgg.model.bean.PeripheryDeviceBean;
 import com.zlcm.zlgg.model.bean.UserInfoBean;
 import com.zlcm.zlgg.model.db.RealmHelper;
 import com.zlcm.zlgg.model.http.HttpHelper;
+import com.zlcm.zlgg.model.http.response.ZL2Response;
 import com.zlcm.zlgg.model.http.response.ZLResponse;
+
+import java.util.List;
+
 import javax.inject.Inject;
 import io.reactivex.Flowable;
 import okhttp3.RequestBody;
@@ -44,13 +49,18 @@ public class DataManager implements HttpHelper,RealmHelper {
     }
 
     @Override
-    public Flowable<ZLResponse<UserInfoBean>> fetchgetUserInfo(String username) {
+    public Flowable<ZL2Response<UserInfoBean>> fetchgetUserInfo(String username) {
         return mHttpHelper.fetchgetUserInfo(username);
     }
 
     @Override
-    public Flowable<ZLResponse> fetchUploadFile(RequestBody file, RequestBody nickName) {
-        return mHttpHelper.fetchUploadFile(file,nickName);
+    public Flowable<ZLResponse> fetchUploadFile(RequestBody file) {
+        return mHttpHelper.fetchUploadFile(file);
+    }
+
+    @Override
+    public Flowable<ZLResponse> fetchSetNickName(String nickName) {
+        return mHttpHelper.fetchSetNickName(nickName);
     }
 
     @Override
@@ -91,6 +101,16 @@ public class DataManager implements HttpHelper,RealmHelper {
     @Override
     public Flowable<ZLResponse<PeripheryDetailsBean>> fetchPeripheryDetailsInfo(int did,int page, int size, int type) {
         return mHttpHelper.fetchPeripheryDetailsInfo(did,page,size,type);
+    }
+
+    @Override
+    public Flowable<ZLResponse<ChargInfoBean>> fetchgetSubmitAdvertInfo(List<Integer> list, RequestBody file, String desc, String address, long duration) {
+        return mHttpHelper.fetchgetSubmitAdvertInfo(list, file, desc, address, duration);
+    }
+
+    @Override
+    public Flowable<ZLResponse<PeripheryDeviceBean>> fetchDeliveryDeviceList(String province, String city, String area, List<Integer> devices,int page) {
+        return mHttpHelper.fetchDeliveryDeviceList(province, city, area, devices,page);
     }
 
     @Override

@@ -21,4 +21,7 @@ public class Constants {
 
     //我的位置信息
     public static PositionEntity loction;
+    public static String city;
+    public static String province;
+    public static String district;
 }

@@ -36,4 +36,5 @@ public class ZLResponse<T> implements Serializable{
     public void setData(T data) {
         this.data = data;
     }
+
 }

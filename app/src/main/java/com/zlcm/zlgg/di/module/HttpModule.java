@@ -1,23 +1,18 @@
 package com.zlcm.zlgg.di.module;
 
 import android.text.TextUtils;
-
 import com.zlcm.zlgg.app.App;
 import com.zlcm.zlgg.app.Constants;
 import com.zlcm.zlgg.di.qualifiler.ZLUrl;
 import com.zlcm.zlgg.model.http.api.ZLApi;
 import com.zlcm.zlgg.utils.JsonUtil;
 import com.zlcm.zlgg.utils.LogUtil;
-import com.zlcm.zlgg.utils.RSAUtils;
 import com.zlcm.zlgg.utils.SpUtil;
 import com.zlcm.zlgg.utils.SystemUtil;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-
 import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
@@ -37,6 +32,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 @Module
 public class HttpModule {
+    /*公共参数 */
+    private String uid;
+    private String token;
 
     @Singleton
     @Provides
@@ -62,7 +60,6 @@ public class HttpModule {
     ZLApi provideBusService(@ZLUrl Retrofit retrofit){
         return retrofit.create(ZLApi.class);
     }
-
 
     @Singleton
     @Provides
@@ -101,23 +98,24 @@ public class HttpModule {
             }
         };
         try {
-            String uid = SpUtil.getString(App.getInstance().getContext(),"loginId");
-            final String token = SpUtil.getString(App.getInstance().getContext(),"token");
-            if (!TextUtils.isEmpty(uid) && !TextUtils.isEmpty(token)) {
-                final String puid = new String(RSAUtils.encryptByPrivateKey(RSAUtils.decryptByPrivateKey(uid.getBytes(), Constants.PRIVATE_KEY),Constants.APP_PUBLIC_KEY));
-                Interceptor apikey = new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request request = chain.request();
-                        request = request.newBuilder()
-                                .addHeader("loginId",puid)
-                                .addHeader("token",token)
-                                .build();
-                        return chain.proceed(request);
-                    }
-                };
-                builder.addInterceptor(apikey);
+            uid = SpUtil.getString(App.getInstance().getContext(),"loginId");
+            token = SpUtil.getString(App.getInstance().getContext(),"token");
+            if (TextUtils.isEmpty(uid) && TextUtils.isEmpty(token)) {
+                uid = "";
+                token = "";
             }
+            Interceptor apikey = new Interceptor() {
+                @Override
+                public Response intercept(Chain chain) throws IOException {
+                    Request request = chain.request();
+                    request = request.newBuilder()
+                            .addHeader("loginId",uid)
+                            .addHeader("token",token)
+                            .build();
+                    return chain.proceed(request);
+                }
+            };
+            builder.addInterceptor(apikey);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -135,6 +133,7 @@ public class HttpModule {
     }
 
     private Retrofit createRetrofit(Retrofit.Builder builder, OkHttpClient client, String url) {
+
         return builder
                 .baseUrl(url)
                 .client(client)
@@ -168,4 +167,11 @@ public class HttpModule {
             }
         }
     }
+
+    /**
+     * 封装公共参数
+     */
+
+
+
 }

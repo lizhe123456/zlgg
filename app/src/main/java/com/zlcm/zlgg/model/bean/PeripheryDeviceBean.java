@@ -25,6 +25,7 @@ public class PeripheryDeviceBean implements Serializable{
         int did;
         String address;
         List<String> advert;
+        boolean isCheckeed;
 
         public String getAddress() {
            return address;
@@ -48,6 +49,14 @@ public class PeripheryDeviceBean implements Serializable{
 
         public void setDid(int did) {
             this.did = did;
+        }
+
+        public boolean isCheckeed() {
+            return isCheckeed;
+        }
+
+        public void setCheckeed(boolean checkeed) {
+            isCheckeed = checkeed;
         }
     }
 

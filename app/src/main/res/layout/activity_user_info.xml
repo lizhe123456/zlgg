@@ -19,8 +19,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:background="@drawable/item_shape"
-                >
+                android:background="@drawable/item_shape">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -63,9 +62,7 @@
                     android:layout_centerVertical="true"
                     android:textSize="16sp"
                     android:textColor="@color/tv_333"
-                    android:layout_marginLeft="15dp"
-                    />
-
+                    android:layout_marginLeft="15dp"/>
                 <TextView
                     android:id="@+id/name_auth_tv"
                     android:layout_width="wrap_content"
@@ -75,8 +72,7 @@
                     android:layout_toLeftOf="@+id/iv_go2"
                     android:layout_marginRight="10dp"
                     android:text="未认证"
-                    android:textColor="@color/tv_orange"
-                    />
+                    android:textColor="@color/tv_orange"/>
                 <ImageView
                     android:id="@+id/iv_go2"
                     android:layout_width="wrap_content"
@@ -84,8 +80,7 @@
                     android:src="@drawable/go"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="20dp"
-                    />
+                    android:layout_marginRight="20dp"/>
             </RelativeLayout>
             <include layout="@layout/real_name_info"/>
             <View
@@ -98,8 +93,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="15dp"
                 android:paddingBottom="15dp"
-                android:background="@drawable/item_shape"
-                >
+                android:background="@drawable/item_shape">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -107,9 +101,7 @@
                     android:layout_centerVertical="true"
                     android:textSize="16sp"
                     android:textColor="@color/tv_333"
-                    android:layout_marginLeft="15dp"
-                    />
-
+                    android:layout_marginLeft="15dp"/>
                 <TextView
                     android:id="@+id/store_auth"
                     android:layout_width="wrap_content"
@@ -119,8 +111,7 @@
                     android:layout_toLeftOf="@+id/iv_go3"
                     android:layout_marginRight="10dp"
                     android:text="未认证"
-                    android:textColor="@color/tv_orange"
-                    />
+                    android:textColor="@color/tv_orange"/>
                 <ImageView
                     android:id="@+id/iv_go3"
                     android:layout_width="wrap_content"
@@ -128,8 +119,7 @@
                     android:src="@drawable/go"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="20dp"
-                    />
+                    android:layout_marginRight="20dp"/>
             </RelativeLayout>
             <include layout="@layout/store_info" />
             <View
@@ -143,7 +133,6 @@
                 android:background="@drawable/item_shape"
                 android:paddingBottom="15dp"
                 android:paddingTop="15dp">
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -152,7 +141,6 @@
                     android:text="手机号"
                     android:textColor="@color/tv_333"
                     android:textSize="16sp" />
-
                 <TextView
                     android:id="@+id/phone"
                     android:layout_width="wrap_content"
@@ -163,7 +151,6 @@
                     android:src="@mipmap/ic_launcher"
                     android:text="176****3972"
                     android:textColor="@color/tv_999" />
-
                 <ImageView
                     android:id="@+id/iv_go4"
                     android:layout_width="wrap_content"
@@ -173,20 +160,17 @@
                     android:layout_marginRight="20dp"
                     android:src="@drawable/go" />
             </RelativeLayout>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="@color/tv_ccc"
-                />
+                android:background="@color/tv_ccc"/>
             <RelativeLayout
                 android:id="@+id/btn_nick_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="15dp"
                 android:paddingBottom="15dp"
-                android:background="@drawable/item_shape"
-                >
+                android:background="@drawable/item_shape">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -194,9 +178,7 @@
                     android:layout_centerVertical="true"
                     android:textSize="16sp"
                     android:textColor="@color/tv_333"
-                    android:layout_marginLeft="15dp"
-                    />
-
+                    android:layout_marginLeft="15dp" />
                 <TextView
                     android:id="@+id/nick_name"
                     android:layout_width="wrap_content"
@@ -206,8 +188,7 @@
                     android:layout_toLeftOf="@+id/iv_go5"
                     android:layout_marginRight="10dp"
                     android:text="嘻嘻嘻"
-                    android:textColor="@color/tv_999"
-                    />
+                    android:textColor="@color/tv_999"/>
                 <ImageView
                     android:id="@+id/iv_go5"
                     android:layout_width="wrap_content"
@@ -215,8 +196,7 @@
                     android:src="@drawable/go"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="20dp"
-                    />
+                    android:layout_marginRight="20dp"/>
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

@@ -246,6 +246,7 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
     @OnClick({R.id.img_lift, R.id.img_right1, R.id.img_right2, R.id.tv_btn_login, R.id.location, R.id.tv_release
             , R.id.customer_service,R.id.tv_device_release})
     public void onViewClicked(View view) {
+        Intent intent = new Intent();
         switch (view.getId()) {
             case R.id.img_lift:
                 if (isLogin) {
@@ -265,16 +266,18 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
                 clickRefresh();
                 break;
             case R.id.tv_release:
-                if (isLogin) {
-
-                } else {
-                    toLogin();
-                }
+//                if (isLogin) {
+//
+//                } else {
+//                    toLogin();
+//                }
+                intent.setClass(getContext(),ReleaseActivity.class);
+                startActivity(intent);
                 break;
             case R.id.customer_service:
                 break;
             case R.id.tv_device_release:
-                Intent intent = new Intent();
+
                 if (isLogin){
                     switch (chargingBean.getAuthCode()){
                         case Constants.NAMEAUTH :
@@ -310,9 +313,11 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
         if (TextUtils.isEmpty(token)) {
             isLogin = false;
             rlNoLogin.setVisibility(View.VISIBLE);
+            ((MainActivity)getActivity()).setDrawerLock(true);
         } else {
             isLogin = true;
             rlNoLogin.setVisibility(View.GONE);
+            ((MainActivity)getActivity()).setDrawerLock(false);
         }
 
     }
@@ -324,6 +329,11 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
 
     @Override
     public void showContent(HomePageBean homePageBean) {
+
+        ((MainActivity)getActivity()).setAvatar(homePageBean.getAvatar());
+        ((MainActivity)getActivity()).setUserName(homePageBean.getNickName());
+        SpUtil.putString(getContext(),"avatar",homePageBean.getAvatar());
+        SpUtil.putString(getContext(),"nickName",homePageBean.getNickName());
         setHead(homePageBean.getHean());
         setPushInfo(homePageBean.getPushInfo());
         setMainData(homePageBean.getDeviceList(), homePageBean.getLogo());
@@ -633,6 +643,9 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
     public void onResume() {
         super.onResume();
         token(SpUtil.getString(getContext(), "token"));
+        if (!mIsFirst){
+            mPresenter.getHomePage(mRecordPositon.longitude,mRecordPositon.latitude);
+        }
         //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
         mMapView.onResume();
         if (mInitialMark != null) {

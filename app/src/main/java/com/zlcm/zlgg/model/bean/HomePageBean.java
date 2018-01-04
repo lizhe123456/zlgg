@@ -15,6 +15,9 @@ public class HomePageBean implements Serializable {
     private List<DeviceBean> deviceList;
     private String logo;
     private Integer money;
+    private String avatar;
+    private String nickName;
+    private String credit;
 
     public Integer getMoney() {
         return money;
@@ -54,6 +57,30 @@ public class HomePageBean implements Serializable {
 
     public void setLogo(String logo) {
         this.logo = logo;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getCredit() {
+        return credit;
+    }
+
+    public void setCredit(String credit) {
+        this.credit = credit;
     }
 
     public class PushInfo implements Serializable{

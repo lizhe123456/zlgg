@@ -2,32 +2,23 @@ package com.zlcm.zlgg.ui.user.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.zlcm.zlgg.R;
 import com.zlcm.zlgg.base.MvpActivity;
 import com.zlcm.zlgg.model.bean.UserInfoBean;
 import com.zlcm.zlgg.presenter.user.UserInfoPresenter;
 import com.zlcm.zlgg.presenter.user.contract.UserInfoContract;
-import com.zlcm.zlgg.utils.BmpUtils;
 import com.zlcm.zlgg.utils.GlideuUtil;
 import com.zlcm.zlgg.utils.SpUtil;
 import com.zlcm.zlgg.view.RoundImageView;
-import com.zlcm.zlgg.view.ZlCustomDialog;
 import com.zlcm.zlgg.view.ZlToast;
 import com.zlcm.zlgg.widgets.PhotoListActivity;
-
 import java.io.File;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -83,6 +74,8 @@ public class UserInfoActivity extends MvpActivity<UserInfoPresenter> implements 
 
 
     private static final int USERINfO = 3;
+    private String bmp;
+    private String name;
 
     @Override
     protected int setLayout() {
@@ -97,17 +90,11 @@ public class UserInfoActivity extends MvpActivity<UserInfoPresenter> implements 
     @Override
     protected void setData() {
         title.setText(R.string.user_info);
-        String avatarUrl =  SpUtil.getString(this,"avatar");
-        String nickName =  SpUtil.getString(this,"nickName");
         String username = SpUtil.getString(this,"username");
-        if (!TextUtils.isEmpty(avatarUrl) && !TextUtils.isEmpty(nickName)){
-            GlideuUtil.loadImageView(this,avatarUrl,ivAvatar);
-            this.nickName.setText(nickName);
-        }else {
-            if (username != null){
-                mPresenter.getUserInfo(username);
-            }
+        if (!TextUtils.isEmpty(username)) {
+            mPresenter.getUserInfo(username);
         }
+
     }
 
     @Override
@@ -146,15 +133,27 @@ public class UserInfoActivity extends MvpActivity<UserInfoPresenter> implements 
         } else {
             storeInfo.setVisibility(View.GONE);
         }
+        String avatarUrl =  SpUtil.getString(this,"avatar");
+        if (!TextUtils.isEmpty(avatarUrl)){
+            GlideuUtil.loadImageView(this,avatarUrl,ivAvatar);
+        }
 
-        phone.setText(bean.getPhone());
         nickName.setText(bean.getNickname());
-
+        phone.setText(bean.getPhone());
     }
 
     @Override
     public void upload() {
         ZlToast.showText(this,"上传成功");
+        GlideuUtil.loadImageView(this,bmp,ivAvatar);
+        SpUtil.putString(this,"avatar",bmp);
+    }
+
+    @Override
+    public void setState() {
+        ZlToast.showText(this,"修改成功");
+        nickName.setText(name);
+        SpUtil.putString(this,"nickName",name);
     }
 
     @OnClick({R.id.avatar, R.id.btn_name_auth, R.id.btn_store_auth, R.id.btn_phone, R.id.btn_nick_name, R.id.img_lift})
@@ -201,32 +200,30 @@ public class UserInfoActivity extends MvpActivity<UserInfoPresenter> implements 
         }
     }
 
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == USERINfO) {
             switch (resultCode) {
                 case NickNameActivity.NICKNAME_RESULT:
-                    String name = data.getStringExtra("text");
-                    nickName.setText(name);
+                    name = data.getStringExtra("text");
+                    if (!TextUtils.isEmpty(name)) {
+                        mPresenter.getUserInfo(name);
+                    }
                     break;
                 case Activity.RESULT_OK:
-                    String bmp = data.getStringExtra("bitmap");
+                    bmp = data.getStringExtra("bitmap");
                     if (!TextUtils.isEmpty(bmp)) {
-                        GlideuUtil.loadImageView(this,bmp,ivAvatar);
-                        SpUtil.putString(this,"avatar",bmp);
-                        SpUtil.putString(this,"avatar",nickName.getText().toString().trim());
                         File file = new File(bmp);
-                        mPresenter.updateAvatar(file,nickName.getText().toString().trim());
+                        mPresenter.updateAvatar(file);
                     }
                     break;
                 case UpdatePhoneActivity.RESULT:
-
                     break;
-
             }
         }
-
     }
 
 }
