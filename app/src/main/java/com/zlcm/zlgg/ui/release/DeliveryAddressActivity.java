@@ -23,7 +23,6 @@ import com.zlcm.zlgg.presenter.release.contract.DeliveryInfoContract;
 import com.zlcm.zlgg.ui.release.adapter.DeliveryAddressAdapter;
 import com.zlcm.zlgg.utils.GetJsonDataUtil;
 import com.zlcm.zlgg.view.ZlToast;
-
 import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.List;
