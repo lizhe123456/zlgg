@@ -2,13 +2,12 @@ package com.zlcm.zlgg.ui.release.adapter;
 
 import android.content.Context;
 import android.view.View;
-
 import com.zlcm.zlgg.R;
 import com.zlcm.zlgg.base.adapter.BaseAdapter;
 import com.zlcm.zlgg.base.adapter.BaseViewHolder;
 import com.zlcm.zlgg.model.bean.PeripheryDeviceBean;
-
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by lizhe on 2018/1/4.
@@ -24,9 +23,28 @@ public class DeliveryAddressAdapter extends BaseAdapter<PeripheryDeviceBean.Devi
 
     public DeliveryAddressAdapter(Context context) {
         super(context);
+    }
+
+    @Override
+    public void addFirstDataSet(List<PeripheryDeviceBean.Device> data) {
+        super.addFirstDataSet(data);
         for (int i = 0; i < getDataSource().size(); i++) {
             if (getDataSource().get(i).isCheckeed()){
-                device.add(getDataSource().get(i).getDid());
+                if (!device.contains(getDataSource().get(i).getDid())) {
+                    device.add(getDataSource().get(i).getDid());
+                }
+            }
+        }
+    }
+
+    @Override
+    public void addMoreDataSet(List<PeripheryDeviceBean.Device> data) {
+        super.addMoreDataSet(data);
+        for (int i = 0; i < getDataSource().size(); i++) {
+            if (getDataSource().get(i).isCheckeed()){
+                if (!device.contains(getDataSource().get(i).getDid())) {
+                    device.add(getDataSource().get(i).getDid());
+                }
             }
         }
     }
@@ -51,11 +69,13 @@ public class DeliveryAddressAdapter extends BaseAdapter<PeripheryDeviceBean.Devi
                 if (item.isCheckeed()){
                     item.setCheckeed(false);
                     holder.setImageResource(R.id.checkeed,R.drawable.un_checked);
-                    device.remove(item.getDid());
+                    device.remove((Integer) item.getDid());
                 }else {
                     item.setCheckeed(true);
                     holder.setImageResource(R.id.checkeed,R.drawable.checked);
-                    device.add(item.getDid());
+                    if (!device.contains(item.getDid())) {
+                        device.add(item.getDid());
+                    }
                 }
                 onCheckeedListener.onCheckeed(device);
             }

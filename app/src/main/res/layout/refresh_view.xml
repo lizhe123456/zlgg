@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     app:srlEnablePureScrollMode="true"
     app:srlEnableLoadmore="true"
-    app:srlDragRate="1"
-    >
+    app:srlDragRate="1">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

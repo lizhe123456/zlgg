@@ -1,6 +1,5 @@
 package com.zlcm.zlgg.di.module;
 
-import android.text.TextUtils;
 import com.zlcm.zlgg.app.App;
 import com.zlcm.zlgg.app.Constants;
 import com.zlcm.zlgg.di.qualifiler.ZLUrl;
@@ -32,9 +31,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 @Module
 public class HttpModule {
-    /*公共参数 */
-    private String uid;
-    private String token;
 
     @Singleton
     @Provides
@@ -51,19 +47,19 @@ public class HttpModule {
     @Singleton
     @Provides
     @ZLUrl
-    Retrofit provideBusRetrofit(Retrofit.Builder builder,OkHttpClient client){
+    Retrofit provideZLRetrofit(Retrofit.Builder builder, OkHttpClient client){
         return createRetrofit(builder,client,Constants.ZL_URL);
     }
 
     @Singleton
     @Provides
-    ZLApi provideBusService(@ZLUrl Retrofit retrofit){
+    ZLApi provideZLService(@ZLUrl Retrofit retrofit){
         return retrofit.create(ZLApi.class);
     }
 
     @Singleton
     @Provides
-    OkHttpClient provideClient(OkHttpClient.Builder builder) {
+    OkHttpClient provideZLClient(OkHttpClient.Builder builder) {
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLogger());
         logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -98,19 +94,13 @@ public class HttpModule {
             }
         };
         try {
-            uid = SpUtil.getString(App.getInstance().getContext(),"loginId");
-            token = SpUtil.getString(App.getInstance().getContext(),"token");
-            if (TextUtils.isEmpty(uid) && TextUtils.isEmpty(token)) {
-                uid = "";
-                token = "";
-            }
             Interceptor apikey = new Interceptor() {
                 @Override
                 public Response intercept(Chain chain) throws IOException {
                     Request request = chain.request();
                     request = request.newBuilder()
-                            .addHeader("loginId",uid)
-                            .addHeader("token",token)
+                            .addHeader("loginId",SpUtil.getString(App.getInstance().getContext(),"loginId") == null ? "" : SpUtil.getString(App.getInstance().getContext(),"loginId"))
+                            .addHeader("token",SpUtil.getString(App.getInstance().getContext(),"token") == null ? "" : SpUtil.getString(App.getInstance().getContext(),"token"))
                             .build();
                     return chain.proceed(request);
                 }

@@ -1,14 +1,13 @@
 package com.zlcm.zlgg.ui.setting.activity;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.zlcm.zlgg.R;
-import com.zlcm.zlgg.base.BaseActivity;
+import com.zlcm.zlgg.base.MvpActivity;
+import com.zlcm.zlgg.presenter.setting.FeedBackPresenter;
+import com.zlcm.zlgg.presenter.setting.contract.FeedBackContract;
 import com.zlcm.zlgg.view.ZlToast;
 
 import butterknife.BindView;
@@ -21,7 +20,7 @@ import butterknife.OnClick;
  * 类介绍：
  */
 
-public class FeedBackActivity extends BaseActivity {
+public class FeedBackActivity extends MvpActivity<FeedBackPresenter> implements FeedBackContract.View {
 
     @BindView(R.id.title)
     TextView title;
@@ -29,8 +28,6 @@ public class FeedBackActivity extends BaseActivity {
     EditText etDesc;
     @BindView(R.id.phone)
     EditText phone;
-
-    public static final int FEEDBACK = 5;
 
     @Override
     protected int setLayout() {
@@ -40,6 +37,11 @@ public class FeedBackActivity extends BaseActivity {
     @Override
     protected void init() {
 
+    }
+
+    @Override
+    protected void initInject() {
+        getActivityComponent().inject(this);
     }
 
     @Override
@@ -56,15 +58,24 @@ public class FeedBackActivity extends BaseActivity {
                 break;
             case R.id.submit:
                 if (!TextUtils.isEmpty(etDesc.getText().toString())) {
-                    Intent intent = new Intent();
-                    intent.putExtra("desc", etDesc.getText().toString().trim());
-                    intent.putExtra("phone",phone.getText().toString().trim() == null ? "" : phone.getText().toString().trim());
-                    setResult(FEEDBACK,intent);
-                    finish();
+                    String desc = etDesc.getText().toString().trim();
+                    String ph = phone.getText().toString().trim() == null ? "" : phone.getText().toString().trim();
+                    mPresenter.feedback(desc,ph);
                 }else {
                     ZlToast.showText(this,"写点东西呗...");
                 }
                 break;
         }
+    }
+
+    @Override
+    public void back() {
+        ZlToast.showText(this,"提交成功");
+        finish();
+    }
+
+    @Override
+    public void stateError() {
+
     }
 }

@@ -63,8 +63,6 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ui.periphery.PeripheryActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.CustomerServiceActivity"
-            android:screenOrientation="portrait"/>
         <activity android:name=".ui.setting.SettingActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.release.ReleaseActivity"
@@ -94,6 +92,8 @@
         <activity android:name=".ui.release.PayActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.release.DeliveryAddressActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.release.OrderActivity"
             android:screenOrientation="portrait"/>
     </application>
 

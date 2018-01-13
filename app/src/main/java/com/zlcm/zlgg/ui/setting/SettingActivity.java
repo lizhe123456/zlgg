@@ -2,14 +2,9 @@ package com.zlcm.zlgg.ui.setting;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.zlcm.zlgg.R;
-import com.zlcm.zlgg.app.Constants;
-import com.zlcm.zlgg.base.BaseActivity;
 import com.zlcm.zlgg.base.MvpActivity;
 import com.zlcm.zlgg.model.bean.NewVersionInfoBean;
 import com.zlcm.zlgg.presenter.setting.SettingPresenter;
@@ -18,9 +13,8 @@ import com.zlcm.zlgg.ui.setting.activity.FeedBackActivity;
 import com.zlcm.zlgg.utils.DataCleanManager;
 import com.zlcm.zlgg.utils.PackageUtil;
 import com.zlcm.zlgg.utils.SpUtil;
-
+import com.zlcm.zlgg.view.ZlToast;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -40,8 +34,6 @@ public class SettingActivity extends MvpActivity<SettingPresenter> implements Se
     TextView version;
     @BindView(R.id.exit_login)
     TextView exitLogin;
-
-    private static final int SETTING = 3;
 
     @Override
     protected int setLayout() {
@@ -73,12 +65,16 @@ public class SettingActivity extends MvpActivity<SettingPresenter> implements Se
                 finish();
                 break;
             case R.id.clean_out_cache:
-                DataCleanManager.cleanApplicationData(mActivity, Constants.PATH_CACHE);
                 try {
-                    String size = DataCleanManager.getTotalCacheSize(mActivity);
-                    Toast.makeText(mActivity, size, Toast.LENGTH_SHORT).show();
+                    if (!cacheSize.getText().toString().trim().equals("0K")) {
+                        DataCleanManager.clearAllCache(mActivity);
+                        cacheSize.setText(DataCleanManager.getTotalCacheSize(mActivity));
+                        ZlToast.showText(mActivity, "清理成功");
+                    }else {
+                        ZlToast.showText(mActivity, "已经很干净了");
+                    }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    ZlToast.showText(mActivity, "清理失败");
                 }
                 break;
             case R.id.contact_us:
@@ -86,12 +82,12 @@ public class SettingActivity extends MvpActivity<SettingPresenter> implements Se
                 startActivity(dialIntent);
                 break;
             case R.id.version_update:
-                mPresenter.getNewVersion(PackageUtil.getVersionName(mActivity));
+                mPresenter.getNewVersion();
                 break;
             case R.id.feedback:
                 Intent intent = new Intent();
                 intent.setClass(mActivity, FeedBackActivity.class);
-                startActivityForResult(intent,SETTING);
+                startActivity(intent);
                 break;
             case R.id.about_us:
                 break;
@@ -106,8 +102,15 @@ public class SettingActivity extends MvpActivity<SettingPresenter> implements Se
 
     }
 
+
     @Override
-    public void showNewVersion(NewVersionInfoBean bean) {
+    public void showNewVersion(NewVersionInfoBean.AppVersion bean) {
+        if (bean.getCode().equals(PackageUtil.getVersionName(mActivity))){
+            ZlToast.showText(this,"已是最新版本");
+        }else {
+            //弹出版本更新对话框，非强制
+
+        }
 
     }
 
@@ -119,20 +122,4 @@ public class SettingActivity extends MvpActivity<SettingPresenter> implements Se
         finish();
     }
 
-    @Override
-    public void back() {
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SETTING){
-            if (resultCode == FeedBackActivity.FEEDBACK){
-                String desc = data.getStringExtra("desc");
-                String phone = data.getStringExtra("phone");
-                mPresenter.feedback(desc,phone);
-            }
-        }
-    }
 }

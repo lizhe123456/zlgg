@@ -6,6 +6,7 @@ import com.zlcm.zlgg.model.bean.HomePageBean;
 import com.zlcm.zlgg.model.bean.HotBean;
 import com.zlcm.zlgg.model.bean.LoginBean;
 import com.zlcm.zlgg.model.bean.NewVersionInfoBean;
+import com.zlcm.zlgg.model.bean.OrderListBean;
 import com.zlcm.zlgg.model.bean.PeripheryDetailsBean;
 import com.zlcm.zlgg.model.bean.PeripheryDeviceBean;
 import com.zlcm.zlgg.model.bean.UserInfoBean;
@@ -13,9 +14,6 @@ import com.zlcm.zlgg.model.db.RealmHelper;
 import com.zlcm.zlgg.model.http.HttpHelper;
 import com.zlcm.zlgg.model.http.response.ZL2Response;
 import com.zlcm.zlgg.model.http.response.ZLResponse;
-
-import java.util.List;
-
 import javax.inject.Inject;
 import io.reactivex.Flowable;
 import okhttp3.RequestBody;
@@ -74,8 +72,8 @@ public class DataManager implements HttpHelper,RealmHelper {
     }
 
     @Override
-    public Flowable<ZLResponse<NewVersionInfoBean>> fetchNewVersion(String version) {
-        return mHttpHelper.fetchNewVersion(version);
+    public Flowable<ZLResponse<NewVersionInfoBean>> fetchNewVersion() {
+        return mHttpHelper.fetchNewVersion();
     }
 
     @Override
@@ -84,8 +82,8 @@ public class DataManager implements HttpHelper,RealmHelper {
     }
 
     @Override
-    public Flowable<ZLResponse<HomePageBean>> fetchHomePage(double longitude, double latitude) {
-        return mHttpHelper.fetchHomePage(longitude, latitude);
+    public Flowable<ZLResponse<HomePageBean>> fetchHomePage(double longitude, double latitude,int first) {
+        return mHttpHelper.fetchHomePage(longitude, latitude, first);
     }
 
     @Override
@@ -104,13 +102,38 @@ public class DataManager implements HttpHelper,RealmHelper {
     }
 
     @Override
-    public Flowable<ZLResponse<ChargInfoBean>> fetchgetSubmitAdvertInfo(List<Integer> list, RequestBody file, String desc, String address, long duration) {
-        return mHttpHelper.fetchgetSubmitAdvertInfo(list, file, desc, address, duration);
+    public Flowable<ZL2Response<ChargInfoBean>> fetchgetSubmitAdvertInfo(String list, RequestBody file, String phone,String desc, String address, long duration) {
+        return mHttpHelper.fetchgetSubmitAdvertInfo(list, file, phone,desc, address, duration);
     }
 
     @Override
-    public Flowable<ZLResponse<PeripheryDeviceBean>> fetchDeliveryDeviceList(String province, String city, String area, List<Integer> devices,int page) {
+    public Flowable<ZLResponse<PeripheryDeviceBean>> fetchDeliveryDeviceList(String province, String city, String area, String devices,int page) {
         return mHttpHelper.fetchDeliveryDeviceList(province, city, area, devices,page);
+    }
+
+    @Override
+    public Flowable<ZL2Response<String>> fetchPayInfo(int order,int type) {
+        return mHttpHelper.fetchPayInfo(order,type);
+    }
+
+    @Override
+    public Flowable<ZLResponse<OrderListBean>> fetchOrderListInfo(int size, int page) {
+        return mHttpHelper.fetchOrderListInfo(size, page);
+    }
+
+    @Override
+    public Flowable<ZLResponse> fetchAuthName(String name, String idCard, String front, String back) {
+        return mHttpHelper.fetchAuthName(name, idCard, front, back);
+    }
+
+    @Override
+    public Flowable<ZLResponse> fetchStoreAuth(String name, String address, String phone, String image) {
+        return mHttpHelper.fetchStoreAuth(name, address, phone, image);
+    }
+
+    @Override
+    public Flowable<ZL2Response<String>> getNavigation() {
+        return mHttpHelper.getNavigation();
     }
 
     @Override

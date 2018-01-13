@@ -13,19 +13,17 @@ public interface SettingContract {
 
     interface View extends BaseView{
 
-        void showNewVersion(NewVersionInfoBean bean);
+        void showNewVersion(NewVersionInfoBean.AppVersion bean);
 
         void exit();
 
-        void back();
     }
 
     interface Presenter extends BasePresenter<View>{
 
         void exitLogin();
 
-        void getNewVersion(String version);
+        void getNewVersion();
 
-        void feedback(String desc,String phone);
     }
 }

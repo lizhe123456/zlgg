@@ -1,10 +1,12 @@
 package com.zlcm.zlgg.presenter.release;
 
+import com.google.gson.Gson;
 import com.zlcm.zlgg.base.BasePresenterImpl;
 import com.zlcm.zlgg.base.CommonSubscriber;
 import com.zlcm.zlgg.model.DataManager;
 import com.zlcm.zlgg.model.bean.ChargInfoBean;
 import com.zlcm.zlgg.model.bean.ChargingBean;
+import com.zlcm.zlgg.model.http.response.ZL2Response;
 import com.zlcm.zlgg.model.http.response.ZLResponse;
 import com.zlcm.zlgg.presenter.release.contract.ReleaseContract;
 import com.zlcm.zlgg.utils.RxUtil;
@@ -31,13 +33,15 @@ public class ReleasePresenter extends BasePresenterImpl<ReleaseContract.View> im
     }
 
     @Override
-    public void submit(List<Integer> list, File file, String desc, String address, long duration) {
+    public void submit(List<Integer> devices, File file,String phone, String desc, String address, long duration) {
         mView.loading("提交中...");
         //创建RequwstBody对象
+        Gson gson = new Gson();
+        String body = gson.toJson(devices);
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
-        addSubscribe(dataManager.fetchgetSubmitAdvertInfo(list,requestBody,desc,address,duration)
-                    .compose(RxUtil.<ZLResponse<ChargInfoBean>>rxSchedulerHelper())
-                    .compose(RxUtil.<ChargInfoBean>handleZL())
+        addSubscribe(dataManager.fetchgetSubmitAdvertInfo(body,requestBody,phone,desc,address,duration)
+                    .compose(RxUtil.<ZL2Response<ChargInfoBean>>rxSchedulerHelper())
+                    .compose(RxUtil.<ChargInfoBean>handleZL2())
                     .subscribeWith(new CommonSubscriber<ChargInfoBean>(mView){
                         @Override
                         public void onNext(ChargInfoBean chargingBean) {

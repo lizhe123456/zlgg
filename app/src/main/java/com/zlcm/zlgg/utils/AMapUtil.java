@@ -22,6 +22,9 @@ import java.util.Date;
 import java.util.List;
 
 public class AMapUtil {
+
+	private static double EARTH_RADIUS = 6371.393;
+
 	/**
 	 * 判断edittext是否null
 	 */
@@ -279,5 +282,25 @@ public class AMapUtil {
 			return busLineName.replaceAll("\\(.*?\\)", "");
 		}
 
+	private static double rad(double d) {
+		return d * Math.PI / 180.0;
+	}
 
+	/**
+	 * 计算两个经纬度之间的距离
+	 * @param oldLatLng
+	 * @param newLatLng
+	 * @return
+	 */
+	public static double GetDistance(LatLng oldLatLng,LatLng newLatLng){
+		double radLat1 = rad(oldLatLng.latitude);
+		double radLat2 = rad(newLatLng.latitude);
+		double a = radLat1 - radLat2;
+		double b = rad(oldLatLng.longitude) - rad(newLatLng.longitude);
+		double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2) +
+				Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
+		s = s * EARTH_RADIUS;
+		s = Math.round(s * 1000);
+		return s;
+	}
 }

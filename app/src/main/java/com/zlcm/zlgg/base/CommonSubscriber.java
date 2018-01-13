@@ -60,7 +60,7 @@ public abstract class CommonSubscriber<T> extends ResourceSubscriber<T> {
         } else if (e instanceof ApiException) {
             mView.showErrorMsg(e.toString());
         } else if (e instanceof HttpException) {
-            mView.showErrorMsg("数据加载失败ヽ(≧Д≦)ノ");
+            mView.showErrorMsg("服务器异常，正在抢修中..");
         }else if (e instanceof SysException){
             mView.showErrorMsg(e.getMessage());
         } else {

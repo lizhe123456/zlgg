@@ -1,20 +1,21 @@
 package com.zlcm.zlgg.model.http.api;
 
 import com.zlcm.zlgg.model.bean.AdvertDetailsBean;
+import com.zlcm.zlgg.model.bean.AuthInfo;
 import com.zlcm.zlgg.model.bean.ChargInfoBean;
 import com.zlcm.zlgg.model.bean.ChargingBean;
 import com.zlcm.zlgg.model.bean.HomePageBean;
 import com.zlcm.zlgg.model.bean.HotBean;
 import com.zlcm.zlgg.model.bean.LoginBean;
 import com.zlcm.zlgg.model.bean.NewVersionInfoBean;
+import com.zlcm.zlgg.model.bean.OrderListBean;
 import com.zlcm.zlgg.model.bean.PeripheryDetailsBean;
 import com.zlcm.zlgg.model.bean.PeripheryDeviceBean;
+import com.zlcm.zlgg.model.bean.StoreInfo;
 import com.zlcm.zlgg.model.bean.UserInfoBean;
 import com.zlcm.zlgg.model.http.response.ZL2Response;
 import com.zlcm.zlgg.model.http.response.ZLResponse;
-
 import java.util.List;
-
 import io.reactivex.Flowable;
 import okhttp3.RequestBody;
 import retrofit2.http.Field;
@@ -93,12 +94,10 @@ public interface ZLApi {
 
     /**
      * 获取最新版本
-     * @param version
      * @return
      */
-    @FormUrlEncoded
-    @POST("/api/user/newversion")
-    Flowable<ZLResponse<NewVersionInfoBean>> getNewVersion(@Field("version") String version);
+    @POST("/api/setting/newversion")
+    Flowable<ZLResponse<NewVersionInfoBean>> getNewVersion();
 
     /**
      * 反馈意见
@@ -107,7 +106,7 @@ public interface ZLApi {
      * @return
      */
     @FormUrlEncoded
-    @POST("/api/user/feedback")
+    @POST("/api/setting/feedback")
     Flowable<ZLResponse> uploadFeed(@Field("desc") String desc, @Field("phone") String phone);
 
     /**
@@ -117,7 +116,7 @@ public interface ZLApi {
      * @return
      */
     @GET("/api/user/homepage")
-    Flowable<ZLResponse<HomePageBean>> getHomePageInfo(@Query("longitude") double longitude,@Query("latitude") double latitude);
+    Flowable<ZLResponse<HomePageBean>> getHomePageInfo(@Query("longitude") double longitude,@Query("latitude") double latitude,@Query("first") int first);
 
     /**
      * 获取热门广告
@@ -172,11 +171,12 @@ public interface ZLApi {
      */
     @Multipart
     @POST("/api/advert/submit")
-    Flowable<ZLResponse<ChargInfoBean>> getSubmitAdvert(@Field("devices")List<Integer> list,
+    Flowable<ZL2Response<ChargInfoBean>> getSubmitAdvert(@Query("devices")String list,
                                                         @Part("advert\"; filename=\"advert.jpg\"") RequestBody file,
-                                                        @Field("desc") String desc,
-                                                        @Field("address") String address,
-                                                        @Field("duration") long duration);
+                                                        @Query("phone") String phone,
+                                                        @Query("desc") String desc,
+                                                        @Query("address") String address,
+                                                        @Query("duration") long duration);
 
     /**
      * 通过省市区获取设配 + 已有设配
@@ -186,6 +186,51 @@ public interface ZLApi {
     Flowable<ZLResponse<PeripheryDeviceBean>> getDeliveryDeviceList(@Field("province") String province,
                                                                     @Field("city") String city,
                                                                     @Field("area") String area,
-                                                                    @Field("devices") List<Integer> devices,
+                                                                    @Field("devices") String devices,
                                                                     @Query("page") int page);
+
+    /**
+     * 支付接口
+     * @param order
+     * @param type
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/api/order/pay")
+    Flowable<ZL2Response<String>> pay(@Field("order") int order,@Field("type") int type);
+
+    /**
+     * 获取订单列表
+     * @param size
+     * @param page
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/api/order/list")
+    Flowable<ZLResponse<OrderListBean>> getOrderInfo(@Field("size") int size,@Field("page") int page);
+
+    /**
+     * 实名认证
+     * @param name
+     * @param idCard
+     * @param front
+     * @param back
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/api/user/authen")
+    Flowable<ZLResponse> uploadAuthInfo(@Field("name") String name, @Field("idCard") String idCard, @Field("front") String front, @Field("back") String back);
+
+    /**
+     * 商家认证
+     */
+    @FormUrlEncoded
+    @POST("/api/user/storeAuthen")
+    Flowable<ZLResponse> uploadStoreAuthInfo(@Field("name") String name, @Field("address") String address, @Field("phone") String phone, @Field("image") String image);
+
+    @GET("/api/user/navigation")
+    Flowable<ZL2Response<String>> navigation();
+
 }
+
+

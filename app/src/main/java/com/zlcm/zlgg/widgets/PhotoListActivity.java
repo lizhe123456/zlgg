@@ -74,10 +74,17 @@ public class PhotoListActivity extends BaseActivity {
 
 
     private void startClipPicture(String path) {
-        Intent intent = new Intent(this, ClipPictureActivity.class);
-        intent.putExtra("path", path);
-        intent.putExtra("clipType",clipType);
-        startActivityForResult(intent,PHOTOLIST_REQ);
+        if (clipType == 3){
+            Intent intent = new Intent();
+            intent.putExtra("bitmap",path);
+            setResult(Activity.RESULT_OK,intent);
+            finish();
+        }else {
+            Intent intent = new Intent(this, ClipPictureActivity.class);
+            intent.putExtra("path", path);
+            intent.putExtra("clipType", clipType);
+            startActivityForResult(intent, PHOTOLIST_REQ);
+        }
     }
 
     /**
@@ -191,7 +198,15 @@ public class PhotoListActivity extends BaseActivity {
             }
         }else if (requestCode == PackageUtil.CODE_RESULT_REQUEST){
             if (resultCode == Activity.RESULT_OK) {
-                startClipPicture(file.getAbsolutePath());
+                if (clipType == 3){
+                    Intent intent = new Intent();
+                    intent.putExtra("bitmap",file.getAbsolutePath());
+                    setResult(Activity.RESULT_OK,intent);
+                    finish();
+                }else {
+                    startClipPicture(file.getAbsolutePath());
+                }
+
             }
         }
     }

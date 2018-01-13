@@ -18,6 +18,6 @@ public interface ReleaseContract {
     }
 
     interface Presenter extends BasePresenter<View>{
-        void submit(List<Integer> list, File file, String desc, String address, long duration);
+        void submit(List<Integer> list, File file,String phone, String desc, String address, long duration);
     }
 }

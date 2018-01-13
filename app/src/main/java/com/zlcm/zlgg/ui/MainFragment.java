@@ -4,10 +4,12 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -34,6 +36,9 @@ import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.zlcm.zlgg.R;
 import com.zlcm.zlgg.app.Constants;
 import com.zlcm.zlgg.base.MvpFragment;
@@ -54,8 +59,12 @@ import com.zlcm.zlgg.ui.release.ReleaseActivity;
 import com.zlcm.zlgg.ui.user.LoginActivity;
 import com.zlcm.zlgg.ui.user.activity.NameAuthActivity;
 import com.zlcm.zlgg.utils.AMapUtil;
+import com.zlcm.zlgg.utils.GlideuUtil;
 import com.zlcm.zlgg.utils.LogUtil;
 import com.zlcm.zlgg.utils.SpUtil;
+import com.zlcm.zlgg.view.ZlCustomDialog;
+import com.zlcm.zlgg.view.ZlCustomerServiceDialog;
+import com.zlcm.zlgg.view.ZlPushDialog;
 import com.zlcm.zlgg.view.ZlToast;
 import java.util.List;
 import butterknife.BindView;
@@ -117,7 +126,7 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
     private boolean mMapShow = false;
     private LatLng initLocation;
     private ValueAnimator animator = null;//坐标动画
-    private BitmapDescriptor initBitmap, moveBitmap, smallIdentificationBitmap, bigIdentificationBitmap;//定位圆点、可移动、所有标识（车）
+    private BitmapDescriptor initBitmap, moveBitmap, smallIdentificationBitmap, bigIdentificationBitmap;//定位圆点、可移动、所有标识（设配）
     private RouteSearch mRouteSearch;
 
     private WalkRouteResult mWalkRouteResult;
@@ -129,6 +138,9 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
     private String[] time;
     private String distance;
     private ChargingBean chargingBean;
+    private boolean isData = true;
+    private LatLng oldAddress;
+    private ZlPushDialog zlPushDialog;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -266,15 +278,16 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
                 clickRefresh();
                 break;
             case R.id.tv_release:
-//                if (isLogin) {
-//
-//                } else {
-//                    toLogin();
-//                }
-                intent.setClass(getContext(),ReleaseActivity.class);
-                startActivity(intent);
+                if (isLogin) {
+                    intent.setClass(getContext(),ReleaseActivity.class);
+                    startActivity(intent);
+                } else {
+                    toLogin();
+                }
                 break;
             case R.id.customer_service:
+                ZlCustomerServiceDialog zlCustomerServiceDialog = new ZlCustomerServiceDialog(getContext());
+                zlCustomerServiceDialog.show();
                 break;
             case R.id.tv_device_release:
 
@@ -329,14 +342,16 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
 
     @Override
     public void showContent(HomePageBean homePageBean) {
-
-        ((MainActivity)getActivity()).setAvatar(homePageBean.getAvatar());
-        ((MainActivity)getActivity()).setUserName(homePageBean.getNickName());
-        SpUtil.putString(getContext(),"avatar",homePageBean.getAvatar());
-        SpUtil.putString(getContext(),"nickName",homePageBean.getNickName());
-        setHead(homePageBean.getHean());
-        setPushInfo(homePageBean.getPushInfo());
+        if (isData) {
+            ((MainActivity) getActivity()).setAvatar(homePageBean.getAvatar());
+            ((MainActivity) getActivity()).setUserName(homePageBean.getNickName());
+            SpUtil.putString(getContext(), "avatar", homePageBean.getAvatar());
+            SpUtil.putString(getContext(), "nickName", homePageBean.getNickName());
+            setHead(homePageBean.getHean());
+        }
+        isData = false;
         setMainData(homePageBean.getDeviceList(), homePageBean.getLogo());
+        setPushInfo(homePageBean.getPushInfo());
     }
 
     @Override
@@ -368,11 +383,24 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
 
     }
 
-    private void setPushInfo(HomePageBean.PushInfo pushInfo) {
-
+    private void setPushInfo(final HomePageBean.PushInfo pushInfo) {
+        if (pushInfo != null) {
+            Glide.with(getContext()).load(pushInfo.getImg()).asBitmap().into(new SimpleTarget<Bitmap>() {
+                @Override
+                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                    zlPushDialog = new ZlPushDialog.Builder(getContext())
+                            .setImage(resource)
+                            .setTitle(pushInfo.getTitle())
+                            .setMessage(pushInfo.getDesc())
+                            .build();
+                    zlPushDialog.show();
+                }
+            });
+        }
     }
 
     private void setMainData(List<DeviceBean> list, String logo) {
+        MarkerUtil.removeMarkers();
         MarkerUtil.addMarkers(aMap, list, logo, getContext());
     }
 
@@ -411,6 +439,7 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
 
     @Override
     public void onCameraChangeFinish(CameraPosition cameraPosition) {
+
         LogUtil.d(TAG, "onCameraChangeFinish" + cameraPosition.target);
         if (!isClickIdentification) {
             mRecordPositon = cameraPosition.target;
@@ -434,11 +463,17 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
             mPositionMark.setToTop();
             if (!isClickIdentification) {
                 animMarker();
+                if (mRecordPositon != null){
+                    if (AMapUtil.GetDistance(oldAddress,cameraPosition.target) > 1 * 1000){
+                        mPresenter.getHomePage(cameraPosition.target.longitude, cameraPosition.target.latitude);
+                    }
+                }
                 if (isShow(mLlDevice)) {
                     mLlDevice.setVisibility(View.GONE);
                 }
             }
         }
+        oldAddress = cameraPosition.target;
     }
 
     private void animMarker() {
@@ -643,9 +678,9 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
     public void onResume() {
         super.onResume();
         token(SpUtil.getString(getContext(), "token"));
-        if (!mIsFirst){
-            mPresenter.getHomePage(mRecordPositon.longitude,mRecordPositon.latitude);
-        }
+//        if (!mIsFirst){
+//            mPresenter.getHomePage(mRecordPositon.longitude,mRecordPositon.latitude);
+//        }
         //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
         mMapView.onResume();
         if (mInitialMark != null) {

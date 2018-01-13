@@ -44,33 +44,20 @@ public class SettingPresenter extends BasePresenterImpl<SettingContract.View>
     }
 
     @Override
-    public void getNewVersion(String version) {
+    public void getNewVersion() {
         mView.loading("正在检查...");
-        addSubscribe(dataManager.fetchNewVersion(version)
+        addSubscribe(dataManager.fetchNewVersion()
                 .compose(RxUtil.<ZLResponse<NewVersionInfoBean>>rxSchedulerHelper())
                 .compose(RxUtil.<NewVersionInfoBean>handleZL())
                 .subscribeWith(new CommonSubscriber<NewVersionInfoBean>(mView){
                     @Override
                     public void onNext(NewVersionInfoBean newVersionInfoBean) {
+                        mView.showNewVersion(newVersionInfoBean.getVersion());
                         super.onNext(newVersionInfoBean);
-                        mView.showNewVersion(newVersionInfoBean);
                     }
                 })
         );
     }
 
-    @Override
-    public void feedback(String desc, String phone) {
-        addSubscribe(dataManager.fetchUploadFeed(desc,phone)
-                .compose(RxUtil.<ZLResponse>rxSchedulerHelper())
-                .compose(RxUtil.handleZLState())
-                .subscribeWith(new CommonSubscriber<ZLResponse>(mView){
-                    @Override
-                    public void onNext(ZLResponse response) {
-                        super.onNext(response);
-                        mView.back();
-                    }
-                })
-        );
-    }
+
 }

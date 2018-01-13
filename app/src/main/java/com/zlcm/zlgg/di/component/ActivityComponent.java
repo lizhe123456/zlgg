@@ -4,13 +4,19 @@ import android.app.Activity;
 
 import com.zlcm.zlgg.di.module.ActivityModule;
 import com.zlcm.zlgg.di.scope.ActivityScope;
+import com.zlcm.zlgg.ui.GuideActivity;
 import com.zlcm.zlgg.ui.hot.HotActivity;
 import com.zlcm.zlgg.ui.periphery.PeripheryActivity;
 import com.zlcm.zlgg.ui.periphery.activity.DeviceDetailsActivity;
 import com.zlcm.zlgg.ui.release.DeliveryAddressActivity;
+import com.zlcm.zlgg.ui.release.OrderActivity;
+import com.zlcm.zlgg.ui.release.PayActivity;
 import com.zlcm.zlgg.ui.release.ReleaseActivity;
 import com.zlcm.zlgg.ui.setting.SettingActivity;
+import com.zlcm.zlgg.ui.setting.activity.FeedBackActivity;
 import com.zlcm.zlgg.ui.user.LoginActivity;
+import com.zlcm.zlgg.ui.user.activity.NameAuthActivity;
+import com.zlcm.zlgg.ui.user.activity.StoreAuthActivity;
 import com.zlcm.zlgg.ui.user.activity.UpdatePhoneActivity;
 import com.zlcm.zlgg.ui.user.activity.UserInfoActivity;
 
@@ -43,5 +49,17 @@ public interface ActivityComponent {
     void inject(ReleaseActivity activity);
 
     void inject(DeliveryAddressActivity activity);
+
+    void inject(PayActivity activity);
+
+    void inject(OrderActivity activity);
+
+    void inject(NameAuthActivity activity);
+
+    void inject(StoreAuthActivity activity);
+
+    void inject(GuideActivity activity);
+
+    void inject(FeedBackActivity activity);
 
 }

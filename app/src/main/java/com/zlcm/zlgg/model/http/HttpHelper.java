@@ -1,5 +1,6 @@
 package com.zlcm.zlgg.model.http;
 
+import com.zlcm.zlgg.model.bean.AuthInfo;
 import com.zlcm.zlgg.model.bean.ChargInfoBean;
 import com.zlcm.zlgg.model.bean.ChargingBean;
 import com.zlcm.zlgg.model.bean.DeviceBean;
@@ -7,8 +8,10 @@ import com.zlcm.zlgg.model.bean.HomePageBean;
 import com.zlcm.zlgg.model.bean.HotBean;
 import com.zlcm.zlgg.model.bean.LoginBean;
 import com.zlcm.zlgg.model.bean.NewVersionInfoBean;
+import com.zlcm.zlgg.model.bean.OrderListBean;
 import com.zlcm.zlgg.model.bean.PeripheryDetailsBean;
 import com.zlcm.zlgg.model.bean.PeripheryDeviceBean;
+import com.zlcm.zlgg.model.bean.StoreInfo;
 import com.zlcm.zlgg.model.bean.UserInfoBean;
 import com.zlcm.zlgg.model.http.response.ZL2Response;
 import com.zlcm.zlgg.model.http.response.ZLResponse;
@@ -39,13 +42,13 @@ public interface HttpHelper {
 
     Flowable<ZLResponse> fetchExitLogin();
 
-    Flowable<ZLResponse<NewVersionInfoBean>> fetchNewVersion(String version);
+    Flowable<ZLResponse<NewVersionInfoBean>> fetchNewVersion();
 
     Flowable<ZLResponse> fetchUploadFeed(String desc, String phone);
 
     Flowable<ZLResponse<PeripheryDeviceBean>> fetchDeviceBList(double longitude, double latitude,int page, int size);
 
-    Flowable<ZLResponse<HomePageBean>> fetchHomePage(double longitude, double latitude);
+    Flowable<ZLResponse<HomePageBean>> fetchHomePage(double longitude, double latitude, int first);
 
     Flowable<ZLResponse<ChargingBean>> fetchChargingInfo(int did);
 
@@ -53,11 +56,22 @@ public interface HttpHelper {
 
     Flowable<ZLResponse<PeripheryDetailsBean>> fetchPeripheryDetailsInfo(int did,int page, int size, int type);
 
-    Flowable<ZLResponse<ChargInfoBean>> fetchgetSubmitAdvertInfo(List<Integer> list,
+    Flowable<ZL2Response<ChargInfoBean>> fetchgetSubmitAdvertInfo(String list,
                                                                  RequestBody file,
+                                                                 String phone,
                                                                  String desc,
                                                                  String address,
                                                                  long duration);
 
-    Flowable<ZLResponse<PeripheryDeviceBean>> fetchDeliveryDeviceList(String province, String city, String area, List<Integer> devices,int page);
+    Flowable<ZLResponse<PeripheryDeviceBean>> fetchDeliveryDeviceList(String province, String city, String area, String devices,int page);
+
+    Flowable<ZL2Response<String>> fetchPayInfo(int order,int type);
+
+    Flowable<ZLResponse<OrderListBean>> fetchOrderListInfo(int size, int page);
+
+    Flowable<ZLResponse> fetchAuthName(String name, String idCard, String front, String back);
+
+    Flowable<ZLResponse> fetchStoreAuth(String name, String address, String phone, String image);
+
+    Flowable<ZL2Response<String>> getNavigation();
 }

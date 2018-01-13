@@ -6,11 +6,17 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.qiyukf.nimlib.sdk.NimIntent;
+import com.qiyukf.unicorn.api.ConsultSource;
+import com.qiyukf.unicorn.api.Unicorn;
+import com.qiyukf.unicorn.ui.fragment.ServiceMessageFragment;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 import com.zlcm.zlgg.R;
 import com.zlcm.zlgg.app.App;
@@ -19,11 +25,13 @@ import com.zlcm.zlgg.base.adapter.BaseAdapter;
 import com.zlcm.zlgg.model.bean.MenuBean;
 import com.zlcm.zlgg.ui.hot.HotActivity;
 import com.zlcm.zlgg.ui.periphery.PeripheryActivity;
+import com.zlcm.zlgg.ui.release.OrderActivity;
 import com.zlcm.zlgg.ui.release.ReleaseActivity;
 import com.zlcm.zlgg.ui.setting.SettingActivity;
 import com.zlcm.zlgg.ui.user.activity.UserInfoActivity;
 import com.zlcm.zlgg.ui.wallet.WalletActivity;
 import com.zlcm.zlgg.utils.GlideuUtil;
+import com.zlcm.zlgg.utils.SpUtil;
 import com.zlcm.zlgg.view.RoundImageView;
 import com.zlcm.zlgg.view.ZlToast;
 import java.util.ArrayList;
@@ -51,9 +59,9 @@ public class MainActivity extends BaseActivity {
     private List<MenuBean> mList = new ArrayList<>();
     private static final int HOT = 0;
     private static final int PERIPHERY = 1;
-    private static final int WALLET = 2;
-    private static final int RELEASE = 3;
-    private static final int SHARE = 4;
+//    private static final int WALLET = 2;
+    private static final int RELEASE = 2;
+    private static final int SHARE = 3;
     private Fragment mContent;
 
 
@@ -70,7 +78,7 @@ public class MainActivity extends BaseActivity {
         mAdapter = new MenuAdapter(this);
         mList.add(new MenuBean(R.drawable.hot, "热门推荐"));
         mList.add(new MenuBean(R.drawable.periphery, "我的周围"));
-        mList.add(new MenuBean(R.drawable.pay, "我的钱包"));
+//        mList.add(new MenuBean(R.drawable.pay, "我的钱包"));
         mList.add(new MenuBean(R.drawable.release_menu, "我的发布"));
         mList.add(new MenuBean(R.drawable.share, "邀请好友"));
         navigationMenu.setAdapter(mAdapter);
@@ -93,15 +101,20 @@ public class MainActivity extends BaseActivity {
                         intent.setClass(mActivity, PeripheryActivity.class);
                         startActivity(intent);
                         break;
-                    case WALLET:
-                        intent.setClass(mActivity, WalletActivity.class);
-                        startActivity(intent);
-                        break;
+//                    case WALLET:
+//                        intent.setClass(mActivity, WalletActivity.class);
+//                        startActivity(intent);
+//                        break;
                     case RELEASE:
-                        intent.setClass(mActivity, ReleaseActivity.class);
+                        intent.setClass(mActivity, OrderActivity.class);
                         startActivity(intent);
                         break;
                     case SHARE:
+                        Intent sendIntent = new Intent();
+                        sendIntent.setAction(Intent.ACTION_SEND);
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+                        sendIntent.setType("text/plain");
+                        startActivity(sendIntent);
                         break;
                 }
             }
@@ -127,8 +140,13 @@ public class MainActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.tv_customer_service:
-                intent.setClass(mActivity, CustomerServiceActivity.class);
-                startActivity(intent);
+                String title = "客服";
+//                ConsultSource source = new ConsultSource(sourceUrl, sourceTitle, "custom information string");
+                // 打开客服窗口
+                Unicorn.openServiceActivity(this, title, null);
+                    // 最好将intent清掉，以免从堆栈恢复时又打开客服窗口
+                setIntent(new Intent());
+
                 break;
             case R.id.head_portrait:
                 intent.setClass(mActivity, UserInfoActivity.class);
@@ -159,6 +177,19 @@ public class MainActivity extends BaseActivity {
 
     public void setUserName(String nickName){
         userName.setText(nickName);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String avatar = SpUtil.getString(this,"avatar");
+        String nickName = SpUtil.getString(this,"nickName");
+        if (!TextUtils.isEmpty(avatar)) {
+            setAvatar(avatar);
+        }
+        if (!TextUtils.isEmpty(nickName)){
+            setUserName(nickName);
+        }
     }
 
     /**

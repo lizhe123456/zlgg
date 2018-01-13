@@ -18,6 +18,7 @@ public class HomePagePresenter extends BasePresenterImpl<HomePageContract.View>
         implements HomePageContract.Presenter{
 
     DataManager dataManager;
+    private boolean isFrist = true;
 
     @Inject
     public HomePagePresenter(DataManager dataManager) {
@@ -26,8 +27,10 @@ public class HomePagePresenter extends BasePresenterImpl<HomePageContract.View>
 
     @Override
     public void getHomePage(double longitude, double latitude) {
-        mView.loading("加载中...");
-        addSubscribe(dataManager.fetchHomePage(longitude,latitude)
+        if (isFrist) {
+            mView.loading("加载中...");
+        }
+        addSubscribe(dataManager.fetchHomePage(longitude,latitude,isFrist == true ? 0 : 1)
                 .compose(RxUtil.<ZLResponse<HomePageBean>>rxSchedulerHelper())
                 .compose(RxUtil.<HomePageBean>handleZL())
                 .subscribeWith(new CommonSubscriber<HomePageBean>(mView){
@@ -38,6 +41,7 @@ public class HomePagePresenter extends BasePresenterImpl<HomePageContract.View>
                     }
                 })
         );
+        isFrist = false;
     }
 
     @Override

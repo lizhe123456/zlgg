@@ -22,9 +22,9 @@
     <!-- layout foreground -->
     <item
         android:bottom="1dp"
-        android:left="0.5dp"
+        android:left="1.5dp"
         android:right="0.5dp"
-        android:top="0.5dp">
+        android:top="0dp">
         <!-- show rectangle area -->
         <shape android:shape="oval">
             <gradient

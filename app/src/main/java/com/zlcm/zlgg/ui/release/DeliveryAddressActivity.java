@@ -22,6 +22,7 @@ import com.zlcm.zlgg.presenter.release.DeliveryInfoPresenter;
 import com.zlcm.zlgg.presenter.release.contract.DeliveryInfoContract;
 import com.zlcm.zlgg.ui.release.adapter.DeliveryAddressAdapter;
 import com.zlcm.zlgg.utils.GetJsonDataUtil;
+import com.zlcm.zlgg.utils.SystemUtil;
 import com.zlcm.zlgg.view.ZlToast;
 import org.json.JSONArray;
 import java.util.ArrayList;
@@ -63,6 +64,7 @@ public class DeliveryAddressActivity extends MvpActivity<DeliveryInfoPresenter> 
     private String strArea;
     private DeliveryAddressAdapter mAdapter;
     private boolean isMore = true;
+
 
     @Override
     protected int setLayout() {
@@ -246,6 +248,7 @@ public class DeliveryAddressActivity extends MvpActivity<DeliveryInfoPresenter> 
                 Intent intent = new Intent();
                 intent.putIntegerArrayListExtra("devices",devices);
                 setResult(Activity.RESULT_OK,intent);
+                finish();
                 break;
         }
     }

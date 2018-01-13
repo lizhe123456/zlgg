@@ -10,21 +10,22 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
 import com.zlcm.zlgg.R;
+import com.zlcm.zlgg.utils.DensityUtil;
+import com.zlcm.zlgg.utils.SystemUtil;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
-import static com.zlcm.zlgg.utils.FileUtil.getRealFilePathFromUri;
 
 
 /**
@@ -63,6 +64,9 @@ public class ClipViewLayout extends RelativeLayout {
     //最大缩放比例
     private float maxScale = 4;
 
+    private int height;
+    private int width;
+    private Context mContext;
 
     public ClipViewLayout(Context context) {
         this(context, null);
@@ -102,8 +106,11 @@ public class ClipViewLayout extends RelativeLayout {
         imageView = new ImageView(context);
         //相对布局布局参数
         android.view.ViewGroup.LayoutParams lp = new LayoutParams(
-                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-                android.view.ViewGroup.LayoutParams.MATCH_PARENT);
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        height = SystemUtil.getScreenHeight(context);
+        width = SystemUtil.getScreenWidth(context);
+        mContext = context;
         this.addView(imageView, lp);
         this.addView(clipView, lp);
     }
@@ -138,9 +145,14 @@ public class ClipViewLayout extends RelativeLayout {
         if (TextUtils.isEmpty(path)) {
             return;
         }
-
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        Bitmap img = BitmapFactory.decodeFile(path, options); // 此时返回的bitmap为null
+        int imgW = options.outWidth;
+        int imgH = options.outHeight;
+        double imgHeight = ((double)(width/ imgW) * (double) imgH);
         //这里decode出720*1280 左右的照片,防止OOM
-        Bitmap bitmap = decodeSampledBitmap(path, 720, 1280);
+        Bitmap bitmap = decodeSampledBitmap(path, width, (int) imgHeight);
         if (bitmap == null) {
             return;
         }
@@ -370,7 +382,11 @@ public class ClipViewLayout extends RelativeLayout {
         Bitmap zoomedCropBitmap = null;
         try {
             cropBitmap = Bitmap.createBitmap(imageView.getDrawingCache(), rect.left, rect.top, rect.width(), rect.height());
-            zoomedCropBitmap = zoomBitmap(cropBitmap, 200, 200);
+            if (clipView.getClipType() == ClipView.ClipType.CIRCLE) {
+                zoomedCropBitmap = zoomBitmap(cropBitmap, 200, 200);
+            }else {
+                zoomedCropBitmap = zoomBitmap(cropBitmap, 376, 160);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -473,7 +489,7 @@ public class ClipViewLayout extends RelativeLayout {
         matrix.postScale(scaleWidth, scaleHeight);
         Bitmap newBmp = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false);
         return newBmp;
-    }
 
+    }
 
 }

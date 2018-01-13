@@ -32,7 +32,6 @@
                     android:id="@+id/iv_avatar"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@mipmap/ic_launcher"
                     android:layout_toLeftOf="@+id/iv_go1"
                     android:layout_marginRight="10dp"/>
                 <ImageView
@@ -71,7 +70,6 @@
                     android:src="@mipmap/ic_launcher"
                     android:layout_toLeftOf="@+id/iv_go2"
                     android:layout_marginRight="10dp"
-                    android:text="未认证"
                     android:textColor="@color/tv_orange"/>
                 <ImageView
                     android:id="@+id/iv_go2"
@@ -110,7 +108,6 @@
                     android:src="@mipmap/ic_launcher"
                     android:layout_toLeftOf="@+id/iv_go3"
                     android:layout_marginRight="10dp"
-                    android:text="未认证"
                     android:textColor="@color/tv_orange"/>
                 <ImageView
                     android:id="@+id/iv_go3"
@@ -145,12 +142,11 @@
                     android:id="@+id/phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:layout_toLeftOf="@+id/iv_go4"
                     android:src="@mipmap/ic_launcher"
-                    android:text="176****3972"
-                    android:textColor="@color/tv_999" />
+                    android:textColor="@color/tv_999"
+                    android:layout_alignBottom="@+id/iv_go4"
+                    android:layout_toLeftOf="@+id/iv_go4"
+                    android:layout_toStartOf="@+id/iv_go4" />
                 <ImageView
                     android:id="@+id/iv_go4"
                     android:layout_width="wrap_content"
@@ -187,7 +183,6 @@
                     android:src="@mipmap/ic_launcher"
                     android:layout_toLeftOf="@+id/iv_go5"
                     android:layout_marginRight="10dp"
-                    android:text="嘻嘻嘻"
                     android:textColor="@color/tv_999"/>
                 <ImageView
                     android:id="@+id/iv_go5"

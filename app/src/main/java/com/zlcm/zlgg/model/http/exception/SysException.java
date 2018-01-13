@@ -47,7 +47,7 @@ public class SysException extends RuntimeException {
                 message = "验证码获取次数过多，请稍后重试";
                 break;
             default:
-                message = "未知错误";
+                message = "服务器异常，工作人员正在抢修中...";
         }
         return message;
     }

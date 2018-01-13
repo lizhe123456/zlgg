@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_login_shape"
-        android:text="@string/submit"
+        android:text="@string/submit_btn"
         android:gravity="center"
         android:textColor="@color/white"
         android:textSize="18sp"

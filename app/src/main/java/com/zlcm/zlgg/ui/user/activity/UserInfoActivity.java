@@ -104,17 +104,35 @@ public class UserInfoActivity extends MvpActivity<UserInfoPresenter> implements 
 
     @Override
     public void showContent(UserInfoBean bean) {
-        if (bean.getReal_name() != null && bean.getIdCrad() != null) {
+        if (!TextUtils.isEmpty(bean.getReal_name())&& !TextUtils.isEmpty(bean.getIdCrad())) {
             isNameAuth = true;
             nameAuth.setTextColor(getResources().getColor(R.color.tv_666));
             nameAuth.setText("已认证");
             ivGo2.setVisibility(View.GONE);
+        }else {
+            isNameAuth = false;
+            nameAuth.setText("未认证");
+            ivGo2.setVisibility(View.VISIBLE);
         }
         if (bean.getStorename() != null) {
-            isStoreAuth = true;
-            storeAuth.setTextColor(getResources().getColor(R.color.tv_666));
-            storeAuth.setText("已认证");
-            ivGo3.setVisibility(View.GONE);
+            if (bean.getStoreState() == 0){
+                isStoreAuth = true;
+                storeAuth.setText("审核中");
+                ivGo3.setVisibility(View.GONE);
+            }else if (bean.getStoreState() == 1) {
+                isStoreAuth = true;
+                storeAuth.setTextColor(getResources().getColor(R.color.tv_666));
+                storeAuth.setText("已认证");
+                ivGo3.setVisibility(View.GONE);
+            }else {
+                isStoreAuth = false;
+                storeAuth.setText("审核失败");
+                ivGo3.setVisibility(View.VISIBLE);
+            }
+        }else {
+            isStoreAuth = false;
+            storeAuth.setText("未认证");
+            ivGo3.setVisibility(View.VISIBLE);
         }
         if (isNameAuth) {
             realNameInfo.setVisibility(View.VISIBLE);
@@ -210,7 +228,7 @@ public class UserInfoActivity extends MvpActivity<UserInfoPresenter> implements 
                 case NickNameActivity.NICKNAME_RESULT:
                     name = data.getStringExtra("text");
                     if (!TextUtils.isEmpty(name)) {
-                        mPresenter.getUserInfo(name);
+                        mPresenter.setNickName(name);
                     }
                     break;
                 case Activity.RESULT_OK:

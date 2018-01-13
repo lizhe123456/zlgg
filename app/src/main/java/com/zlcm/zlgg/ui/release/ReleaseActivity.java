@@ -6,8 +6,11 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.zlcm.zlgg.R;
@@ -15,6 +18,10 @@ import com.zlcm.zlgg.base.MvpActivity;
 import com.zlcm.zlgg.model.bean.ChargInfoBean;
 import com.zlcm.zlgg.presenter.release.ReleasePresenter;
 import com.zlcm.zlgg.presenter.release.contract.ReleaseContract;
+import com.zlcm.zlgg.utils.DensityUtil;
+import com.zlcm.zlgg.utils.GlideuUtil;
+import com.zlcm.zlgg.utils.MobileUtil;
+import com.zlcm.zlgg.utils.SystemUtil;
 import com.zlcm.zlgg.view.ZlToast;
 import com.zlcm.zlgg.widgets.PhotoListActivity;
 import java.io.File;
@@ -64,6 +71,8 @@ public class ReleaseActivity extends MvpActivity<ReleasePresenter> implements Re
     private final int RELEASE_DELIVERY = 3;
     private File bitmap;
     private ArrayList<Integer> devices = new ArrayList<>();
+    private int height;
+    private int width;
 
     @Override
     protected int setLayout() {
@@ -99,13 +108,13 @@ public class ReleaseActivity extends MvpActivity<ReleasePresenter> implements Re
                         + 500);
             }
         });
+        height = SystemUtil.getScreenHeight(this);
+        width = SystemUtil.getScreenWidth(this);
+//        double imgHeight = ((double)width/(double)DensityUtil.px2dip(this,376)) * (double)DensityUtil.px2dip(this,160);
+//        advertImg.setLayoutParams(new LinearLayout.LayoutParams(width, (int) imgHeight));
     }
 
-
-
-
-
-    @OnClick({R.id.img_lift, R.id.advert_img, R.id.bmp,R.id.delivery_advert,R.id.release})
+    @OnClick({R.id.img_lift, R.id.advert_img, R.id.bmp,R.id.delivery_advert,R.id.release,R.id.et_phone,R.id.et_time,R.id.et_address})
     public void onViewClicked(View view) {
 
         Intent intent = new Intent();
@@ -128,17 +137,18 @@ public class ReleaseActivity extends MvpActivity<ReleasePresenter> implements Re
                 startActivityForResult(intent,RELEASE_DELIVERY);
                 break;
             case R.id.release:
-                if (TextUtils.isEmpty(etTime.getText().toString().trim())){
-                    ZlToast.showText(this,"请输入时间");
+                String desc = etDesc.getText().toString();
+                if (TextUtils.isEmpty(desc)){
+                    ZlToast.showText(this,"请写一段优美的介绍");
                     return;
                 }
-                long data = Integer.valueOf(etTime.getText().toString())*1000*60*60*24;
-                if (data == 0){
-                    ZlToast.showText(this,"时间不可为0");
-                    return;
-                }
-                if (devices.size() == 0){
-                    ZlToast.showText(this,"投放地址为空");
+                String phone = etPhone.getText().toString().trim();
+                if (TextUtils.isEmpty(desc)){
+                    if (MobileUtil.isMobile(phone)){
+                        ZlToast.showText(this,"手机号格式有误");
+                    }else {
+                        ZlToast.showText(this,"请留下您的联系方式");
+                    }
                     return;
                 }
                 String address = etAddress.getText().toString().trim();
@@ -146,16 +156,36 @@ public class ReleaseActivity extends MvpActivity<ReleasePresenter> implements Re
                     ZlToast.showText(this,"请填写广告活动所在地");
                     return;
                 }
-                String desc = etDesc.getText().toString();
-                if (TextUtils.isEmpty(desc)){
-                    ZlToast.showText(this,"请写一段优美的介绍");
+                if (TextUtils.isEmpty(etTime.getText().toString().trim())){
+                    ZlToast.showText(this,"请输入时间");
+                    return;
+                }
+                long date = Integer.valueOf(etTime.getText().toString().trim());
+                if (date == 0){
+                    ZlToast.showText(this,"时间不可为0");
+                    return;
+                }else if (date > 365){
+                    ZlToast.showText(this,"最多一年");
+                    return;
+                }
+                if (devices.size() == 0){
+                    ZlToast.showText(this,"投放地址为空");
                     return;
                 }
                 if (bitmap == null){
                     ZlToast.showText(this,"请选择您准备好的一张海报");
                     return;
                 }
-                mPresenter.submit(devices,bitmap,desc,address,data);
+                mPresenter.submit(devices,bitmap,phone,desc,address,date);
+                break;
+            case R.id.et_address:
+                etAddress.setSelection(etAddress.getText().length());
+                break;
+            case R.id.et_time:
+                etTime.setSelection(etTime.getText().length());
+                break;
+            case R.id.et_phone:
+                etPhone.setSelection(etPhone.getText().length());
                 break;
         }
     }
@@ -203,6 +233,9 @@ public class ReleaseActivity extends MvpActivity<ReleasePresenter> implements Re
                     String bmp = data.getStringExtra("bitmap");
                     if (!TextUtils.isEmpty(bmp)) {
                         bitmap = new File(bmp);
+                        GlideuUtil.loadImageView(this,bmp,advertImg);
+                        this.bmp.setVisibility(View.GONE);
+                        advertImg.setVisibility(View.VISIBLE);
                     }
                     break;
                 case RELEASE_DELIVERY:
@@ -221,8 +254,8 @@ public class ReleaseActivity extends MvpActivity<ReleasePresenter> implements Re
 
     @Override
     public void showContent(ChargInfoBean bean) {
-        Intent intent = new Intent();
-        intent.setClass(this,PayActivity.class);
+        mActivity.finish();
+        Intent intent = new Intent(mActivity,PayActivity.class);
         intent.putExtra("charg",bean);
         startActivity(intent);
     }

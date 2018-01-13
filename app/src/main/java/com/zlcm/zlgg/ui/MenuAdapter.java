@@ -24,9 +24,9 @@ public class MenuAdapter extends BaseAdapter<MenuBean> {
         holder.setText(R.id.title,item.getTitle())
                 .setImageResource(R.id.iv_img,item.getImg());
         holder.setVisible(R.id.money,false);
-        if (position == 2){
-            holder.setVisible(R.id.money,true);
-        }
+//        if (position == 2){
+//            holder.setVisible(R.id.money,true);
+//        }
     }
 
     @Override

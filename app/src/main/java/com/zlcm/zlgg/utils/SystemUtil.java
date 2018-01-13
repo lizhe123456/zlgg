@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.view.View;
+import android.view.WindowManager;
 
 
 import com.zlcm.zlgg.app.Constants;
@@ -78,5 +79,22 @@ public class SystemUtil {
         }
         return -1;
     }
+
+    public static int getScreenHeight(Context context){
+        WindowManager wm = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+
+        int height = wm.getDefaultDisplay().getHeight();
+        return height;
+    }
+
+    public static int getScreenWidth(Context context){
+        WindowManager wm = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+
+        int width = wm.getDefaultDisplay().getWidth();
+        return width;
+    }
+
 
 }

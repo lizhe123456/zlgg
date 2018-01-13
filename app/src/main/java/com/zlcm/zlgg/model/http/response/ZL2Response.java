@@ -13,7 +13,6 @@ public class ZL2Response<T> implements Serializable{
 
     private String message;
     private int code;
-    private Map<String, Object> data = new HashMap<String, Object>();
     private T info;
 
     public String getMessage() {
@@ -22,10 +21,6 @@ public class ZL2Response<T> implements Serializable{
 
     public int getCode() {
         return code;
-    }
-
-    public Map<String, Object> getData() {
-        return data;
     }
 
     public T getInfo() {
@@ -44,7 +39,4 @@ public class ZL2Response<T> implements Serializable{
         this.code = code;
     }
 
-    public void setData(Map<String, Object> data) {
-        this.data = data;
-    }
 }

@@ -35,3 +35,6 @@
 -keep class com.youth.banner.** {
     *;
  }
+ #网易七鱼客服
+ -dontwarn com.qiyukf.**
+ -keep class com.qiyukf.** {*;}

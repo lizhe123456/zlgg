@@ -14,6 +14,9 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.zlcm.zlgg.utils.DensityUtil;
+import com.zlcm.zlgg.utils.SystemUtil;
+
 /**
  * 头像上传裁剪框
  */
@@ -32,6 +35,9 @@ public class ClipView extends View {
     //裁剪框类别，（圆形、矩形），默认为圆形
     private ClipType clipType = ClipType.CIRCLE;
     private Xfermode xfermode;
+    private int height;
+    private int width;
+    private float imgHeight;
 
     public ClipView(Context context) {
         this(context, null);
@@ -50,6 +56,9 @@ public class ClipView extends View {
         borderPaint.setStrokeWidth(clipBorderWidth);
         borderPaint.setAntiAlias(true);
         xfermode = new PorterDuffXfermode(PorterDuff.Mode.DST_OUT);
+        height = SystemUtil.getScreenHeight(context);
+        width = SystemUtil.getScreenWidth(context);
+        imgHeight =(((float)width/ (float) DensityUtil.px2dip(context,376)) * (float)DensityUtil.px2dip(context,160));
     }
 
     @Override
@@ -71,15 +80,20 @@ public class ClipView extends View {
             canvas.drawCircle(this.getWidth() / 2, this.getHeight() / 2, clipRadiusWidth, borderPaint);
         } else if (clipType == ClipType.RECTANGLE) { //绘制矩形裁剪框
             //绘制中间的矩形
-            canvas.drawRect(mHorizontalPadding, this.getHeight() / 2 - clipWidth / 2,
-                    this.getWidth() - mHorizontalPadding, this.getHeight() / 2 + clipWidth / 2, paint);
-            //绘制白色的矩形边框
-            canvas.drawRect(mHorizontalPadding, this.getHeight() / 2 - clipWidth / 2,
-                    this.getWidth() - mHorizontalPadding, this.getHeight() / 2 + clipWidth / 2, borderPaint);
+//            canvas.drawRect(mHorizontalPadding, this.getHeight() / 2 - clipWidth / 2,
+//                    this.getWidth() - mHorizontalPadding, this.getHeight() / 2 + clipWidth / 2, paint);
+
+            canvas.drawRect(mHorizontalPadding,this.getHeight()/2 - imgHeight/2,
+                    this.getWidth() - mHorizontalPadding, this.getHeight()/2 + imgHeight/2,paint);
+
+//            //绘制白色的矩形边框
+//            canvas.drawRect(mHorizontalPadding, this.getHeight() / 2 - clipWidth / 2,
+//                    this.getWidth() - mHorizontalPadding, this.getHeight() / 2 + clipWidth / 2, borderPaint);
         }
         //出栈，恢复到之前的图层，意味着新建的图层会被删除，新建图层上的内容会被绘制到canvas (or the previous layer)
         canvas.restore();
     }
+
 
     /**
      * 获取裁剪区域的Rect
@@ -87,16 +101,33 @@ public class ClipView extends View {
      * @return
      */
     public Rect getClipRect() {
-        Rect rect = new Rect();
-        //宽度的一半 - 圆的半径
-        rect.left = (this.getWidth() / 2 - clipRadiusWidth);
-        //宽度的一半 + 圆的半径
-        rect.right = (this.getWidth() / 2 + clipRadiusWidth);
-        //高度的一半 - 圆的半径
-        rect.top = (this.getHeight() / 2 - clipRadiusWidth);
-        //高度的一半 + 圆的半径
-        rect.bottom = (this.getHeight() / 2 + clipRadiusWidth);
-        return rect;
+        if (clipType == ClipType.CIRCLE) {
+            Rect rect = new Rect();
+            //宽度的一半 - 圆的半径
+            rect.left = (this.getWidth() / 2 - clipRadiusWidth);
+            //宽度的一半 + 圆的半径
+            rect.right = (this.getWidth() / 2 + clipRadiusWidth);
+            //高度的一半 - 圆的半径
+            rect.top = (this.getHeight() / 2 - clipRadiusWidth);
+            //高度的一半 + 圆的半径
+            rect.bottom = (this.getHeight() / 2 + clipRadiusWidth);
+            return rect;
+        }else {
+            Rect rect = new Rect();
+            //宽度的一半 - 圆的半径
+            rect.left = (this.getWidth() / 2 - clipRadiusWidth);
+            //宽度的一半 + 圆的半径
+            rect.right = (this.getWidth() / 2 + clipRadiusWidth);
+            //高度的一半 - 圆的半径
+            rect.top = (int) (this.getHeight() / 2 - imgHeight/2);
+            //高度的一半 + 圆的半径
+            rect.bottom = (int) (this.getHeight() / 2 + imgHeight/2);
+            return rect;
+        }
+    }
+
+    public ClipType getClipType() {
+        return clipType;
     }
 
     /**

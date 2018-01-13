@@ -79,7 +79,7 @@
             android:background="@drawable/item_shape"
             android:gravity="center"
             android:layout_weight="1.0"
-            android:text="@string/submit"
+            android:text="@string/submit_btn"
             android:textSize="12sp"
             android:textColor="@color/tv_333"/>
     </LinearLayout>

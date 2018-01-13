@@ -81,10 +81,12 @@ public class MarkerUtil {
      * 移除marker
      */
     public static void removeMarkers() {
-        for (Marker marker : markers) {
-            marker.remove();
-            marker.destroy();
+        if (markers != null) {
+            for (Marker marker : markers) {
+                marker.remove();
+                marker.destroy();
+            }
+            markers.clear();
         }
-        markers.clear();
     }
 }

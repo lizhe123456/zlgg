@@ -1,9 +1,7 @@
 package com.zlcm.zlgg.widgets;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,8 +9,6 @@ import android.widget.TextView;
 import com.zlcm.zlgg.R;
 import com.zlcm.zlgg.base.BaseActivity;
 import com.zlcm.zlgg.widgets.circle.ClipViewLayout;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;

@@ -1,26 +1,24 @@
 package com.zlcm.zlgg.app;
 
 import android.app.Activity;
-import android.app.Service;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
+import android.graphics.Bitmap;
+import android.support.annotation.Nullable;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
-import android.util.DisplayMetrics;
-import android.view.Display;
-import android.view.WindowManager;
+import com.bumptech.glide.Glide;
+import com.qiyukf.unicorn.api.ImageLoaderListener;
+import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
+import com.qiyukf.unicorn.api.Unicorn;
+import com.qiyukf.unicorn.api.UnicornImageLoader;
+import com.qiyukf.unicorn.api.YSFOptions;
 import com.zlcm.zlgg.di.component.AppComponent;
 import com.zlcm.zlgg.di.component.DaggerAppComponent;
 import com.zlcm.zlgg.di.module.AppModule;
 import com.zlcm.zlgg.di.module.HttpModule;
-import com.zlcm.zlgg.service.LocationService;
-import com.zlcm.zlgg.utils.LogUtil;
-
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by lizhe on 2017/12/11 0011.
@@ -54,6 +52,30 @@ public class App extends MultiDexApplication {
         }
         instance = this;
         mContext = getApplicationContext();
+        Unicorn.init(this, Constants.QY_APP_KEY, options(), new UnicornImageLoader() {
+            @Nullable
+            @Override
+            public Bitmap loadImageSync(String uri, int width, int height) {
+                try {
+                    return Glide.with(mContext)
+                            .load(uri)
+                            .asBitmap() //必须
+                            .centerCrop()
+                            .into(width, height)
+                            .get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            public void loadImage(String uri, int width, int height, ImageLoaderListener listener) {
+
+            }
+        });
     }
 
 
@@ -98,5 +120,11 @@ public class App extends MultiDexApplication {
         }
         android.os.Process.killProcess(android.os.Process.myPid());
         System.exit(0);
+    }
+
+    private YSFOptions options() {
+        YSFOptions options = new YSFOptions();
+        options.statusBarNotificationConfig = new StatusBarNotificationConfig();
+        return options;
     }
 }

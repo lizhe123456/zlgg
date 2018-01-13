@@ -15,9 +15,18 @@ public class UserInfoBean implements Serializable {
     String phone;
     String storephone;
     String sex;
+    int storeState;
     String birthday;
     String storename;
     String address;
+
+    public int getStoreState() {
+        return storeState;
+    }
+
+    public void setStoreState(int storeState) {
+        this.storeState = storeState;
+    }
 
     public String getNickname() {
         return nickname;

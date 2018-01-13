@@ -29,8 +29,7 @@
                 android:layout_alignParentLeft="true"
                 android:gravity="center"
                 android:layout_marginLeft="20dp"
-                android:background="@drawable/shardow"
-                >
+                android:background="@drawable/shardow">
                 <ImageView
                     android:id="@+id/location"
                     android:layout_width="wrap_content"
@@ -63,8 +62,7 @@
                 android:layout_alignParentRight="true"
                 android:gravity="center"
                 android:layout_marginRight="20dp"
-                android:background="@drawable/shardow"
-                >
+                android:background="@drawable/shardow">
                 <ImageView
                     android:id="@+id/customer_service"
                     android:layout_width="wrap_content"
