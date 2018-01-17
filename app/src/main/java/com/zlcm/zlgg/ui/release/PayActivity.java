@@ -5,16 +5,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zlcm.zlgg.R;
-import com.zlcm.zlgg.base.BaseActivity;
 import com.zlcm.zlgg.base.MvpActivity;
 import com.zlcm.zlgg.model.bean.ChargInfoBean;
-import com.zlcm.zlgg.model.bean.PayInfo;
 import com.zlcm.zlgg.presenter.pay.PayPresenter;
 import com.zlcm.zlgg.presenter.pay.contract.PayContract;
 import com.zlcm.zlgg.ui.release.adapter.AddressListAdapter;
 import com.zlcm.zlgg.view.ZlToast;
-
+import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -46,6 +46,9 @@ public class PayActivity extends MvpActivity<PayPresenter> implements PayContrac
     //支付方式 0 ali 1 wx
     private int type = 0;
     private AddressListAdapter mAdapter;
+    private String url;
+    private IWXAPI api;
+    private String orderInfo;   // 订单信息
 
     @Override
     protected int setLayout() {
@@ -55,6 +58,7 @@ public class PayActivity extends MvpActivity<PayPresenter> implements PayContrac
     @Override
     protected void setData() {
         title.setText("支付中心");
+        api = WXAPIFactory.createWXAPI(this,"");
         wxChecked.setImageResource(R.drawable.un_checked);
         aliChecked.setImageResource(R.drawable.checked);
         bean = (ChargInfoBean) getIntent().getSerializableExtra("charg");
@@ -107,7 +111,7 @@ public class PayActivity extends MvpActivity<PayPresenter> implements PayContrac
     }
 
     @Override
-    public void paySate(PayInfo payInfo) {
+    public void paySate(Map payInfo) {
         //支付成功的回调
         ZlToast.showText(this,"支付成功，可在我的发布中查询");
         mActivity.finish();
@@ -117,4 +121,18 @@ public class PayActivity extends MvpActivity<PayPresenter> implements PayContrac
     protected void initInject() {
         getActivityComponent().inject(this);
     }
+
+    public void wechatpay(View view){
+        //1.post信息到服务器
+//        StringRequest request = new StringRequest(url, this, this);
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(request);
+        //4.处理支付结果：成功、失败、取消
+    }
+
+    /**调用微信支付*/
+    public void sendPayRequest() {
+        
+    }
+
 }

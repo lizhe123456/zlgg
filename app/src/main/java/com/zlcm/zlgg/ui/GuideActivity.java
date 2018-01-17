@@ -58,10 +58,12 @@ public class GuideActivity extends MvpActivity<NavigationPresenter> implements N
                 @Override
                 public void run() {
                     recLen--;
-                    text.setText("跳过 "+recLen +"s");
-                    if(recLen < 0){
-                        timer.cancel();
-                        text.setVisibility(View.GONE);
+                    if (text != null) {
+                        text.setText("跳过 " + recLen + "s");
+                        if (recLen < 0) {
+                            timer.cancel();
+                            text.setVisibility(View.GONE);
+                        }
                     }
                 }
             });
@@ -145,5 +147,6 @@ public class GuideActivity extends MvpActivity<NavigationPresenter> implements N
         timer.schedule(task, 1000, 1000);
         handler.postDelayed(runnable, 3000);
     }
+
 
 }

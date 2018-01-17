@@ -1,16 +1,13 @@
 package com.zlcm.zlgg.view;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
-
 import com.qiyukf.unicorn.api.Unicorn;
 import com.zlcm.zlgg.R;
 import com.zlcm.zlgg.ui.setting.activity.FeedBackActivity;

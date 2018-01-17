@@ -67,4 +67,8 @@ dependencies {
     compile 'com.youth.banner:banner:1.4.10'
     compile 'com.contrarywind:Android-PickerView:3.2.7'
     compile 'com.qiyukf.unicorn:unicorn:3.13.0'
+    //微信支付
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+    compile files('libs/alipaySdk-20170922.jar')
+    compile files('libs/libammsdk.jar')
 }

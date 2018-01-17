@@ -29,4 +29,25 @@ public class Constants {
     public static String city;
     public static String province;
     public static String district;
+    //微信
+    public static final String APP_IP_WX = "";
+    //商户号
+    public static final String MCH_ID_WX = "";
+    //  API密钥，在商户平台设置
+    public static final  String API_KEY_WX="";
+
+    //支付宝
+    public static final String APP_IP_ALI = "";
+    // 商户PID
+    public static final String PARTNER = "";
+    // 商户收款账号
+    public static final String SELLER = "";
+    // 商户私钥，pkcs8格式
+    public static final String RSA_PRIVATE = "";
+    // 支付宝公钥
+    public static final String RSA_PUBLIC = "";
+    public static final String NOTIFY_URL = "http://www.yourdomain.com/order/alipay_notify_app";
+    public static final int SDK_PAY_FLAG = 1;
+    public static final int SDK_CHECK_FLAG = 2;
+
 }

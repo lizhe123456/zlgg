@@ -6,7 +6,12 @@ import com.zlcm.zlgg.model.DataManager;
 import com.zlcm.zlgg.model.http.response.ZL2Response;
 import com.zlcm.zlgg.utils.RxUtil;
 
+import org.reactivestreams.Subscription;
+
 import javax.inject.Inject;
+
+import io.reactivex.FlowableSubscriber;
+import io.reactivex.subscribers.ResourceSubscriber;
 
 /**
  * Created by lizhe on 2018/1/12.
@@ -16,6 +21,8 @@ import javax.inject.Inject;
 public class NavigationPresenter extends BasePresenterImpl<NavigationContract.View> implements NavigationContract.Presenter {
 
     DataManager dataManager;
+    private boolean isFrist = true;
+
     @Inject
     public NavigationPresenter(DataManager dataManager) {
         this.dataManager = dataManager;
@@ -26,13 +33,26 @@ public class NavigationPresenter extends BasePresenterImpl<NavigationContract.Vi
         addSubscribe(dataManager.getNavigation()
                 .compose(RxUtil.<ZL2Response<String>>rxSchedulerHelper())
                 .compose(RxUtil.<String>handleZL2())
-                .subscribeWith(new CommonSubscriber<String>(mView){
+                .subscribeWith(new ResourceSubscriber<String>() {
                     @Override
                     public void onNext(String s) {
                         mView.showContent(s);
-                        super.onNext(s);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        if (isFrist) {
+                            mView.stateError();
+                            isFrist = false;
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 })
+
         );
     }
 }

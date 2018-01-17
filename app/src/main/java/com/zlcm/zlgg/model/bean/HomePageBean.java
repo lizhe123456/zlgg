@@ -10,13 +10,11 @@ import java.util.List;
 
 public class HomePageBean implements Serializable {
 
-    private List<HeadBean> hean;
+    private HeadBean hean;
     private PushInfo pushInfo;
     private List<DeviceBean> deviceList;
     private String logo;
     private Integer money;
-    private String avatar;
-    private String nickName;
     private String credit;
 
     public Integer getMoney() {
@@ -27,11 +25,11 @@ public class HomePageBean implements Serializable {
         this.money = money;
     }
 
-    public List<HeadBean> getHean() {
+    public HeadBean getHean() {
         return hean;
     }
 
-    public void setHean(List<HeadBean> hean) {
+    public void setHean(HeadBean hean) {
         this.hean = hean;
     }
 
@@ -57,22 +55,6 @@ public class HomePageBean implements Serializable {
 
     public void setLogo(String logo) {
         this.logo = logo;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
     }
 
     public String getCredit() {
@@ -132,15 +114,16 @@ public class HomePageBean implements Serializable {
     }
 
     public class HeadBean implements Serializable{
-        int id;
-        String img;
 
-        public int getId() {
-            return id;
+        String img;
+        String url;
+
+        public String getUrl() {
+            return url;
         }
 
-        public void setId(int id) {
-            this.id = id;
+        public void setUrl(String url) {
+            this.url = url;
         }
 
         public String getImg() {

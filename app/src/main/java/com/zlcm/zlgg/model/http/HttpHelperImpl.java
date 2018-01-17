@@ -1,6 +1,5 @@
 package com.zlcm.zlgg.model.http;
 
-import com.zlcm.zlgg.model.bean.AuthInfo;
 import com.zlcm.zlgg.model.bean.ChargInfoBean;
 import com.zlcm.zlgg.model.bean.ChargingBean;
 import com.zlcm.zlgg.model.bean.HomePageBean;
@@ -10,7 +9,6 @@ import com.zlcm.zlgg.model.bean.NewVersionInfoBean;
 import com.zlcm.zlgg.model.bean.OrderListBean;
 import com.zlcm.zlgg.model.bean.PeripheryDetailsBean;
 import com.zlcm.zlgg.model.bean.PeripheryDeviceBean;
-import com.zlcm.zlgg.model.bean.StoreInfo;
 import com.zlcm.zlgg.model.bean.UserInfoBean;
 import com.zlcm.zlgg.model.http.api.ZLApi;
 import com.zlcm.zlgg.model.http.response.ZL2Response;

@@ -12,8 +12,9 @@
             android:id="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
         <include layout="@layout/no_login"/>
-        <include layout="@layout/layout_push"/>
+        <include layout="@layout/layout_push" />
         <include layout="@layout/layout_device_info"/>
         <RelativeLayout
             android:layout_width="match_parent"

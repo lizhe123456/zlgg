@@ -14,6 +14,7 @@ import com.zlcm.zlgg.model.bean.LoginBean;
 import com.zlcm.zlgg.model.http.response.ZLResponse;
 import com.zlcm.zlgg.presenter.user.LoginPresenter;
 import com.zlcm.zlgg.presenter.user.contract.LoginContract;
+import com.zlcm.zlgg.ui.MainActivity;
 import com.zlcm.zlgg.utils.MobileUtil;
 import com.zlcm.zlgg.utils.SpUtil;
 import com.zlcm.zlgg.view.ZlToast;
@@ -109,6 +110,8 @@ public class LoginActivity extends MvpActivity<LoginPresenter> implements LoginC
         }else {
             SpUtil.putString(mActivity,"loginId",bean.getLoginId());
             SpUtil.putString(mActivity,"token",bean.getToken());
+            SpUtil.putString(this, "avatar", bean.getAvatar());
+            SpUtil.putString(this, "nickName", bean.getNickName());
             finish();
         }
     }

@@ -12,11 +12,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.qiyukf.nimlib.sdk.NimIntent;
-import com.qiyukf.unicorn.api.ConsultSource;
 import com.qiyukf.unicorn.api.Unicorn;
-import com.qiyukf.unicorn.ui.fragment.ServiceMessageFragment;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 import com.zlcm.zlgg.R;
 import com.zlcm.zlgg.app.App;
@@ -26,13 +22,12 @@ import com.zlcm.zlgg.model.bean.MenuBean;
 import com.zlcm.zlgg.ui.hot.HotActivity;
 import com.zlcm.zlgg.ui.periphery.PeripheryActivity;
 import com.zlcm.zlgg.ui.release.OrderActivity;
-import com.zlcm.zlgg.ui.release.ReleaseActivity;
 import com.zlcm.zlgg.ui.setting.SettingActivity;
 import com.zlcm.zlgg.ui.user.activity.UserInfoActivity;
-import com.zlcm.zlgg.ui.wallet.WalletActivity;
 import com.zlcm.zlgg.utils.GlideuUtil;
 import com.zlcm.zlgg.utils.SpUtil;
 import com.zlcm.zlgg.view.RoundImageView;
+import com.zlcm.zlgg.view.ShareDialog;
 import com.zlcm.zlgg.view.ZlToast;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +58,7 @@ public class MainActivity extends BaseActivity {
     private static final int RELEASE = 2;
     private static final int SHARE = 3;
     private Fragment mContent;
+    private ShareDialog dialog;
 
 
     @Override
@@ -83,6 +79,7 @@ public class MainActivity extends BaseActivity {
         mList.add(new MenuBean(R.drawable.share, "邀请好友"));
         navigationMenu.setAdapter(mAdapter);
         mContent = new MainFragment();
+        dialog = new ShareDialog(this);
     }
 
     @Override
@@ -110,11 +107,8 @@ public class MainActivity extends BaseActivity {
                         startActivity(intent);
                         break;
                     case SHARE:
-                        Intent sendIntent = new Intent();
-                        sendIntent.setAction(Intent.ACTION_SEND);
-                        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
-                        sendIntent.setType("text/plain");
-                        startActivity(sendIntent);
+                        closeDrawerLayout();
+                        dialog.show();
                         break;
                 }
             }

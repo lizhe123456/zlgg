@@ -16,6 +16,8 @@ public class LoginBean implements Serializable{
 
     private String loginId;
     private String token;
+    private String avatar;
+    private String nickName;
 
     public String getLoginId() {
         return loginId;
@@ -33,4 +35,19 @@ public class LoginBean implements Serializable{
         this.token = token;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
 }

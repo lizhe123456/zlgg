@@ -1,90 +1,174 @@
 package com.zlcm.zlgg.model.bean;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by lizhe on 2018/1/11.
  * 类介绍：
  */
 
 public class PayInfo {
-
+    @SerializedName("appid")
+    @Expose
+    private String appid;
+    @SerializedName("noncestr")
+    @Expose
+    private String noncestr;
+    @SerializedName("package")
+    @Expose
+    private String _package;
+    @SerializedName("partnerid")
+    @Expose
+    private String partnerid;
+    @SerializedName("prepayid")
+    @Expose
+    private String prepayid;
+    @SerializedName("sign")
+    @Expose
+    private String sign;
+    @SerializedName("timestamp")
+    @Expose
+    private String timestamp;
+    @SerializedName("success")
+    @Expose
+    private Boolean success;
 
     /**
-     * msg : 付款即时到账 未到账可联系我们
-     * data : {"qrcode":"HTTPS://QR.ALIPAY.COM/FKX08406GFWYYSF0YRNC10","istype":"1","realprice":0.05}
-     * code : 1
-     * url : https://www.paysapi.com/
+     *
+     * @return The appid
      */
-
-    private String msg;
-    private DataBean data;
-    private int code;
-    private String url;
-
-    public String getMsg() {
-        return msg;
+    public String getAppid() {
+        return appid;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    /**
+     *
+     * @param appid
+     *            The appid
+     */
+    public void setAppid(String appid) {
+        this.appid = appid;
     }
 
-    public DataBean getData() {
-        return data;
+    /**
+     *
+     * @return The noncestr
+     */
+    public String getNoncestr() {
+        return noncestr;
     }
 
-    public void setData(DataBean data) {
-        this.data = data;
+    /**
+     *
+     * @param noncestr
+     *            The noncestr
+     */
+    public void setNoncestr(String noncestr) {
+        this.noncestr = noncestr;
     }
 
-    public int getCode() {
-        return code;
+    /**
+     *
+     * @return The _package
+     */
+    public String getPackage() {
+        return _package;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    /**
+     *
+     * @param _package
+     *            The package
+     */
+    public void setPackage(String _package) {
+        this._package = _package;
     }
 
-    public String getUrl() {
-        return url;
+    /**
+     *
+     * @return The partnerid
+     */
+    public String getPartnerid() {
+        return partnerid;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    /**
+     *
+     * @param partnerid
+     *            The partnerid
+     */
+    public void setPartnerid(String partnerid) {
+        this.partnerid = partnerid;
     }
 
-    public static class DataBean {
-        /**
-         * qrcode : HTTPS://QR.ALIPAY.COM/FKX08406GFWYYSF0YRNC10
-         * istype : 1
-         * realprice : 0.05
-         */
-
-        private String qrcode;
-        private String istype;
-        private double realprice;
-
-        public String getQrcode() {
-            return qrcode;
-        }
-
-        public void setQrcode(String qrcode) {
-            this.qrcode = qrcode;
-        }
-
-        public String getIstype() {
-            return istype;
-        }
-
-        public void setIstype(String istype) {
-            this.istype = istype;
-        }
-
-        public double getRealprice() {
-            return realprice;
-        }
-
-        public void setRealprice(double realprice) {
-            this.realprice = realprice;
-        }
+    /**
+     *
+     * @return The prepayid
+     */
+    public String getPrepayid() {
+        return prepayid;
     }
+
+    /**
+     *
+     * @param prepayid
+     *            The prepayid
+     */
+    public void setPrepayid(String prepayid) {
+        this.prepayid = prepayid;
+    }
+
+    /**
+     *
+     * @return The sign
+     */
+    public String getSign() {
+        return sign;
+    }
+
+    /**
+     *
+     * @param sign
+     *            The sign
+     */
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
+    /**
+     *
+     * @return The timestamp
+     */
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    /**
+     *
+     * @param timestamp
+     *            The timestamp
+     */
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    /**
+     *
+     * @return The success
+     */
+    public Boolean getSuccess() {
+        return success;
+    }
+
+    /**
+     *
+     * @param success
+     *            The success
+     */
+    public void setSuccess(Boolean success) {
+        this.success = success;
+    }
+
+
 }

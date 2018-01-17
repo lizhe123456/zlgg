@@ -111,6 +111,10 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
     TextView visitorsFlowrate;
     @BindView(R.id.tv_device_release)
     TextView tvDeviceRelease;
+    @BindView(R.id.banner)
+    ImageView ivBanner;
+    @BindView(R.id.head_portrait)
+    LinearLayout ivHeadPortrait;
 
     private AMap aMap;
     private boolean isLogin = false;
@@ -343,15 +347,12 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
     @Override
     public void showContent(HomePageBean homePageBean) {
         if (isData) {
-            ((MainActivity) getActivity()).setAvatar(homePageBean.getAvatar());
-            ((MainActivity) getActivity()).setUserName(homePageBean.getNickName());
-            SpUtil.putString(getContext(), "avatar", homePageBean.getAvatar());
-            SpUtil.putString(getContext(), "nickName", homePageBean.getNickName());
             setHead(homePageBean.getHean());
+            setPushInfo(homePageBean.getPushInfo());
         }
         isData = false;
         setMainData(homePageBean.getDeviceList(), homePageBean.getLogo());
-        setPushInfo(homePageBean.getPushInfo());
+
     }
 
     @Override
@@ -377,10 +378,25 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
             tvDeviceRelease.setText("立即登录发布广告");
         }
         mLlDevice.setVisibility(View.VISIBLE);
+        if (isShow(ivHeadPortrait)){
+            ivHeadPortrait.setVisibility(View.GONE);
+        }
     }
 
-    private void setHead(List<HomePageBean.HeadBean> headBean) {
-
+    private void setHead(HomePageBean.HeadBean headBean) {
+        if (headBean != null) {
+            Glide.with(getContext()).load(headBean.getImg()).asBitmap().into(new SimpleTarget<Bitmap>() {
+                @Override
+                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                    if (resource == null) {
+                        ivHeadPortrait.setVisibility(View.GONE);
+                    } else {
+                        ivBanner.setImageBitmap(resource);
+                        ivHeadPortrait.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+        }
     }
 
     private void setPushInfo(final HomePageBean.PushInfo pushInfo) {
