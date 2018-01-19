@@ -39,7 +39,7 @@ public class GuideActivity extends MvpActivity<NavigationPresenter> implements N
     private int recLen = 4;
     Timer timer = new Timer();
     private AlertDialog dialog;
-
+    private boolean isFirst = true;
     private Runnable runnable = new Runnable() {
 
         @Override
@@ -79,19 +79,22 @@ public class GuideActivity extends MvpActivity<NavigationPresenter> implements N
     @Override
     protected void onResume() {
         super.onResume();
-        isNetwork();
+        if (!isFirst) {
+            isNetwork();
+            isFirst = false;
+        }
     }
 
     protected void setData() {
         isNetwork();
+        LocationTask.getInstance(this).startLocate();
+        handler = new Handler();
     }
 
     public void isNetwork(){
         //检查是否有网络
         if (SystemUtil.isNetworkConnected(this)) {
             mPresenter.getNavigation();
-            LocationTask.getInstance(this).startLocate();
-            handler = new Handler();
         }else {
             navigation.setImageResource(R.drawable.navigation);
             if (dialog == null) {

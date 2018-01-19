@@ -17,6 +17,7 @@ import javax.inject.Inject;
 public class FeedBackPresenter extends BasePresenterImpl<FeedBackContract.View> implements FeedBackContract.Presenter{
 
     DataManager dataManager;
+
     @Inject
     public FeedBackPresenter(DataManager dataManager) {
         this.dataManager = dataManager;

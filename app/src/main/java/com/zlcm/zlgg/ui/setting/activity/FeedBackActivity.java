@@ -35,11 +35,6 @@ public class FeedBackActivity extends MvpActivity<FeedBackPresenter> implements 
     }
 
     @Override
-    protected void init() {
-
-    }
-
-    @Override
     protected void initInject() {
         getActivityComponent().inject(this);
     }
@@ -59,7 +54,10 @@ public class FeedBackActivity extends MvpActivity<FeedBackPresenter> implements 
             case R.id.submit:
                 if (!TextUtils.isEmpty(etDesc.getText().toString())) {
                     String desc = etDesc.getText().toString().trim();
-                    String ph = phone.getText().toString().trim() == null ? "" : phone.getText().toString().trim();
+                    String ph = phone.getText().toString().trim();
+                    if (TextUtils.isEmpty(ph)){
+                        ph = "";
+                    }
                     mPresenter.feedback(desc,ph);
                 }else {
                     ZlToast.showText(this,"写点东西呗...");

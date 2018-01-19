@@ -470,7 +470,7 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
 //            iv_scan_code.setVisibility(View.VISIBLE);
             createInitialPosition(cameraPosition.target.latitude, cameraPosition.target.longitude);
             createMovingPosition();
-            mIsFirst = false;
+
         }
         if (mInitialMark != null) {
             mInitialMark.setToTop();
@@ -481,13 +481,18 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
                 animMarker();
                 if (mRecordPositon != null){
                     if (AMapUtil.GetDistance(oldAddress,cameraPosition.target) > 1 * 1000){
-                        mPresenter.getHomePage(cameraPosition.target.longitude, cameraPosition.target.latitude);
+                        if (!mIsFirst) {
+                            mPresenter.getHomePage(cameraPosition.target.longitude, cameraPosition.target.latitude);
+                        }
                     }
                 }
                 if (isShow(mLlDevice)) {
                     mLlDevice.setVisibility(View.GONE);
                 }
             }
+        }
+        if (mIsFirst){
+            mIsFirst = false;
         }
         oldAddress = cameraPosition.target;
     }

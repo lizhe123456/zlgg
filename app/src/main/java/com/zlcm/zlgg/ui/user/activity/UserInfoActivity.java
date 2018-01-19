@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.zlcm.zlgg.R;
 import com.zlcm.zlgg.base.MvpActivity;
@@ -90,11 +91,17 @@ public class UserInfoActivity extends MvpActivity<UserInfoPresenter> implements 
     @Override
     protected void setData() {
         title.setText(R.string.user_info);
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         String username = SpUtil.getString(this,"username");
         if (!TextUtils.isEmpty(username)) {
             mPresenter.getUserInfo(username);
         }
-
     }
 
     @Override
@@ -108,7 +115,7 @@ public class UserInfoActivity extends MvpActivity<UserInfoPresenter> implements 
             isNameAuth = true;
             nameAuth.setTextColor(getResources().getColor(R.color.tv_666));
             nameAuth.setText("已认证");
-            ivGo2.setVisibility(View.GONE);
+            ivGo2.setVisibility(View.INVISIBLE);
         }else {
             isNameAuth = false;
             nameAuth.setText("未认证");
@@ -118,12 +125,12 @@ public class UserInfoActivity extends MvpActivity<UserInfoPresenter> implements 
             if (bean.getStoreState() == 0){
                 isStoreAuth = true;
                 storeAuth.setText("审核中");
-                ivGo3.setVisibility(View.GONE);
+                ivGo3.setVisibility(View.INVISIBLE);
             }else if (bean.getStoreState() == 1) {
                 isStoreAuth = true;
                 storeAuth.setTextColor(getResources().getColor(R.color.tv_666));
                 storeAuth.setText("已认证");
-                ivGo3.setVisibility(View.GONE);
+                ivGo3.setVisibility(View.INVISIBLE);
             }else {
                 isStoreAuth = false;
                 storeAuth.setText("审核失败");
@@ -186,7 +193,13 @@ public class UserInfoActivity extends MvpActivity<UserInfoPresenter> implements 
                 break;
             case R.id.btn_name_auth:
                 if (isNameAuth) {
-
+                    if (isNameAuthS){
+                        realNameInfo.setVisibility(View.GONE);
+                        isNameAuthS = false;
+                    }else {
+                        realNameInfo.setVisibility(View.VISIBLE);
+                        isNameAuthS = true;
+                    }
                 }else {
                     intent.setClass(this, NameAuthActivity.class);
                     startActivityForResult(intent, USERINfO);
@@ -195,7 +208,13 @@ public class UserInfoActivity extends MvpActivity<UserInfoPresenter> implements 
             case R.id.btn_store_auth:
                 //跳转商家认证页面
                 if (isStoreAuth){
-
+                    if (isStoreAuthS){
+                        storeInfo.setVisibility(View.GONE);
+                        isStoreAuthS = false;
+                    }else {
+                        storeInfo.setVisibility(View.VISIBLE);
+                        isStoreAuthS = true;
+                    }
                 }else {
                     intent.setClass(this, StoreAuthActivity.class);
                     startActivityForResult(intent, USERINfO);

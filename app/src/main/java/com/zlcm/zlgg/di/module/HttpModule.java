@@ -114,8 +114,8 @@ public class HttpModule {
         builder.connectTimeout(15, TimeUnit.SECONDS)
                 .addInterceptor(logInterceptor)
                 .addNetworkInterceptor(cacheInterceptor)
-                .readTimeout(20, TimeUnit.SECONDS)
-                .writeTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
                 .retryOnConnectionFailure(true)
                 .cache(cache)
                 .addInterceptor(cacheInterceptor);

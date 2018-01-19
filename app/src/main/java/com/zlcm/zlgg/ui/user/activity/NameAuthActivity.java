@@ -2,6 +2,7 @@ package com.zlcm.zlgg.ui.user.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.zlcm.zlgg.model.bean.AuthInfo;
 import com.zlcm.zlgg.presenter.user.NameAuthPresenter;
 import com.zlcm.zlgg.presenter.user.contract.NameAuthContract;
 import com.zlcm.zlgg.utils.Base64Utils;
+import com.zlcm.zlgg.utils.BmpUtils;
 import com.zlcm.zlgg.utils.GlideuUtil;
 import com.zlcm.zlgg.view.ZlToast;
 import com.zlcm.zlgg.widgets.PhotoListActivity;
@@ -116,8 +118,10 @@ public class NameAuthActivity extends MvpActivity<NameAuthPresenter> implements 
                 case Activity.RESULT_OK:
                     frontPath = data.getStringExtra("bitmap");
                     if (!TextUtils.isEmpty(frontPath)) {
-                        GlideuUtil.loadImageView(this,frontPath,ivPositive);
-                        front = Base64Utils.Bitmap2StrByBase64(frontPath);
+                        Bitmap bitmap = BmpUtils.getSmallBitmap(frontPath);
+                        ivPositive.setImageBitmap(bitmap);
+//                        GlideuUtil.loadImageView(this,frontPath,ivPositive);
+                        front = Base64Utils.Bitmap2StrByBase64(bitmap);
                     }
                     break;
             }
@@ -126,8 +130,9 @@ public class NameAuthActivity extends MvpActivity<NameAuthPresenter> implements 
                 case Activity.RESULT_OK:
                     backPath = data.getStringExtra("bitmap");
                     if (!TextUtils.isEmpty(backPath)) {
-                        GlideuUtil.loadImageView(this,backPath,ivOpposite);
-                        back = Base64Utils.Bitmap2StrByBase64(backPath);
+                        Bitmap bitmap = BmpUtils.getSmallBitmap(backPath);
+                        ivOpposite.setImageBitmap(bitmap);
+                        back = Base64Utils.Bitmap2StrByBase64(bitmap);
                     }
                     break;
             }

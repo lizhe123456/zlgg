@@ -2,6 +2,7 @@ package com.zlcm.zlgg.ui.user.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import com.zlcm.zlgg.base.MvpActivity;
 import com.zlcm.zlgg.presenter.user.StoreAuthPresenter;
 import com.zlcm.zlgg.presenter.user.contract.StoreAuthContract;
 import com.zlcm.zlgg.utils.Base64Utils;
+import com.zlcm.zlgg.utils.BmpUtils;
 import com.zlcm.zlgg.utils.GlideuUtil;
 import com.zlcm.zlgg.view.ZlToast;
 import com.zlcm.zlgg.widgets.PhotoListActivity;
@@ -100,8 +102,9 @@ public class StoreAuthActivity extends MvpActivity<StoreAuthPresenter> implement
                 case Activity.RESULT_OK:
                     path = data.getStringExtra("bitmap");
                     if (!TextUtils.isEmpty(path)) {
-                        GlideuUtil.loadImageView(this,path,ivPositive);
-                        bmp = Base64Utils.Bitmap2StrByBase64(path);
+                        Bitmap bitmap = BmpUtils.getSmallBitmap(path);
+                        ivPositive.setImageBitmap(bitmap);
+                        bmp = Base64Utils.Bitmap2StrByBase64(bitmap);
                     }
                     break;
             }

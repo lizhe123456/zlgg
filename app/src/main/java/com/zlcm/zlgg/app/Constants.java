@@ -13,6 +13,8 @@ public class Constants {
     public static final boolean IS_DEBUG = true;
     public static final String PATH_CACHE = FileUtil.getFileDir("Http") + "/caches";
 //    public static final String ZL_URL = "http://39.106.34.25";
+//    public static final String ZL_URL = "http://libolg.vicp.io";
+
     public static final String ZL_URL = "http://192.168.1.201:8080";
     public static final String JH_URL = "http://apis.juhe.cn";
 

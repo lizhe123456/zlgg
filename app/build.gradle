@@ -15,7 +15,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -63,7 +63,6 @@ dependencies {
     compile files('libs/AMap3DMap_5.6.0_AMapNavi_5.5.0_AMapSearch_5.5.0_AMapLocation_3.6.1_20171130.jar')
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
-    compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.youth.banner:banner:1.4.10'
     compile 'com.contrarywind:Android-PickerView:3.2.7'
     compile 'com.qiyukf.unicorn:unicorn:3.13.0'

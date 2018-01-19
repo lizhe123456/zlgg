@@ -14,6 +14,7 @@ import com.amap.api.services.route.BusStep;
 import com.amap.api.services.route.RouteBusLineItem;
 import com.amap.api.services.route.RouteRailwayItem;
 import com.zlcm.zlgg.R;
+import com.zlcm.zlgg.app.Constants;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -293,6 +294,9 @@ public class AMapUtil {
 	 * @return
 	 */
 	public static double GetDistance(LatLng oldLatLng,LatLng newLatLng){
+		if (oldLatLng == null){
+			oldLatLng = new LatLng(Constants.loction.latitue,Constants.loction.longitude);
+		}
 		double radLat1 = rad(oldLatLng.latitude);
 		double radLat2 = rad(newLatLng.latitude);
 		double a = radLat1 - radLat2;
