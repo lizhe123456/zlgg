@@ -145,6 +145,7 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
     private boolean isData = true;
     private LatLng oldAddress;
     private ZlPushDialog zlPushDialog;
+    private int did;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -294,15 +295,20 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
                 zlCustomerServiceDialog.show();
                 break;
             case R.id.tv_device_release:
-
                 if (isLogin){
                     switch (chargingBean.getAuthCode()){
                         case Constants.NAMEAUTH :
                             intent.setClass(getContext(), ReleaseActivity.class);
+                            if (did != 0) {
+                                intent.putExtra("did", did);
+                            }
                             startActivity(intent);
                             break;
                         case Constants.STOREUTH :
                             intent.setClass(getContext(), ReleaseActivity.class);
+                            if (did != 0) {
+                                intent.putExtra("did", did);
+                            }
                             startActivity(intent);
                             break;
                         default:
@@ -361,6 +367,7 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
         tvAddress.setText(bean.getAddress());
         charging.setText(bean.getCharging());
         household.setText(bean.getHousehold());
+        did = bean.getDid();
         visitorsFlowrate.setText(bean.getVisitorsFlowrate());
         if (isLogin){
             switch (bean.getAuthCode()){

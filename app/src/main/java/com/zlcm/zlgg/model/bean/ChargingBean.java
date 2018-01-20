@@ -14,10 +14,12 @@ public class ChargingBean implements Serializable{
     private int household;
     private int visitorsflowrate;
     private int authCode;
+    private int did;
 
     public String getAddress() {
         return address;
     }
+
 
     public void setAddress(String address) {
         this.address = address;
@@ -54,5 +56,13 @@ public class ChargingBean implements Serializable{
 
     public void setAuthCode(int authCode) {
         this.authCode = authCode;
+    }
+
+    public int getDid() {
+        return did;
+    }
+
+    public void setDid(int did) {
+        this.did = did;
     }
 }

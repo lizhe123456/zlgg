@@ -3,6 +3,7 @@ package com.zlcm.zlgg.ui.release.adapter;
 import android.content.Context;
 import android.view.View;
 import com.zlcm.zlgg.R;
+import com.zlcm.zlgg.app.Constants;
 import com.zlcm.zlgg.base.adapter.BaseAdapter;
 import com.zlcm.zlgg.base.adapter.BaseViewHolder;
 import com.zlcm.zlgg.model.bean.PeripheryDeviceBean;
@@ -55,7 +56,11 @@ public class DeliveryAddressAdapter extends BaseAdapter<PeripheryDeviceBean.Devi
 
     @Override
     protected void bindDataToItemView(final BaseViewHolder holder, final PeripheryDeviceBean.Device item, int position) {
-        holder.setBannerImg(R.id.banner, item.getAdvert());
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < item.getAdvert().size(); i++) {
+            list.add(Constants.ZL_URL + "/"+ item.getAdvert().get(i));
+        }
+        holder.setBannerImg(R.id.banner, list);
         holder.setText(R.id.tv_address, item.getAddress());
         if (item.isCheckeed()){
             holder.setImageResource(R.id.checkeed,R.drawable.checked);

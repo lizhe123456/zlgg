@@ -87,6 +87,11 @@ public class ReleaseActivity extends MvpActivity<ReleasePresenter> implements Re
     @Override
     protected void setData() {
         title.setText("广告编辑");
+        int did = getIntent().getIntExtra("did",0);
+        if (did != 0){
+            devices.add(did);
+            tvNum.setText("1");
+        }
         etDesc.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
