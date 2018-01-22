@@ -1,23 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
-    android:padding="20dp"
-    android:background="@color/title_bg">
-    <com.zlcm.zlgg.view.RoundImageView
-        android:id="@+id/head_portrait"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        app:border_width="0dp"
-        app:border_color="@color/white" />
-    <TextView
-        android:id="@+id/user_name"
-        android:layout_width="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/head_portrait"
-        android:layout_marginLeft="20dp"
-        android:textSize="18sp"
-        android:textColor="@color/white"/>
-
-</RelativeLayout>
+        android:padding="20dp"
+        android:background="@color/title_bg">
+        <com.zlcm.zlgg.view.RoundImageView
+            android:id="@+id/head_portrait"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:border_width="0dp"
+            app:border_color="@color/white" />
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/head_portrait"
+            android:layout_marginLeft="20dp"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:text="17688943972"/>
+        <TextView
+            android:id="@+id/credit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="信用积分:  100"
+            android:textColor="#fcfcfc"
+            android:drawableRight="@drawable/goto_white"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:drawablePadding="8dp"
+            android:layout_toRightOf="@+id/head_portrait"
+            android:layout_marginLeft="20dp"
+            android:layout_alignBottom="@+id/head_portrait"/>
+    </RelativeLayout>
+    <include layout="@layout/layout_release_num"/>
+</LinearLayout>

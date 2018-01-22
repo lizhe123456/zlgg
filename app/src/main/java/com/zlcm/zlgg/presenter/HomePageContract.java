@@ -21,7 +21,7 @@ public interface HomePageContract {
 
     interface Presenter extends BasePresenter<View>{
 
-        void getHomePage(double longitude, double latitude);
+        void getHomePage(double longitude, double latitude, int type);
 
         void getHomeDeviceList(double longitude, double latitude);
 

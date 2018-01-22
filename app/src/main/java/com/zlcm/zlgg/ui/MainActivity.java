@@ -1,6 +1,7 @@
 package com.zlcm.zlgg.ui;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,8 +11,10 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.qiyukf.unicorn.api.Unicorn;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 import com.zlcm.zlgg.R;
@@ -29,9 +32,12 @@ import com.zlcm.zlgg.utils.SpUtil;
 import com.zlcm.zlgg.view.RoundImageView;
 import com.zlcm.zlgg.view.ShareDialog;
 import com.zlcm.zlgg.view.ZlToast;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
@@ -48,13 +54,19 @@ public class MainActivity extends BaseActivity {
     TextView userName;
     @BindView(R.id.navigation_all)
     RelativeLayout navigationAll;
+    @BindView(R.id.credit)
+    TextView credit;
+    @BindView(R.id.release_num)
+    TextView releaseNum;
+    @BindView(R.id.auditing_num)
+    TextView auditingNum;
 
     private long exitTime = 0;
     private MenuAdapter mAdapter;
     private List<MenuBean> mList = new ArrayList<>();
     private static final int HOT = 0;
     private static final int PERIPHERY = 1;
-//    private static final int WALLET = 2;
+    //    private static final int WALLET = 2;
     private static final int RELEASE = 2;
     private static final int SHARE = 3;
     private Fragment mContent;
@@ -124,8 +136,7 @@ public class MainActivity extends BaseActivity {
     }
 
 
-
-    @OnClick({R.id.tv_setting, R.id.tv_customer_service, R.id.head_portrait})
+    @OnClick({R.id.tv_setting, R.id.tv_customer_service, R.id.head_portrait,R.id.credit,R.id.release_btn,R.id.auditing_btn})
     public void onViewClicked(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -138,7 +149,7 @@ public class MainActivity extends BaseActivity {
 //                ConsultSource source = new ConsultSource(sourceUrl, sourceTitle, "custom information string");
                 // 打开客服窗口
                 Unicorn.openServiceActivity(this, title, null);
-                    // 最好将intent清掉，以免从堆栈恢复时又打开客服窗口
+                // 最好将intent清掉，以免从堆栈恢复时又打开客服窗口
                 setIntent(new Intent());
 
                 break;
@@ -146,7 +157,31 @@ public class MainActivity extends BaseActivity {
                 intent.setClass(mActivity, UserInfoActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.credit:
+                break;
+            case R.id.auditing_btn:
+                intent.setClass(mActivity, OrderActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.release_btn:
+                intent.setClass(mActivity, OrderActivity.class);
+                startActivity(intent);
+                break;
         }
+    }
+
+    public void setCredit(String num){
+        if (!TextUtils.isEmpty(num)) {
+            credit.setText("信用积分： " + num);
+        }
+    }
+
+    public void setReleaseNum(String num){
+        releaseNum.setText(num);
+    }
+
+    public void setAuditingNum(String num){
+        auditingNum.setText(num);
     }
 
     public void openDrawerLayout() {
@@ -157,31 +192,31 @@ public class MainActivity extends BaseActivity {
         drawerlayout.closeDrawer(navigationAll);
     }
 
-    public void setDrawerLock(boolean flag){
-        if (flag){
+    public void setDrawerLock(boolean flag) {
+        if (flag) {
             drawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        }else {
+        } else {
             drawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
     }
 
-    public void setAvatar(String path){
-        GlideuUtil.loadImageView(this,path,headPortrait);
+    public void setAvatar(String path) {
+        GlideuUtil.loadImageView(this, path, headPortrait);
     }
 
-    public void setUserName(String nickName){
+    public void setUserName(String nickName) {
         userName.setText(nickName);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        String avatar = SpUtil.getString(this,"avatar");
-        String nickName = SpUtil.getString(this,"nickName");
+        String avatar = SpUtil.getString(this, "avatar");
+        String nickName = SpUtil.getString(this, "nickName");
         if (!TextUtils.isEmpty(avatar)) {
             setAvatar(avatar);
         }
-        if (!TextUtils.isEmpty(nickName)){
+        if (!TextUtils.isEmpty(nickName)) {
             setUserName(nickName);
         }
     }
@@ -217,6 +252,5 @@ public class MainActivity extends BaseActivity {
             App.getInstance().exitApp();
         }
     }
-
 
 }

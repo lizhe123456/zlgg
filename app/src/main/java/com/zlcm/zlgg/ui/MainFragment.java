@@ -125,6 +125,7 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
     private LatLng mStartPosition, mRecordPositon;
     //默认添加一次
     private boolean mIsFirst = true;
+    private boolean mIsReq = true;
     //就第一次显示位置
     private boolean mIsFirstShow = true;
     private boolean mMapShow = false;
@@ -358,7 +359,9 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
         }
         isData = false;
         setMainData(homePageBean.getDeviceList(), homePageBean.getLogo());
-
+        ((MainActivity)(getActivity())).setAuditingNum(homePageBean.getAuditingNum()+"");
+        ((MainActivity)(getActivity())).setCredit(homePageBean.getCredit());
+        ((MainActivity)(getActivity())).setReleaseNum(homePageBean.getReleaseNum()+"");
     }
 
     @Override
@@ -392,7 +395,7 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
 
     private void setHead(HomePageBean.HeadBean headBean) {
         if (headBean != null) {
-            Glide.with(getContext()).load(headBean.getImg()).asBitmap().into(new SimpleTarget<Bitmap>() {
+            Glide.with(getContext()).load(headBean.getHeadImg()).asBitmap().into(new SimpleTarget<Bitmap>() {
                 @Override
                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                     if (resource == null) {
@@ -488,8 +491,9 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
                 animMarker();
                 if (mRecordPositon != null){
                     if (AMapUtil.GetDistance(oldAddress,cameraPosition.target) > 1 * 1000){
-                        if (!mIsFirst) {
-                            mPresenter.getHomePage(cameraPosition.target.longitude, cameraPosition.target.latitude);
+                        if (mIsReq) {
+                            mPresenter.getHomePage(cameraPosition.target.longitude, cameraPosition.target.latitude,1);
+                            mIsFirst = false;
                         }
                     }
                 }
@@ -757,7 +761,7 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
         if (mIsFirstShow && mMapShow) {
             CameraUpdate cameraUpate = CameraUpdateFactory.newLatLngZoom(
                     mStartPosition, 17);
-            mPresenter.getHomePage(entity.longitude, entity.latitue);
+            mPresenter.getHomePage(entity.longitude, entity.latitue,0);
             aMap.animateCamera(cameraUpate);
             mIsFirstShow = false;
         }

@@ -70,8 +70,8 @@ public class UserInfoActivity extends MvpActivity<UserInfoPresenter> implements 
     private boolean isStoreAuth = false;
 
     //认证信息展开收起状态
-    private boolean isNameAuthS = true;
-    private boolean isStoreAuthS = true;
+    private boolean isNameAuthS = false;
+    private boolean isStoreAuthS = false;
 
 
     private static final int USERINfO = 3;
@@ -142,21 +142,17 @@ public class UserInfoActivity extends MvpActivity<UserInfoPresenter> implements 
             ivGo3.setVisibility(View.VISIBLE);
         }
         if (isNameAuth) {
-            realNameInfo.setVisibility(View.VISIBLE);
+//            realNameInfo.setVisibility(View.VISIBLE);
             realName.setText(bean.getReal_name());
             idCrad.setText(bean.getIdCrad());
             birthday.setText(bean.getBirthday());
             sex.setText(bean.getSex());
-        } else {
-            realNameInfo.setVisibility(View.GONE);
         }
         if (isStoreAuth) {
-            storeInfo.setVisibility(View.VISIBLE);
+//            storeInfo.setVisibility(View.VISIBLE);
             storeAddress.setText(bean.getAddress());
             storeName.setText(bean.getStorename());
             storePhone.setText(bean.getPhone());
-        } else {
-            storeInfo.setVisibility(View.GONE);
         }
         String avatarUrl =  SpUtil.getString(this,"avatar");
         if (!TextUtils.isEmpty(avatarUrl)){

@@ -16,6 +16,8 @@ public class HomePageBean implements Serializable {
     private String logo;
     private Integer money;
     private String credit;
+    private int releaseNum;
+    private int auditingNum;
 
     public Integer getMoney() {
         return money;
@@ -63,6 +65,22 @@ public class HomePageBean implements Serializable {
 
     public void setCredit(String credit) {
         this.credit = credit;
+    }
+
+    public int getReleaseNum() {
+        return releaseNum;
+    }
+
+    public void setReleaseNum(int releaseNum) {
+        this.releaseNum = releaseNum;
+    }
+
+    public int getAuditingNum() {
+        return auditingNum;
+    }
+
+    public void setAuditingNum(int auditingNum) {
+        this.auditingNum = auditingNum;
     }
 
     public class PushInfo implements Serializable{
@@ -115,7 +133,7 @@ public class HomePageBean implements Serializable {
 
     public class HeadBean implements Serializable{
 
-        String img;
+        String headImg;
         String url;
 
         public String getUrl() {
@@ -126,12 +144,12 @@ public class HomePageBean implements Serializable {
             this.url = url;
         }
 
-        public String getImg() {
-            return img;
+        public String getHeadImg() {
+            return headImg;
         }
 
-        public void setImg(String img) {
-            this.img = img;
+        public void setHeadImg(String headImg) {
+            this.headImg = headImg;
         }
     }
 }

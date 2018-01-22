@@ -59,7 +59,6 @@ public abstract class BaseActivity extends AppCompatActivity {
      *
      * @return
      */
-
     protected boolean avoidRepeatClick(View view){
         boolean flag = false;
         long lastTime = view.getTag(-1)==null?0:(long)view.getTag(-1);
