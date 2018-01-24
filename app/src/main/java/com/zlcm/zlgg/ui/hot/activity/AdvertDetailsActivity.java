@@ -2,19 +2,17 @@ package com.zlcm.zlgg.ui.hot.activity;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.zlcm.zlgg.R;
-import com.zlcm.zlgg.base.BaseActivity;
+import com.zlcm.zlgg.base.MvpActivity;
 import com.zlcm.zlgg.model.bean.AdvertBean;
+import com.zlcm.zlgg.presenter.hot.PageViewPresenter;
+import com.zlcm.zlgg.presenter.hot.contract.PageViewContract;
 import com.zlcm.zlgg.utils.GlideuUtil;
 import com.zlcm.zlgg.view.ZlToast;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -22,7 +20,7 @@ import butterknife.OnClick;
  * 类介绍：
  */
 
-public class AdvertDetailsActivity extends BaseActivity {
+public class AdvertDetailsActivity extends MvpActivity<PageViewPresenter> implements PageViewContract.View{
 
     @BindView(R.id.title)
     TextView title;
@@ -48,15 +46,19 @@ public class AdvertDetailsActivity extends BaseActivity {
         return R.layout.activity_advert_details;
     }
 
+
+
     @Override
-    protected void init() {
-        title.setText("广告详情");
+    protected void initInject() {
+        getActivityComponent().inject(this);
     }
 
     @Override
     protected void setData() {
+        title.setText("广告详情");
         advertBean = (AdvertBean) getIntent().getSerializableExtra("advert");
         if (advertBean != null) {
+            mPresenter.submitPageView(advertBean.getAid());
             GlideuUtil.loadImageView(this, advertBean.getAdvertImg(), aimage);
             tvPhone.setText(advertBean.getPhone());
             tvName.setText(advertBean.getNickname());
@@ -84,5 +86,15 @@ public class AdvertDetailsActivity extends BaseActivity {
                 }
                 break;
         }
+    }
+
+    @Override
+    public void stateError() {
+
+    }
+
+    @Override
+    public void showErrorMsg(String msg) {
+
     }
 }

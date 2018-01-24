@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -59,16 +58,17 @@ import com.zlcm.zlgg.ui.release.ReleaseActivity;
 import com.zlcm.zlgg.ui.user.LoginActivity;
 import com.zlcm.zlgg.ui.user.activity.NameAuthActivity;
 import com.zlcm.zlgg.utils.AMapUtil;
-import com.zlcm.zlgg.utils.GlideuUtil;
 import com.zlcm.zlgg.utils.LogUtil;
 import com.zlcm.zlgg.utils.SpUtil;
-import com.zlcm.zlgg.view.ZlCustomDialog;
+import com.zlcm.zlgg.utils.TbsUtil;
 import com.zlcm.zlgg.view.ZlCustomerServiceDialog;
 import com.zlcm.zlgg.view.ZlPushDialog;
 import com.zlcm.zlgg.view.ZlToast;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static android.R.id.message;
 
 
 /**
@@ -184,6 +184,7 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
      */
     private void initAMap() {
         if (aMap == null) {
+
             aMap = mMapView.getMap();
             mRouteSearch = new RouteSearch(getContext());
             mRouteSearch.setRouteSearchListener(this);
@@ -253,7 +254,6 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
     protected void setData() {
         imgLift.setImageResource(R.drawable.personal);
         title.setText(R.string.title_name);
-
         initLocation();
         initAMap();
         initBitmap();
@@ -262,7 +262,7 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
 
 
     @OnClick({R.id.img_lift, R.id.img_right1, R.id.img_right2, R.id.tv_btn_login, R.id.location, R.id.tv_release
-            , R.id.customer_service,R.id.tv_device_release})
+            , R.id.customer_service, R.id.tv_device_release})
     public void onViewClicked(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -285,7 +285,7 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
                 break;
             case R.id.tv_release:
                 if (isLogin) {
-                    intent.setClass(getContext(),ReleaseActivity.class);
+                    intent.setClass(getContext(), ReleaseActivity.class);
                     startActivity(intent);
                 } else {
                     toLogin();
@@ -296,16 +296,16 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
                 zlCustomerServiceDialog.show();
                 break;
             case R.id.tv_device_release:
-                if (isLogin){
-                    switch (chargingBean.getAuthCode()){
-                        case Constants.NAMEAUTH :
+                if (isLogin) {
+                    switch (chargingBean.getAuthCode()) {
+                        case Constants.NAMEAUTH:
                             intent.setClass(getContext(), ReleaseActivity.class);
                             if (did != 0) {
                                 intent.putExtra("did", did);
                             }
                             startActivity(intent);
                             break;
-                        case Constants.STOREUTH :
+                        case Constants.STOREUTH:
                             intent.setClass(getContext(), ReleaseActivity.class);
                             if (did != 0) {
                                 intent.putExtra("did", did);
@@ -317,7 +317,7 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
                             startActivity(intent);
                             break;
                     }
-                }else {
+                } else {
                     toLogin();
                 }
                 break;
@@ -332,16 +332,16 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
 
 
     public void token(String token) {
-        LogUtil.d("token",token);
-        LogUtil.d("loginId",SpUtil.getString(getContext(),"loginId"));
+        LogUtil.d("token", token);
+        LogUtil.d("loginId", SpUtil.getString(getContext(), "loginId"));
         if (TextUtils.isEmpty(token)) {
             isLogin = false;
             rlNoLogin.setVisibility(View.VISIBLE);
-            ((MainActivity)getActivity()).setDrawerLock(true);
+            ((MainActivity) getActivity()).setDrawerLock(true);
         } else {
             isLogin = true;
             rlNoLogin.setVisibility(View.GONE);
-            ((MainActivity)getActivity()).setDrawerLock(false);
+            ((MainActivity) getActivity()).setDrawerLock(false);
         }
 
     }
@@ -356,12 +356,14 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
         if (isData) {
             setHead(homePageBean.getHean());
             setPushInfo(homePageBean.getPushInfo());
+            mIsReq = false;
+            isData = false;
         }
-        isData = false;
+
         setMainData(homePageBean.getDeviceList(), homePageBean.getLogo());
-        ((MainActivity)(getActivity())).setAuditingNum(homePageBean.getAuditingNum()+"");
-        ((MainActivity)(getActivity())).setCredit(homePageBean.getCredit());
-        ((MainActivity)(getActivity())).setReleaseNum(homePageBean.getReleaseNum()+"");
+        ((MainActivity) (getActivity())).setAuditingNum(homePageBean.getAuditingNum() + "");
+        ((MainActivity) (getActivity())).setCredit(homePageBean.getCredit());
+        ((MainActivity) (getActivity())).setReleaseNum(homePageBean.getReleaseNum() + "");
     }
 
     @Override
@@ -372,28 +374,28 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
         household.setText(bean.getHousehold());
         did = bean.getDid();
         visitorsFlowrate.setText(bean.getVisitorsFlowrate());
-        if (isLogin){
-            switch (bean.getAuthCode()){
-                case Constants.NAMEAUTH :
+        if (isLogin) {
+            switch (bean.getAuthCode()) {
+                case Constants.NAMEAUTH:
                     tvDeviceRelease.setText("开始发布广告");
                     break;
-                case Constants.STOREUTH :
+                case Constants.STOREUTH:
                     tvDeviceRelease.setText("开始发布广告");
                     break;
                 default:
                     tvDeviceRelease.setText("未实名去认证");
                     break;
             }
-        }else {
+        } else {
             tvDeviceRelease.setText("立即登录发布广告");
         }
         mLlDevice.setVisibility(View.VISIBLE);
-        if (isShow(ivHeadPortrait)){
+        if (isShow(ivHeadPortrait)) {
             ivHeadPortrait.setVisibility(View.GONE);
         }
     }
 
-    private void setHead(HomePageBean.HeadBean headBean) {
+    private void setHead(final HomePageBean.HeadBean headBean) {
         if (headBean != null) {
             Glide.with(getContext()).load(headBean.getHeadImg()).asBitmap().into(new SimpleTarget<Bitmap>() {
                 @Override
@@ -402,7 +404,16 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
                         ivHeadPortrait.setVisibility(View.GONE);
                     } else {
                         ivBanner.setImageBitmap(resource);
-                        ivHeadPortrait.setVisibility(View.VISIBLE);
+                        if (!isShow(ivHeadPortrait)) {
+                            ivHeadPortrait.setVisibility(View.VISIBLE);
+                        }
+                        ivHeadPortrait.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                TbsUtil.toTbsWeb(getContext(), headBean.getHeadUrl());
+                                ivHeadPortrait.setVisibility(View.GONE);
+                            }
+                        });
                     }
                 }
             });
@@ -418,6 +429,12 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
                             .setImage(resource)
                             .setTitle(pushInfo.getTitle())
                             .setMessage(pushInfo.getDesc())
+                            .setImgOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    TbsUtil.toTbsWeb(getContext(), pushInfo.getUrl());
+                                }
+                            })
                             .build();
                     zlPushDialog.show();
                 }
@@ -470,18 +487,19 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
         if (!isClickIdentification) {
             mRecordPositon = cameraPosition.target;
         }
+
         mStartPosition = cameraPosition.target;
         mRegeocodeTask.setOnRegecodeGetListener(this);
         mRegeocodeTask.search(mStartPosition.latitude, mStartPosition.longitude);
         if (mIsFirst) {
-
             //表面图标
 //            iv_refresh.setVisibility(View.VISIBLE);
 //            iv_scan_code.setVisibility(View.VISIBLE);
             createInitialPosition(cameraPosition.target.latitude, cameraPosition.target.longitude);
             createMovingPosition();
-
+            mIsFirst = false;
         }
+
         if (mInitialMark != null) {
             mInitialMark.setToTop();
         }
@@ -489,11 +507,10 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
             mPositionMark.setToTop();
             if (!isClickIdentification) {
                 animMarker();
-                if (mRecordPositon != null){
-                    if (AMapUtil.GetDistance(oldAddress,cameraPosition.target) > 1 * 1000){
-                        if (mIsReq) {
-                            mPresenter.getHomePage(cameraPosition.target.longitude, cameraPosition.target.latitude,1);
-                            mIsFirst = false;
+                if (mRecordPositon != null) {
+                    if (AMapUtil.GetDistance(oldAddress, cameraPosition.target) > 1 * 1000) {
+                        if (!mIsReq) {
+                            mPresenter.getHomePage(cameraPosition.target.longitude, cameraPosition.target.latitude, 0);
                         }
                     }
                 }
@@ -502,9 +519,7 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
                 }
             }
         }
-        if (mIsFirst){
-            mIsFirst = false;
-        }
+
         oldAddress = cameraPosition.target;
     }
 
@@ -579,6 +594,7 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
                     mRecordPositon, 17f);
             aMap.animateCamera(cameraUpate);
         }
+
     }
 
     private void clickRefresh() {
@@ -608,6 +624,17 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
     @Override
     public void onMapLoaded() {
         mMapShow = true;
+        PositionEntity sploc = SpUtil.getObject(getContext(),"location");
+        PositionEntity loc = Constants.loction;
+        if (loc != null) {
+            CameraUpdate cameraUpate = CameraUpdateFactory.newLatLngZoom(new LatLng(loc.latitue,loc.longitude)
+                    , 17f);
+            aMap.moveCamera(cameraUpate);
+        }else {
+            CameraUpdate cameraUpate = CameraUpdateFactory.newLatLngZoom(new LatLng(sploc.latitue,sploc.longitude)
+                    , 17f);
+            aMap.moveCamera(cameraUpate);
+        }
     }
 
     @Override
@@ -706,6 +733,7 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
 //        RouteTask.getInstance(getContext()).removeRouteCalculateListener(this);
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
@@ -722,6 +750,9 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
             mPositionMark.setToTop();
         }
         LocationTask.getInstance(getContext()).startLocate();
+        if (!mIsReq) {
+            mPresenter.getHomePage(oldAddress.longitude, oldAddress.latitude, 0);
+        }
     }
 
     @Override
@@ -744,12 +775,12 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
 
     @Override
     public void onRegecodeGet(PositionEntity entity) {
-        Log.e(TAG, "onRegecodeGet" + entity.address);
+        LogUtil.d(TAG, "onRegecodeGet" + entity.address);
         entity.latitue = mStartPosition.latitude;
         entity.longitude = mStartPosition.longitude;
         RouteTask.getInstance(getContext()).setStartPoint(entity);
         RouteTask.getInstance(getContext()).search();
-        Log.e(TAG, "onRegecodeGet" + mStartPosition);
+        Log.d(TAG, "onRegecodeGet" + mStartPosition);
     }
 
     @Override
@@ -761,13 +792,23 @@ public class MainFragment extends MvpFragment<HomePagePresenter> implements Home
         if (mIsFirstShow && mMapShow) {
             CameraUpdate cameraUpate = CameraUpdateFactory.newLatLngZoom(
                     mStartPosition, 17);
-            mPresenter.getHomePage(entity.longitude, entity.latitue,0);
+            mPresenter.getHomePage(entity.longitude, entity.latitue, 0);
             aMap.animateCamera(cameraUpate);
             mIsFirstShow = false;
         }
         mInitialMark.setPosition(mStartPosition);
         initLocation = mStartPosition;
         Log.e(TAG, "onLocationGet" + mStartPosition);
+    }
+
+    public boolean isCloseLlDevice() {
+        if (isShow(mLlDevice)) {
+            mLlDevice.setVisibility(View.GONE);
+            clickInitInfo();
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }

@@ -150,8 +150,7 @@ public interface ZLApi {
     @POST("/api/device/periphery")
     Flowable<ZLResponse<PeripheryDeviceBean>> getDeviceListInfo(@Field("longitude") double longitude,
                                                                 @Field("latitude") double latitude,
-                                                                @Field("page") int page,
-                                                                @Field("size") int size);
+                                                                @Field("page") int page);
 
     /**
      * 获取设配详情
@@ -230,6 +229,12 @@ public interface ZLApi {
 
     @GET("/api/user/navigation")
     Flowable<ZL2Response<String>> navigation();
+    /**
+     * 访问量
+     */
+    @POST("/api/advert/pageview")
+    @FormUrlEncoded
+    Flowable<ZLResponse> pageview(@Field("aid") int aid);
 
 }
 

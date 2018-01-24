@@ -6,6 +6,7 @@ import com.zlcm.zlgg.di.module.ActivityModule;
 import com.zlcm.zlgg.di.scope.ActivityScope;
 import com.zlcm.zlgg.ui.GuideActivity;
 import com.zlcm.zlgg.ui.hot.HotActivity;
+import com.zlcm.zlgg.ui.hot.activity.AdvertDetailsActivity;
 import com.zlcm.zlgg.ui.periphery.PeripheryActivity;
 import com.zlcm.zlgg.ui.periphery.activity.DeviceDetailsActivity;
 import com.zlcm.zlgg.ui.release.DeliveryAddressActivity;
@@ -61,5 +62,7 @@ public interface ActivityComponent {
     void inject(GuideActivity activity);
 
     void inject(FeedBackActivity activity);
+
+    void inject(AdvertDetailsActivity activity);
 
 }

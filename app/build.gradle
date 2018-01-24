@@ -6,7 +6,7 @@ android {
     buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.zlcm.zlgg"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -15,7 +15,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -70,4 +70,6 @@ dependencies {
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     compile files('libs/alipaySdk-20170922.jar')
     compile files('libs/libammsdk.jar')
+    compile files('libs/tbs_sdk_thirdapp_v3.5.0.1004_43500_sharewithdownload_withoutGame_obfs_20170801_113025.jar')
+    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.8.2@aar'
 }

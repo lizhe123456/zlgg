@@ -10,12 +10,12 @@ import com.zlcm.zlgg.utils.FileUtil;
 
 public class Constants {
     //正式关闭日志
-    public static final boolean IS_DEBUG = true;
+    public static final boolean IS_DEBUG = false;
     public static final String PATH_CACHE = FileUtil.getFileDir("Http") + "/caches";
 //    public static final String ZL_URL = "http://39.106.34.25";
-//    public static final String ZL_URL = "http://libolg.vicp.io";
+    public static final String ZL_URL = "http://libolg.vicp.io";
 
-    public static final String ZL_URL = "http://192.168.1.201:8080";
+//    public static final String ZL_URL = "http://192.168.1.201:8080";
     public static final String JH_URL = "http://apis.juhe.cn";
 
     public static final String ZL_KEY = "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJxm1FL3RwDgRBWkBIn6JzqNQ8Mn/8nEumHAOYmVMhsrjG+lckmmYr4SVvO/4fzeTUd6JO0kGVoFUt3loQJq8j8CAwEAAQ==";

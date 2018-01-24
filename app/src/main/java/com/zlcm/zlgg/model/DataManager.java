@@ -77,8 +77,8 @@ public class DataManager implements HttpHelper,RealmHelper {
     }
 
     @Override
-    public Flowable<ZLResponse<PeripheryDeviceBean>> fetchDeviceBList(double longitude, double latitude,int page, int size) {
-        return mHttpHelper.fetchDeviceBList(longitude, latitude, page, size);
+    public Flowable<ZLResponse<PeripheryDeviceBean>> fetchDeviceBList(double longitude, double latitude,int page) {
+        return mHttpHelper.fetchDeviceBList(longitude, latitude, page);
     }
 
     @Override
@@ -134,6 +134,11 @@ public class DataManager implements HttpHelper,RealmHelper {
     @Override
     public Flowable<ZL2Response<String>> getNavigation() {
         return mHttpHelper.getNavigation();
+    }
+
+    @Override
+    public Flowable<ZLResponse> addPageView(int aid) {
+        return mHttpHelper.addPageView(aid);
     }
 
     @Override

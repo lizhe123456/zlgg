@@ -31,7 +31,7 @@ public class PeripheryPresenter extends BasePresenterImpl<PeripheryContract.View
         if (page == 0) {
             mView.loading("加载中...");
         }
-        addSubscribe(dataManager.fetchDeviceBList(lng, lat,page,SIZE)
+        addSubscribe(dataManager.fetchDeviceBList(lng, lat,page)
                 .compose(RxUtil.<ZLResponse<PeripheryDeviceBean>>rxSchedulerHelper())
                 .compose(RxUtil.<PeripheryDeviceBean>handleZL())
                 .subscribeWith(new CommonSubscriber<PeripheryDeviceBean>(mView){

@@ -25,24 +25,70 @@
 #-renamesourcefileattribute SourceFile
 
 -dontwarn
--optimizationpasses 5          # 指定代码的压缩级别
--dontusemixedcaseclassnames   # 是否使用大小写混合
--dontpreverify           # 混淆时是否做预校验
--verbose                # 混淆时是否记录日志
+-ignorewarnings
+-optimizationpasses 5
 -dontusemixedcaseclassnames
 -dontskipnonpubliclibraryclasses
--ignorewarnings
+-dontskipnonpubliclibraryclassmembers
+-dontpreverify
+-verbose
+-printmapping proguardMapping.txt
+-optimizations !code/simplification/cast,!field/*,!class/merging/*
+-keepattributes *Annotation*,InnerClasses
+-keepattributes Signature
+-keepattributes SourceFile,LineNumberTable
+#----------------------------------------------------------------------------
 
--optimizations !code/simplification/arithmetic,!field/*,!class/merging/*  # 混淆时所采用的算法
+#---------------------------------默认保留区---------------------------------
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends android.app.backup.BackupAgentHelper
+-keep public class * extends android.preference.Preference
+-keep public class * extends android.view.View
+-keep public class com.android.vending.licensing.ILicensingService
+-keep class android.support.** {*;}
 
--keep public class * extends android.app.Activity      # 保持哪些类不被混淆
--keep public class * extends android.app.Application   # 保持哪些类不被混淆
--keep public class * extends android.app.Service       # 保持哪些类不被混淆
--keep public class * extends android.content.BroadcastReceiver  # 保持哪些类不被混淆
--keep public class * extends android.content.ContentProvider    # 保持哪些类不被混淆
--keep public class * extends android.app.backup.BackupAgentHelper # 保持哪些类不被混淆
--keep public class * extends android.preference.Preference        # 保持哪些类不被混淆
--keep public class com.android.vending.licensing.ILicensingService    # 保持哪些类不被混淆
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+-keepclassmembers class * extends android.app.Activity{
+    public void *(android.view.View);
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+-keep public class * extends android.view.View{
+    *** get*();
+    void set*(***);
+    public <init>(android.content.Context);
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+-keep class **.R$* {
+ *;
+}
+-keepclassmembers class * {
+    void *(**On*Event);
+}
 
 -keepclasseswithmembernames class * {  # 保持 native 方法不被混淆
     native <methods>;
@@ -56,13 +102,10 @@
 -keepclassmembers class * extends android.app.Activity { # 保持自定义控件类不被混淆
     public void *(android.view.View);
 }
--keepclassmembers enum * {     # 保持枚举 enum 类不被混淆
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
-}
--keep class * implements android.os.Serializable { # 保持 Parcelable 不被混淆
-    public static final android.os.Parcelable$Creator *;
-}
+
+-keep class com.zlcm.zlgg.model.bean.** { *; }
+-keep class com.zlcm.zlgg.lib.** { *; }
+
 
 
 # glide 的混淆代码
@@ -133,6 +176,11 @@
 -dontwarn retrofit2.Platform$Java8
 -keepattributes Signature
 -keepattributes Exceptions
+
+#dagger
+-keep class dagger.**{ *;}
+
+
  # RxJava RxAndroid
  -dontwarn sun.misc.**
  -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
@@ -165,3 +213,231 @@
 -keep class com.scwang.smartrefresh.** { *; }
 -keep class com.bigkoo.pickerview.** { *; }
 -keep class com.hamcrest.** { *; }
+
+#tbs
+-keep class com.tencent.smtt.export.external.**{
+    *;
+}
+
+-keep class com.tencent.tbs.video.interfaces.IUserStateChangedListener {
+	*;
+}
+
+-keep class com.tencent.smtt.sdk.CacheManager {
+	public *;
+}
+
+-keep class com.tencent.smtt.sdk.CookieManager {
+	public *;
+}
+
+-keep class com.tencent.smtt.sdk.WebHistoryItem {
+	public *;
+}
+
+-keep class com.tencent.smtt.sdk.WebViewDatabase {
+	public *;
+}
+
+-keep class com.tencent.smtt.sdk.WebBackForwardList {
+	public *;
+}
+
+-keep public class com.tencent.smtt.sdk.WebView {
+	public <fields>;
+	public <methods>;
+}
+
+-keep public class com.tencent.smtt.sdk.WebView$HitTestResult {
+	public static final <fields>;
+	public java.lang.String getExtra();
+	public int getType();
+}
+
+-keep public class com.tencent.smtt.sdk.WebView$WebViewTransport {
+	public <methods>;
+}
+
+-keep public class com.tencent.smtt.sdk.WebView$PictureListener {
+	public <fields>;
+	public <methods>;
+}
+
+-keep public enum com.tencent.smtt.sdk.WebSettings$** {
+    *;
+}
+
+-keep public enum com.tencent.smtt.sdk.QbSdk$** {
+    *;
+}
+
+-keep public class com.tencent.smtt.sdk.WebSettings {
+    public *;
+}
+
+-keep public class com.tencent.smtt.sdk.ValueCallback {
+	public <fields>;
+	public <methods>;
+}
+
+-keep public class com.tencent.smtt.sdk.WebViewClient {
+	public <fields>;
+	public <methods>;
+}
+
+-keep public class com.tencent.smtt.sdk.DownloadListener {
+	public <fields>;
+	public <methods>;
+}
+
+-keep public class com.tencent.smtt.sdk.WebChromeClient {
+	public <fields>;
+	public <methods>;
+}
+
+-keep public class com.tencent.smtt.sdk.WebChromeClient$FileChooserParams {
+	public <fields>;
+	public <methods>;
+}
+
+-keep class com.tencent.smtt.sdk.SystemWebChromeClient{
+	public *;
+}
+# 1. extension interfaces should be apparent
+-keep public class com.tencent.smtt.export.external.extension.interfaces.* {
+	public protected *;
+}
+
+# 2. interfaces should be apparent
+-keep public class com.tencent.smtt.export.external.interfaces.* {
+	public protected *;
+}
+
+-keep public class com.tencent.smtt.sdk.WebViewCallbackClient {
+	public protected *;
+}
+
+-keep public class com.tencent.smtt.sdk.WebStorage$QuotaUpdater {
+	public <fields>;
+	public <methods>;
+}
+
+-keep public class com.tencent.smtt.sdk.WebIconDatabase {
+	public <fields>;
+	public <methods>;
+}
+
+-keep public class com.tencent.smtt.sdk.WebStorage {
+	public <fields>;
+	public <methods>;
+}
+
+-keep public class com.tencent.smtt.sdk.DownloadListener {
+	public <fields>;
+	public <methods>;
+}
+
+-keep public class com.tencent.smtt.sdk.QbSdk {
+	public <fields>;
+	public <methods>;
+}
+
+-keep public class com.tencent.smtt.sdk.QbSdk$PreInitCallback {
+	public <fields>;
+	public <methods>;
+}
+-keep public class com.tencent.smtt.sdk.CookieSyncManager {
+	public <fields>;
+	public <methods>;
+}
+
+-keep public class com.tencent.smtt.sdk.Tbs* {
+	public <fields>;
+	public <methods>;
+}
+
+-keep public class com.tencent.smtt.utils.LogFileUtils {
+	public <fields>;
+	public <methods>;
+}
+
+-keep public class com.tencent.smtt.utils.TbsLog {
+	public <fields>;
+	public <methods>;
+}
+
+-keep public class com.tencent.smtt.utils.TbsLogClient {
+	public <fields>;
+	public <methods>;
+}
+
+-keep public class com.tencent.smtt.sdk.CookieSyncManager {
+	public <fields>;
+	public <methods>;
+}
+
+# Added for game demos
+-keep public class com.tencent.smtt.sdk.TBSGamePlayer {
+	public <fields>;
+	public <methods>;
+}
+
+-keep public class com.tencent.smtt.sdk.TBSGamePlayerClient* {
+	public <fields>;
+	public <methods>;
+}
+
+-keep public class com.tencent.smtt.sdk.TBSGamePlayerClientExtension {
+	public <fields>;
+	public <methods>;
+}
+
+-keep public class com.tencent.smtt.sdk.TBSGamePlayerService* {
+	public <fields>;
+	public <methods>;
+}
+
+-keep public class com.tencent.smtt.utils.Apn {
+	public <fields>;
+	public <methods>;
+}
+-keep class com.tencent.smtt.** {
+	*;
+}
+# end
+
+
+-keep public class com.tencent.smtt.export.external.extension.proxy.ProxyWebViewClientExtension {
+	public <fields>;
+	public <methods>;
+}
+
+-keep class MTT.ThirdAppInfoNew {
+	*;
+}
+
+-keep class com.tencent.mtt.MttTraceEvent {
+	*;
+}
+
+# Game related
+-keep public class com.tencent.smtt.gamesdk.* {
+	public protected *;
+}
+
+-keep public class com.tencent.smtt.sdk.TBSGameBooter {
+        public <fields>;
+        public <methods>;
+}
+
+-keep public class com.tencent.smtt.sdk.TBSGameBaseActivity {
+	public protected *;
+}
+
+-keep public class com.tencent.smtt.sdk.TBSGameBaseActivityProxy {
+	public protected *;
+}
+
+-keep public class com.tencent.smtt.gamesdk.internal.TBSGameServiceClient {
+	public *;
+}

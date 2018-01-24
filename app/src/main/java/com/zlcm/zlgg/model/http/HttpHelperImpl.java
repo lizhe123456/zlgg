@@ -79,8 +79,8 @@ public class HttpHelperImpl implements HttpHelper{
     }
 
     @Override
-    public Flowable<ZLResponse<PeripheryDeviceBean>> fetchDeviceBList(double longitude, double latitude,int page, int size ) {
-        return zlApi.getDeviceListInfo(longitude, latitude, page, size);
+    public Flowable<ZLResponse<PeripheryDeviceBean>> fetchDeviceBList(double longitude, double latitude,int page) {
+        return zlApi.getDeviceListInfo(longitude, latitude, page);
     }
 
     @Override
@@ -136,6 +136,11 @@ public class HttpHelperImpl implements HttpHelper{
     @Override
     public Flowable<ZL2Response<String>> getNavigation() {
         return zlApi.navigation();
+    }
+
+    @Override
+    public Flowable<ZLResponse> addPageView(int aid) {
+        return zlApi.pageview(aid);
     }
 
 

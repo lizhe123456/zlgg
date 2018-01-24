@@ -1,5 +1,6 @@
 package com.zlcm.zlgg.ui;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zlcm.zlgg.R;
 import com.zlcm.zlgg.app.App;
 import com.zlcm.zlgg.base.MvpActivity;
@@ -19,9 +21,13 @@ import com.zlcm.zlgg.lib.LocationTask;
 import com.zlcm.zlgg.presenter.NavigationContract;
 import com.zlcm.zlgg.presenter.NavigationPresenter;
 import com.zlcm.zlgg.utils.SystemUtil;
+import com.zlcm.zlgg.view.ZlToast;
+
 import java.util.Timer;
 import java.util.TimerTask;
 import butterknife.BindView;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 
 /**
@@ -39,7 +45,6 @@ public class GuideActivity extends MvpActivity<NavigationPresenter> implements N
     private int recLen = 4;
     Timer timer = new Timer();
     private AlertDialog dialog;
-    private boolean isFirst = true;
     private Runnable runnable = new Runnable() {
 
         @Override
@@ -79,16 +84,38 @@ public class GuideActivity extends MvpActivity<NavigationPresenter> implements N
     @Override
     protected void onResume() {
         super.onResume();
-        if (!isFirst) {
-            isNetwork();
-            isFirst = false;
-        }
+        isNetwork();
     }
 
     protected void setData() {
-        isNetwork();
         LocationTask.getInstance(this).startLocate();
         handler = new Handler();
+        RxPermissions.getInstance(this).request(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION)
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Boolean value) {
+                        if(value){
+
+                        }else {
+                            ZlToast.showText(GuideActivity.this,"拒绝权限");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     public void isNetwork(){
@@ -150,6 +177,5 @@ public class GuideActivity extends MvpActivity<NavigationPresenter> implements N
         timer.schedule(task, 1000, 1000);
         handler.postDelayed(runnable, 3000);
     }
-
 
 }

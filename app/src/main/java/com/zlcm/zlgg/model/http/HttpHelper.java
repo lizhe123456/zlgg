@@ -1,9 +1,7 @@
 package com.zlcm.zlgg.model.http;
 
-import com.zlcm.zlgg.model.bean.AuthInfo;
 import com.zlcm.zlgg.model.bean.ChargInfoBean;
 import com.zlcm.zlgg.model.bean.ChargingBean;
-import com.zlcm.zlgg.model.bean.DeviceBean;
 import com.zlcm.zlgg.model.bean.HomePageBean;
 import com.zlcm.zlgg.model.bean.HotBean;
 import com.zlcm.zlgg.model.bean.LoginBean;
@@ -11,15 +9,11 @@ import com.zlcm.zlgg.model.bean.NewVersionInfoBean;
 import com.zlcm.zlgg.model.bean.OrderListBean;
 import com.zlcm.zlgg.model.bean.PeripheryDetailsBean;
 import com.zlcm.zlgg.model.bean.PeripheryDeviceBean;
-import com.zlcm.zlgg.model.bean.StoreInfo;
 import com.zlcm.zlgg.model.bean.UserInfoBean;
 import com.zlcm.zlgg.model.http.response.ZL2Response;
 import com.zlcm.zlgg.model.http.response.ZLResponse;
-import java.util.List;
 import io.reactivex.Flowable;
 import okhttp3.RequestBody;
-import retrofit2.http.Field;
-import retrofit2.http.Part;
 
 /**
  * Created by lizhe on 2017/12/11 0011.
@@ -46,7 +40,7 @@ public interface HttpHelper {
 
     Flowable<ZLResponse> fetchUploadFeed(String desc, String phone);
 
-    Flowable<ZLResponse<PeripheryDeviceBean>> fetchDeviceBList(double longitude, double latitude,int page, int size);
+    Flowable<ZLResponse<PeripheryDeviceBean>> fetchDeviceBList(double longitude, double latitude,int page);
 
     Flowable<ZLResponse<HomePageBean>> fetchHomePage(double longitude, double latitude, int first);
 
@@ -74,4 +68,7 @@ public interface HttpHelper {
     Flowable<ZLResponse> fetchStoreAuth(String name, String address, String phone, String image);
 
     Flowable<ZL2Response<String>> getNavigation();
+
+    Flowable<ZLResponse> addPageView(int aid);
+
 }

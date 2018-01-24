@@ -16,6 +16,7 @@ import com.zlcm.zlgg.presenter.periphery.PeripheryDetailsPresenter;
 import com.zlcm.zlgg.presenter.periphery.contract.PeripheryDetailsContract;
 import com.zlcm.zlgg.ui.hot.activity.AdvertDetailsActivity;
 import com.zlcm.zlgg.ui.hot.adapter.HotAdapter;
+import com.zlcm.zlgg.ui.release.ReleaseActivity;
 import com.zlcm.zlgg.view.ZlToast;
 
 import java.io.Serializable;
@@ -129,6 +130,12 @@ public class DeviceDetailsActivity extends MvpActivity<PeripheryDetailsPresenter
     public void onViewClicked(View view) {
         switch (view.getId()){
             case R.id.confirm:
+                Intent intent = new Intent();
+                intent.setClass(this, ReleaseActivity.class);
+                if (did != 0) {
+                    intent.putExtra("did", did);
+                }
+                startActivity(intent);
                 break;
             case R.id.img_lift:
                 finish();

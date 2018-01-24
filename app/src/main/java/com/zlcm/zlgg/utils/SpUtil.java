@@ -2,6 +2,7 @@ package com.zlcm.zlgg.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Base64;
 
@@ -161,6 +162,14 @@ public class SpUtil {
      * @param <T>     泛型定义
      */
     public static <T extends Serializable> void putObject(Context context, String key, T obj) {
+        try {
+            put(context, key, obj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static <T extends Parcelable> void putObject(Context context, String key, T obj) {
         try {
             put(context, key, obj);
         } catch (Exception e) {

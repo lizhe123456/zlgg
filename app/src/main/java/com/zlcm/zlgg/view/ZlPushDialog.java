@@ -30,6 +30,7 @@ public class ZlPushDialog extends Dialog {
     private String title;
     private String content;
     private Bitmap image;
+    private View.OnClickListener onClickListener;
 
 
     public ZlPushDialog(@NonNull Context context) {
@@ -57,6 +58,10 @@ public class ZlPushDialog extends Dialog {
         if (!TextUtils.isEmpty(dialog.title)){
             dialog.tvTitle.setText(dialog.title);
         }
+
+        if (onClickListener != null){
+            dialog.img.setOnClickListener(onClickListener);
+        }
     }
 
     @Override
@@ -65,6 +70,7 @@ public class ZlPushDialog extends Dialog {
         setContentView(R.layout.push_dialog);
         Window dialogWindow = this.getWindow();
         dialogWindow.setGravity(Gravity.BOTTOM);
+        dialogWindow.setBackgroundDrawableResource(android.R.color.transparent);
         dialogWindow.setWindowAnimations(R.style.dialogstyle); // 添加动画
         img = findViewById(R.id.img);
         tvTitle = findViewById(R.id.tv_title);
@@ -113,6 +119,11 @@ public class ZlPushDialog extends Dialog {
          */
         public Builder setImage(Bitmap bitmap){
             dialog.image = bitmap;
+            return this;
+        }
+
+        public Builder setImgOnClickListener(View.OnClickListener onClickListener){
+            dialog.onClickListener = onClickListener;
             return this;
         }
 

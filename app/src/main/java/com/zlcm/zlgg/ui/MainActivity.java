@@ -1,7 +1,6 @@
 package com.zlcm.zlgg.ui;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -11,14 +10,13 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.qiyukf.unicorn.api.Unicorn;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 import com.zlcm.zlgg.R;
 import com.zlcm.zlgg.app.App;
+import com.zlcm.zlgg.app.Constants;
 import com.zlcm.zlgg.base.BaseActivity;
 import com.zlcm.zlgg.base.adapter.BaseAdapter;
 import com.zlcm.zlgg.model.bean.MenuBean;
@@ -32,12 +30,9 @@ import com.zlcm.zlgg.utils.SpUtil;
 import com.zlcm.zlgg.view.RoundImageView;
 import com.zlcm.zlgg.view.ShareDialog;
 import com.zlcm.zlgg.view.ZlToast;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
@@ -230,18 +225,21 @@ public class MainActivity extends BaseActivity {
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-            if (drawerlayout.isDrawerOpen(navigationAll)) {
-                closeDrawerLayout();
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_context);
+        if (((MainFragment) fragment).isCloseLlDevice()) {
+            if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+                if (drawerlayout.isDrawerOpen(navigationAll)) {
+                    closeDrawerLayout();
+                } else {
+                    exit();
+                }
+
+                return false;
             } else {
-                exit();
+                return super.onKeyDown(keyCode, event);
             }
-
-            return false;
-        } else {
-            return super.onKeyDown(keyCode, event);
         }
-
+        return false;
     }
 
     public void exit() {
@@ -249,6 +247,7 @@ public class MainActivity extends BaseActivity {
             ZlToast.showText(this, "再按一次退出程序");
             exitTime = System.currentTimeMillis();
         } else {
+            SpUtil.putObject(this,"location", Constants.loction);
             App.getInstance().exitApp();
         }
     }

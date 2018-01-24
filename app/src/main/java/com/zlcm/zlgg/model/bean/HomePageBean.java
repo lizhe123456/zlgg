@@ -1,5 +1,7 @@
 package com.zlcm.zlgg.model.bean;
 
+import com.google.gson.Gson;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -89,6 +91,7 @@ public class HomePageBean implements Serializable {
         String img;
         String desc;
         String time;
+        String url;
 
         public String getDesc() {
             return desc;
@@ -129,12 +132,6 @@ public class HomePageBean implements Serializable {
         public void setTime(String time) {
             this.time = time;
         }
-    }
-
-    public class HeadBean implements Serializable{
-
-        String headImg;
-        String url;
 
         public String getUrl() {
             return url;
@@ -143,6 +140,12 @@ public class HomePageBean implements Serializable {
         public void setUrl(String url) {
             this.url = url;
         }
+    }
+
+    public class HeadBean implements Serializable{
+
+        String headImg;
+        String headUrl;
 
         public String getHeadImg() {
             return headImg;
@@ -150,6 +153,14 @@ public class HomePageBean implements Serializable {
 
         public void setHeadImg(String headImg) {
             this.headImg = headImg;
+        }
+
+        public String getHeadUrl() {
+            return headUrl;
+        }
+
+        public void setHeadUrl(String headUrl) {
+            this.headUrl = headUrl;
         }
     }
 }

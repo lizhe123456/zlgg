@@ -71,6 +71,9 @@ public class PayActivity extends MvpActivity<PayPresenter> implements PayContrac
         deliveryAddressList.setLayoutManager(linearLayoutManager);
         deliveryAddressList.setAdapter(mAdapter);
         mAdapter.addFirstDataSet(bean.getList());
+        if (bean.getList().size() > 0){
+            deliveryAddressList.setVisibility(View.VISIBLE);
+        }
     }
 
 
