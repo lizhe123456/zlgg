@@ -36,6 +36,9 @@ public class OrderAdapter extends BaseAdapter<ChargInfoBean> {
             }else if (item.getAdvertState() == 2){
                 holder.setText(R.id.order_state,"审核失败");
                 holder.setTextColor(R.id.order_state,R.color.red_1);
+            }else if (item.getAdvertState() == 3){
+                holder.setText(R.id.order_state,"已过期");
+                holder.setTextColor(R.id.order_state,R.color.red_1);
             }
         }
         holder.setText(R.id.order_num,"订单号： "+item.getOrder_number());

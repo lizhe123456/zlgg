@@ -18,7 +18,7 @@ public class LoadingDialog extends Dialog {
     private TextView textView;
 
     public LoadingDialog(Context context) {
-        super(context,R.style.LoadingDialog);
+        super(context,R.style.ZlCustomerServiceDialog);
         /**设置对话框背景透明*/
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         setContentView(R.layout.loading);

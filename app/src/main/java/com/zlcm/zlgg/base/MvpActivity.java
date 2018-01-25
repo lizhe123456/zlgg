@@ -1,7 +1,5 @@
 package com.zlcm.zlgg.base;
 
-
-
 import com.zlcm.zlgg.app.App;
 import com.zlcm.zlgg.di.component.ActivityComponent;
 import com.zlcm.zlgg.di.component.DaggerActivityComponent;
